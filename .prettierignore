@@ -21,6 +21,9 @@ coverage/
 
 # Build outputs
 .next/
+out/
+build/
+dist/
 
 # Local env files
 .env.local
