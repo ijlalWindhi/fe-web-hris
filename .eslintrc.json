@@ -77,5 +77,32 @@
       ],
       "extends": ["plugin:testing-library/react"]
     }
+  ],
+  "ignorePatterns": [
+    // Directory patterns
+    "node_modules/",
+    ".next/",
+    "out/",
+    "dist/",
+    "build/",
+
+    // Configuration files
+    ".prettierignore",
+    ".prettierrc",
+    "commitlint.config.ts",
+    "next.config.ts",
+    "package.json",
+    "package-lock.json",
+    "postcss.config.mjs",
+    "tailwind.config.ts",
+    "tsconfig.json",
+
+    // Testing configurations
+    "jest.config.ts",
+    "jest.setup.ts",
+    "tsconfig.jest.json",
+
+    // Optional: Default generated files
+    "**/*.d.ts"
   ]
 }
