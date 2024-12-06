@@ -32,8 +32,7 @@ module.exports = {
     "scope-case": [2, "always", "lower-case"],
     "scope-empty": [2, "never"],
 
-    // Pastikan subject dalam huruf kecil, tidak kosong, dan minimal 10 karakter
-    "subject-case": [2, "always", "lower-case"],
+    // Pastikan subject tidak kosong, dan minimal 10 karakter
     "subject-min-length": [2, "always", 10],
     "subject-empty": [2, "never"],
   },
