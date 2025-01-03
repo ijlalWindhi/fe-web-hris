@@ -6,6 +6,7 @@ LICENSE
 .prettierignore
 *.lock
 README.md
+Dockerfile
 
 # Next.js specific
 next-env.d.ts
