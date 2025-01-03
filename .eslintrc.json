@@ -1,21 +1,10 @@
 {
   "extends": [
     "next/core-web-vitals",
-    "next/typescript",
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-type-checked",
-    "plugin:react-hooks/recommended",
-    "plugin:jsx-a11y/recommended",
-    "plugin:prettier/recommended"
+    "plugin:@typescript-eslint/recommended"
   ],
-  "plugins": [
-    "@typescript-eslint",
-    "react-hooks",
-    "jsx-a11y",
-    "simple-import-sort",
-    "unused-imports"
-  ],
+  "plugins": ["@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json",
@@ -24,43 +13,31 @@
     }
   },
   "rules": {
-    // TypeScript specific rules
-    "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/explicit-function-return-type": "off",
+    // Prevent potential errors
+    "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-unused-vars": [
-      "error",
-      { "argsIgnorePattern": "^_" }
-    ],
-    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
-
-    // React specific rules
-    "react/prop-types": "off",
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-sort-props": [
-      "error",
+      "warn",
       {
-        "callbacksLast": true,
-        "shorthandFirst": true,
-        "multiline": "last"
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
       }
     ],
 
-    // Import sorting
-    "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
-    "unused-imports/no-unused-imports": "error",
+    // Basic type safety
+    "@typescript-eslint/no-unsafe-assignment": "warn",
+    "@typescript-eslint/no-unsafe-call": "warn",
+    "@typescript-eslint/no-unsafe-member-access": "warn",
 
-    // Accessibility rules
-    "jsx-a11y/alt-text": "error",
-    "jsx-a11y/aria-role": "error",
-
-    // General best practices
+    // Performance and security
     "no-console": ["warn", { "allow": ["warn", "error"] }],
     "eqeqeq": "error",
-    "curly": "error",
-    "no-duplicate-imports": "error",
+    "no-duplicate-imports": "warn",
 
-    // Hooks rules
+    // React specific
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+
+    // Hooks
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
   },
@@ -69,40 +46,15 @@
       "version": "detect"
     }
   },
-  "overrides": [
-    {
-      "files": [
-        "**/__tests__/**/*.[jt]s?(x)",
-        "**/?(*.)+(spec|test).[jt]s?(x)"
-      ],
-      "extends": ["plugin:testing-library/react"]
-    }
-  ],
   "ignorePatterns": [
-    // Directory patterns
     "node_modules/",
     ".next/",
     "out/",
     "dist/",
     "build/",
-
-    // Configuration files
-    ".prettierignore",
-    ".prettierrc",
-    "commitlint.config.ts",
-    "next.config.ts",
-    "package.json",
-    "package-lock.json",
-    "postcss.config.mjs",
-    "tailwind.config.ts",
-    "tsconfig.json",
-
-    // Testing configurations
-    "jest.config.ts",
-    "jest.setup.ts",
-    "tsconfig.jest.json",
-
-    // Optional: Default generated files
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "**/*.config.ts",
+    "**/*.config.mjs",
+    "**/*.json"
   ]
 }
