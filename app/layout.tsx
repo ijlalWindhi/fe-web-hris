@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import Providers from "../lib/react-query";
+import { METADATA } from "@/constants/metadata";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,8 +17,20 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Skeleton - Dhisa Production",
-  description: "Skeleton for Dhisa Production",
+  description: METADATA.description,
+  keywords: METADATA.keyword,
+  creator: METADATA.creator,
+  authors: {
+    name: METADATA.creator,
+    url: METADATA.openGraph.url,
+  },
+  openGraph: {
+    images: METADATA.profile,
+    url: METADATA.openGraph.url,
+    siteName: METADATA.openGraph.siteName,
+    locale: METADATA.openGraph.locale,
+    type: "website",
+  },
 };
 
 export default function RootLayout({
