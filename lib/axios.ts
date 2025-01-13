@@ -35,8 +35,8 @@ const createAxiosInstance = () => {
         config.data = sanitizeData(config.data);
       }
 
-      if (token) {
-        config.headers["Authorization"] = `Bearer ${token}`;
+      if (token?.value) {
+        config.headers["Authorization"] = `Bearer ${token?.value}`;
       }
       return config;
     },
