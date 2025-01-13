@@ -1,5 +1,3 @@
-import { AxiosError } from "axios";
-
 import axios from "@/lib/axios";
 import { IApiResponse, IResponsePagination } from "@/types";
 import {
@@ -20,11 +18,8 @@ export async function login(
     );
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError) {
-      console.error("Error from service login: ", error);
-      throw error;
-    }
-    throw new Error("An unexpected error occurred");
+    console.error("Error from service login: ", error);
+    throw error;
   }
 }
 
@@ -34,11 +29,8 @@ export async function getProfile(): Promise<IApiResponse<TResponseProfile>> {
       await axios.get<IApiResponse<TResponseProfile>>("/auth/me");
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError) {
-      console.error("Error from getProfile: ", error);
-      throw error;
-    }
-    throw new Error("An unexpected error occurred");
+    console.error("Error from getProfile: ", error);
+    throw error;
   }
 }
 
@@ -52,11 +44,8 @@ export async function getPermissions(): Promise<
       );
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError) {
-      console.error("Error from getPermissions: ", error);
-      throw error;
-    }
-    throw new Error("An unexpected error occurred");
+    console.error("Error from getPermissions: ", error);
+    throw error;
   }
 }
 
@@ -70,10 +59,7 @@ export async function getMenu(): Promise<
       );
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError) {
-      console.error("Error from getMenu: ", error);
-      throw error;
-    }
-    throw new Error("An unexpected error occurred");
+    console.error("Error from getMenu: ", error);
+    throw error;
   }
 }
