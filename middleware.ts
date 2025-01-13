@@ -14,7 +14,9 @@ const publicAssets = [
 ];
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
+  const token = request.cookies.get(
+    `${process.env.NEXT_PUBLIC_STORAGE_NAME}_token`,
+  )?.value;
   const path = request.nextUrl.pathname;
 
   // Check if the current path is for public assets
