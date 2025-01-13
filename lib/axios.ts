@@ -1,8 +1,8 @@
 import axios from "axios";
-import useAuth from "@/stores/auth";
 import useTheme from "@/stores/theme";
 import { handleAxiosError } from "@/utils/handle-axios-error";
 import { sanitizeData, sanitizeUrl } from "@/utils/sanitize-data";
+import { getCookies } from "@/utils/cookie";
 
 const createAxiosInstance = () => {
   const instance = axios.create({
@@ -15,7 +15,7 @@ const createAxiosInstance = () => {
   instance.interceptors.request.use(
     async (config) => {
       useTheme.getState().setLoading(true);
-      const token = await useAuth.getState().getToken();
+      const token = await getCookies("token");
 
       // Sanitize URL if present (both path and query parameters)
       if (config.url) {
