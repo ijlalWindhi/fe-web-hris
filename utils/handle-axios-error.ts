@@ -73,5 +73,5 @@ export const handleAxiosError = async (err: AxiosError<IResponseMessage>) => {
     // Redirect to login page
     window.location.href = "/auth/login";
   }
-  return { error: true, message: errorMessage };
+  return { error: true, message: errorMessage, status };
 };
