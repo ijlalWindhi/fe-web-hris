@@ -28,8 +28,8 @@ export default function ModalSuccess() {
 
   return (
     <Dialog open={modalSuccess.open} onOpenChange={() => handleAction}>
-      <DialogContent className="sm:max-w-[425px]">
-        <Lottie animation={successAnimation} height={100} width={100} />
+      <DialogContent className="sm:max-w-[425px] flex flex-col justify-center items-center gap-4">
+        <Lottie animation={successAnimation} height={180} width={180} />
         <div className="flex flex-col gap-1">
           <DialogTitle className="font-semibold text-center">
             {modalSuccess.title}
