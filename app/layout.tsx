@@ -1,9 +1,12 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
+import { Loader2 } from "lucide-react";
 import localFont from "next/font/local";
-import "./globals.css";
 
 import Providers from "../lib/react-query";
 import { METADATA } from "@/constants/metadata";
+import { Toaster } from "@/components/ui/toaster";
+import "./globals.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -43,7 +46,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>{children}</Providers>
+        <Suspense
+          fallback={
+            <div className="w-screen h-screen flex items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin" />
+            </div>
+          }
+        >
+          <Toaster />
+          <Providers>{children}</Providers>
+        </Suspense>
       </body>
     </html>
   );
