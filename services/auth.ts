@@ -1,5 +1,5 @@
 import axios from "@/lib/axios";
-import { IApiResponse, IResponsePagination } from "@/types";
+import { IResponsePagination } from "@/types";
 import {
   TPayloadLogin,
   TResponseLogin,
@@ -8,14 +8,9 @@ import {
   TResponseMenu,
 } from "@/types/modules/auth";
 
-export async function login(
-  data: TPayloadLogin,
-): Promise<IApiResponse<TResponseLogin>> {
+export async function login(data: TPayloadLogin): Promise<TResponseLogin> {
   try {
-    const response = await axios.post<IApiResponse<TResponseLogin>>(
-      "/auth/login",
-      data,
-    );
+    const response = await axios.post<TResponseLogin>("/auth/login", data);
     return response.data;
   } catch (error) {
     console.error("Error from service login: ", error);
@@ -23,10 +18,9 @@ export async function login(
   }
 }
 
-export async function getProfile(): Promise<IApiResponse<TResponseProfile>> {
+export async function getProfile(): Promise<TResponseProfile> {
   try {
-    const response =
-      await axios.get<IApiResponse<TResponseProfile>>("/auth/me");
+    const response = await axios.get<TResponseProfile>("/auth/me");
     return response.data;
   } catch (error) {
     console.error("Error from getProfile: ", error);
@@ -35,11 +29,11 @@ export async function getProfile(): Promise<IApiResponse<TResponseProfile>> {
 }
 
 export async function getPermissions(): Promise<
-  IApiResponse<IResponsePagination<TResponsePermission[]>>
+  IResponsePagination<TResponsePermission[]>
 > {
   try {
     const response =
-      await axios.get<IApiResponse<IResponsePagination<TResponsePermission[]>>>(
+      await axios.get<IResponsePagination<TResponsePermission[]>>(
         "/auth/permissions",
       );
     return response.data;
@@ -49,14 +43,10 @@ export async function getPermissions(): Promise<
   }
 }
 
-export async function getMenu(): Promise<
-  IApiResponse<IResponsePagination<TResponseMenu[]>>
-> {
+export async function getMenu(): Promise<IResponsePagination<TResponseMenu[]>> {
   try {
     const response =
-      await axios.get<IApiResponse<IResponsePagination<TResponseMenu[]>>>(
-        "/auth/menu",
-      );
+      await axios.get<IResponsePagination<TResponseMenu[]>>("/auth/menu");
     return response.data;
   } catch (error) {
     console.error("Error from getMenu: ", error);
