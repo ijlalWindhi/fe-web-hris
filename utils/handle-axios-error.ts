@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 
 import { toast } from "@/hooks/use-toast";
-import { ResponseMessage } from "@/types";
+import { IResponseMessage } from "@/types";
 
 type NotificationType = "destructive" | "default";
 
@@ -21,7 +21,7 @@ const showNotification = (
   });
 };
 
-const getErrorDescription = (error: AxiosError<ResponseMessage>): string => {
+const getErrorDescription = (error: AxiosError<IResponseMessage>): string => {
   return (
     error.response?.data?.message || error.message || DEFAULT_ERROR_MESSAGE
   );
@@ -57,7 +57,7 @@ const handleSpecificError = (
   }
 };
 
-export const handleAxiosError = async (err: AxiosError<ResponseMessage>) => {
+export const handleAxiosError = async (err: AxiosError<IResponseMessage>) => {
   if (!err.response) {
     showNotification("destructive", "Masalah Jaringan", NETWORK_ERROR_MESSAGE);
     return { error: true, message: NETWORK_ERROR_MESSAGE };
