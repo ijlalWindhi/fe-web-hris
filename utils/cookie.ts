@@ -1,6 +1,9 @@
 "use server";
 import { cookies } from "next/headers";
 
+const getCookieName = (key: string) =>
+  `${process.env.NEXT_PUBLIC_STORAGE_NAME}_${key}`;
+
 /**
  * Set cookie
  * @param key
@@ -11,7 +14,7 @@ import { cookies } from "next/headers";
  */
 export async function setCookies(key: string, value: string) {
   const cookieStore = await cookies();
-  cookieStore.set(key, value, {
+  cookieStore.set(getCookieName(key), value, {
     httpOnly: process.env.NODE_ENV === "production",
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
@@ -29,7 +32,7 @@ export async function setCookies(key: string, value: string) {
  */
 export async function getCookies(key: string) {
   const cookieStore = await cookies();
-  return cookieStore.get(key);
+  return cookieStore.get(getCookieName(key));
 }
 
 /**
@@ -41,5 +44,5 @@ export async function getCookies(key: string) {
  */
 export async function deleteCookie(key: string) {
   const cookieStore = await cookies();
-  cookieStore.delete(key);
+  cookieStore.delete(getCookieName(key));
 }
