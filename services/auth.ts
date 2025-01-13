@@ -1,14 +1,14 @@
 import { AxiosError } from "axios";
 
 import axios from "@/lib/axios";
-import { ApiResponse } from "@/types";
-import { TPayloadLogin, TResponseLogin } from "@/types/auth";
+import { IApiResponse } from "@/types";
+import { TPayloadLogin, TResponseLogin } from "@/types/modules/auth";
 
 export async function login(
   data: TPayloadLogin,
-): Promise<ApiResponse<TResponseLogin>> {
+): Promise<IApiResponse<TResponseLogin>> {
   try {
-    const response = await axios.post<ApiResponse<TResponseLogin>>(
+    const response = await axios.post<IApiResponse<TResponseLogin>>(
       "/auth/login",
       data,
     );
