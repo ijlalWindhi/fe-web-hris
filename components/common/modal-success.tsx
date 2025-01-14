@@ -1,5 +1,5 @@
+"use client";
 import Lottie from "./lottie";
-
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
