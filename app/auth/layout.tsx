@@ -1,12 +1,6 @@
-"use client";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
-
-import ModalSuccess from "@/components/common/modal-success";
-
-import useTheme from "@/stores/theme";
 
 function AuthLayout({
   children,
@@ -14,18 +8,11 @@ function AuthLayout({
   children: React.ReactNode;
 }>) {
   // variables
-  const { isLoading } = useTheme();
   const year = new Date().getFullYear();
 
   return (
-    <main className="min-h-screen grid lg:grid-cols-2 p-4 lg:p-0 relative">
-      {isLoading && (
-        <div className="w-full h-full flex items-center justify-center bg-gray-500/60 z-50 absolute">
-          <Loader2 className="h-10 w-10 animate-spin text-primary" />
-        </div>
-      )}
-      <ModalSuccess />
-      <div className="flex flex-col justify-between px-4 max-w-xl mx-auto w-full">
+    <main className="min-h-screen grid lg:grid-cols-2 gap-8 p-4 lg:p-0 relative">
+      <div className="flex flex-col justify-between max-w-md mx-auto w-full">
         <div className="mb-16">
           <Link href="/auth/login">
             <Image

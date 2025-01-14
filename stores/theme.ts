@@ -5,6 +5,7 @@ import { IThemeStore } from "@/types";
 const useTheme = create<IThemeStore>((set) => ({
   // state
   isLoading: false,
+  isSidebarOpen: false,
   modalSuccess: {
     open: false,
     title: "",
@@ -20,6 +21,9 @@ const useTheme = create<IThemeStore>((set) => ({
   },
   setModalSuccess: (modal) => {
     set({ modalSuccess: modal });
+  },
+  toggleSidebar: () => {
+    set((state) => ({ isSidebarOpen: !state.isSidebarOpen }));
   },
 }));
 
