@@ -125,6 +125,7 @@ const NavItem: React.FC<NavItemProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const haveSubItems = menuItem.sub && menuItem.sub.length > 0;
 
   // memoized variables
   const navItemClasses = useMemo(
@@ -132,16 +133,16 @@ const NavItem: React.FC<NavItemProps> = ({
     flex flex-row items-center gap-2 rounded-full
     ${isActive ? "" : "hover:bg-gray-50"}
     ${isSidebarOpen ? "w-full" : "w-full min-w-12 justify-center"}
-    ${menuItem.sub ? "cursor-pointer justify-between" : ""}
+    ${haveSubItems ? "cursor-pointer justify-between" : ""}
   `,
-    [isActive, isSidebarOpen, menuItem.sub],
+    [isActive, isSidebarOpen, haveSubItems],
   );
 
   const navItemContent = useMemo(() => {
     const shouldShowTitle = isSidebarOpen || navigationMode === "header";
     const shouldShowChevron =
       ((isSidebarOpen && isMobile) || navigationMode === "header") &&
-      menuItem.sub;
+      haveSubItems;
 
     return (
       <div
@@ -174,6 +175,7 @@ const NavItem: React.FC<NavItemProps> = ({
     isMobile,
     isOpen,
     isDropdownOpen,
+    haveSubItems,
   ]);
 
   // functions
@@ -191,9 +193,9 @@ const NavItem: React.FC<NavItemProps> = ({
   );
 
   const handleNavItemClick = useCallback(() => {
-    if (navigationMode === "header" && menuItem.sub) {
+    if (navigationMode === "header" && haveSubItems) {
       setIsDropdownOpen((prev) => !prev);
-    } else if (toggleSubMenu && menuItem.sub) {
+    } else if (toggleSubMenu && haveSubItems) {
       toggleSubMenu(menuItem.title);
     }
   }, [navigationMode, menuItem, toggleSubMenu]);
@@ -211,7 +213,7 @@ const NavItem: React.FC<NavItemProps> = ({
       ref={dropdownRef}
       className={`relative ${navigationMode === "sidebar" ? "w-full" : ""}`}
     >
-      {!menuItem.sub ? (
+      {!haveSubItems ? (
         <NavLink
           href={menuItem.path}
           onClick={toggleSidebar}
@@ -229,10 +231,10 @@ const NavItem: React.FC<NavItemProps> = ({
           )}
 
           {/* Dropdown for header mode */}
-          {navigationMode === "header" && isDropdownOpen && menuItem.sub && (
+          {navigationMode === "header" && isDropdownOpen && haveSubItems && (
             <div className="absolute z-10 mt-2 w-[160px] rounded-3xl bg-white shadow-lg border">
               <SubMenuItems
-                subItems={menuItem.sub as INavItem[]}
+                subItems={menuItem.sub}
                 pathname={pathname}
                 onItemClick={() => {
                   setIsDropdownOpen(false);
@@ -244,10 +246,10 @@ const NavItem: React.FC<NavItemProps> = ({
           )}
 
           {/* Sidebar submenu - Desktop */}
-          {navigationMode === "sidebar" && menuItem.sub && !isMobile && (
+          {navigationMode === "sidebar" && haveSubItems && !isMobile && (
             <div className="mt-2 flex flex-col gap-2 w-full">
               <SubMenuItems
-                subItems={menuItem.sub as INavItem[]}
+                subItems={menuItem.sub}
                 pathname={pathname}
                 onItemClick={toggleSidebar}
                 mode="sidebar"
@@ -258,12 +260,12 @@ const NavItem: React.FC<NavItemProps> = ({
 
           {/* Sidebar submenu - Mobile */}
           {navigationMode === "sidebar" &&
-            menuItem.sub &&
+            haveSubItems &&
             isMobile &&
             isOpen && (
               <div className="mt-2 flex flex-col gap-2 w-full">
                 <SubMenuItems
-                  subItems={menuItem.sub as INavItem[]}
+                  subItems={menuItem.sub}
                   pathname={pathname}
                   onItemClick={toggleSidebar}
                   mode="sidebar"

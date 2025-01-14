@@ -29,10 +29,5 @@ export interface INavItem {
   title: string;
   path: string;
   icon: string;
-  sub: boolean | ISubNavItem[];
-}
-
-export interface ISubNavItem {
-  title: string;
-  path: string;
+  sub: INavItem[];
 }
