@@ -9,7 +9,7 @@ import {
   TResponseMenu,
 } from "@/types/modules/auth";
 
-export const useAuth = create<IAuthStore>()(
+const useAuth = create<IAuthStore>()(
   persist(
     (setState) => ({
       // state
