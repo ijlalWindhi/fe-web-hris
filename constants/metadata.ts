@@ -1,17 +1,18 @@
 export const METADATA = {
-  creator: "Dhisa Production",
+  creator: "HRIS",
   description:
-    "Skeleton project Nextjs 15 with React Query, Tailwind CSS, Shadcn and TypeScript",
-  keyword: "nextjs, react-query, tailwindcss, shadcn, typescript",
+    "Easily access and manage employee information, track attendance, handle payroll, and streamline your HR processes all in one place.",
+  keyword:
+    "HRIS, Human Resource Information System, HR, Payroll, Attendance, Employee Management",
   authors: {
-    name: "Dhisa Production",
+    name: "HRIS",
     url: process.env.DOMAIN,
   },
   openGraph: {
     url: process.env.DOMAIN,
-    siteName: "Dhisa Production",
-    locale: "en_US",
+    siteName: "HRIS",
+    locale: "id_ID",
   },
-  exTitle: "| Dhisa Production",
+  exTitle: "| HRIS",
   profile: "",
 };
