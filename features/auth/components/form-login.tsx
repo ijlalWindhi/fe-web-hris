@@ -6,7 +6,7 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { ArrowRight, Mail, Lock } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -56,7 +56,10 @@ export default function FormLogin() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 w-full"
+      >
         <InputField
           name="email"
           label="Email Address"
@@ -81,7 +84,7 @@ export default function FormLogin() {
           )}
         />
         <Link href="/auth/reset-password">
-          <p className="text-xs md:text-sm text-primary text-right mt-4">
+          <p className="text-xs md:text-sm text-primary text-right">
             Forgot Password?
           </p>
         </Link>
