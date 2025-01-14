@@ -21,6 +21,17 @@ export type TResponseLogin = {
   token: string;
 };
 
+// Reset Password
+export type TPayloadResetPassword = {
+  email: string;
+};
+
+// New Password
+export type TPayloadNewPassword = {
+  token: string;
+  password: string;
+};
+
 // Profile
 export type TResponseProfile = {
   id: string;
