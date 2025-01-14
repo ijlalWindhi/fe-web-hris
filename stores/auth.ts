@@ -6,8 +6,8 @@ import {
   IAuthStore,
   TResponseProfile,
   TResponsePermission,
-  TResponseMenu,
 } from "@/types/modules/auth";
+import { INavItem } from "@/types";
 
 const useAuth = create<IAuthStore>()(
   persist(
@@ -53,7 +53,7 @@ const useAuth = create<IAuthStore>()(
       getMenu: async () => {
         try {
           const menus = await getMenu();
-          let flattenedMenus: TResponseMenu[] = [];
+          let flattenedMenus: INavItem[] = [];
           if (menus) {
             flattenedMenus = menus.results.flat();
             setState((state) => ({
