@@ -67,7 +67,7 @@ const SubMenuItems: React.FC<{
         return `
         flex w-full flex-row items-center gap-2 px-4 py-2.5 border-b last:border-0 
         last:rounded-b-3xl first:rounded-t-3xl
-        ${isActive ? "" : "hover:bg-gray-50"}
+        ${isActive ? "text-white bg-primary" : "hover:bg-gray-50"}
       `;
       }
       return `flex w-full flex-row items-center gap-2 rounded-lg ${
@@ -164,8 +164,8 @@ const NavItem: React.FC<NavItemProps> = ({
         {shouldShowChevron && (
           <ChevronDown
             size={20}
-            className={`text-gray-400 transition-all duration-300 
-              ${isOpen || isDropdownOpen ? "rotate-180" : "rotate-0"}`}
+            className={`transition-all duration-300 
+              ${isOpen || isDropdownOpen ? "rotate-180" : "rotate-0"} ${isActive ? "text-white" : "text-gray-400"}`}
           />
         )}
       </div>
