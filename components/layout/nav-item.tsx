@@ -198,7 +198,7 @@ const NavItem: React.FC<NavItemProps> = ({
     } else if (toggleSubMenu && haveSubItems) {
       toggleSubMenu(menuItem.title);
     }
-  }, [navigationMode, menuItem, toggleSubMenu]);
+  }, [navigationMode, menuItem, toggleSubMenu, haveSubItems]);
 
   // lifecycle
   useEffect(() => {
