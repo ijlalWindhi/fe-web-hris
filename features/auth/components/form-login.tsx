@@ -6,7 +6,7 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Mail, Lock } from "lucide-react";
 
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -66,6 +66,7 @@ export default function FormLogin() {
             <Input
               type="email"
               placeholder="Enter your email address"
+              icon={Mail}
               {...field}
             />
           )}
