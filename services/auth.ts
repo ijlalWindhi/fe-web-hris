@@ -1,12 +1,14 @@
 import axios from "@/lib/axios";
-import { IResponsePagination } from "@/types";
+import { IResponseMessage, IResponsePagination } from "@/types";
 import {
   TPayloadLogin,
   TResponseLogin,
+  TPayloadResetPassword,
+  TPayloadNewPassword,
   TResponseProfile,
   TResponsePermission,
-  TResponseMenu,
 } from "@/types/modules/auth";
+import { INavItem } from "@/types";
 
 export async function login(data: TPayloadLogin): Promise<TResponseLogin> {
   try {
@@ -23,7 +25,7 @@ export async function getProfile(): Promise<TResponseProfile> {
     const response = await axios.get<TResponseProfile>("/auth/me");
     return response.data;
   } catch (error) {
-    console.error("Error from getProfile: ", error);
+    console.error("Error from service getProfile: ", error);
     throw error;
   }
 }
@@ -38,18 +40,45 @@ export async function getPermissions(): Promise<
       );
     return response.data;
   } catch (error) {
-    console.error("Error from getPermissions: ", error);
+    console.error("Error from service getPermissions: ", error);
     throw error;
   }
 }
 
-export async function getMenu(): Promise<IResponsePagination<TResponseMenu[]>> {
+export async function getMenu(): Promise<IResponsePagination<INavItem[]>> {
   try {
     const response =
-      await axios.get<IResponsePagination<TResponseMenu[]>>("/auth/menu");
+      await axios.get<IResponsePagination<INavItem[]>>("/auth/menu");
     return response.data;
   } catch (error) {
-    console.error("Error from getMenu: ", error);
+    console.error("Error from service getMenu: ", error);
+    throw error;
+  }
+}
+
+export async function resetPassword(
+  data: TPayloadResetPassword,
+): Promise<IResponseMessage> {
+  try {
+    const response = await axios.post("/auth/forgot-password/send-email", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error from service resetPassword: ", error);
+    throw error;
+  }
+}
+
+export async function newPassword(
+  data: TPayloadNewPassword,
+): Promise<IResponseMessage> {
+  try {
+    const response = await axios.post(
+      "/auth/forgot-password/change-password",
+      data,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service newPassword: ", error);
     throw error;
   }
 }

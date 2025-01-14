@@ -6,10 +6,10 @@ import {
   IAuthStore,
   TResponseProfile,
   TResponsePermission,
-  TResponseMenu,
 } from "@/types/modules/auth";
+import { INavItem } from "@/types";
 
-export const useAuth = create<IAuthStore>()(
+const useAuth = create<IAuthStore>()(
   persist(
     (setState) => ({
       // state
@@ -21,14 +21,13 @@ export const useAuth = create<IAuthStore>()(
       getProfile: async () => {
         try {
           const profile = await getProfile();
-          if (profile.status === 200) {
-            profile.data = profile.data || {};
+          if (profile) {
             setState((state) => ({
               ...state,
-              profile: profile.data,
+              profile: profile,
             }));
           }
-          return profile.data || {};
+          return profile || {};
         } catch (error) {
           console.error("Error store getProfile:", error);
           throw error;
@@ -38,9 +37,8 @@ export const useAuth = create<IAuthStore>()(
         try {
           const permissions = await getPermissions();
           let flattenedPermissions: TResponsePermission[] = [];
-          if (permissions.status === 200) {
-            permissions.data = permissions.data || [];
-            flattenedPermissions = permissions.data.results.flat();
+          if (permissions) {
+            flattenedPermissions = permissions.results.flat();
             setState((state) => ({
               ...state,
               permission: flattenedPermissions || [],
@@ -55,10 +53,9 @@ export const useAuth = create<IAuthStore>()(
       getMenu: async () => {
         try {
           const menus = await getMenu();
-          let flattenedMenus: TResponseMenu[] = [];
-          if (menus.status === 200) {
-            menus.data = menus.data || [];
-            flattenedMenus = menus.data.results.flat();
+          let flattenedMenus: INavItem[] = [];
+          if (menus) {
+            flattenedMenus = menus.results.flat();
             setState((state) => ({
               ...state,
               menu: flattenedMenus || [],

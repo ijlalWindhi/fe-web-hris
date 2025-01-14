@@ -5,6 +5,8 @@ import { Manrope } from "next/font/google";
 
 import { METADATA } from "@/constants/metadata";
 import { Toaster } from "@/components/ui/toaster";
+import ModalSuccess from "@/components/common/modal-success";
+import ScreenLoading from "@/components/common/screen-loading";
 
 import Providers from "../lib/react-query";
 import "./globals.css";
@@ -48,6 +50,8 @@ export default function RootLayout({
             </div>
           }
         >
+          <ScreenLoading />
+          <ModalSuccess />
           <Toaster />
           <Providers>{children}</Providers>
         </Suspense>

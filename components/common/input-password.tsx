@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Lock } from "lucide-react";
 
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
@@ -92,10 +92,13 @@ const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordProps>(
           </div>
         )}
         <div className="relative">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <Lock className="h-5 w-5 text-primary" aria-hidden />
+          </div>
           <input
             type={showPassword ? "text" : "password"}
             className={cn(
-              "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-xs md:text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10",
+              "flex h-10 w-full rounded-full border border-input bg-background py-2 text-xs md:text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 px-10",
               className,
             )}
             ref={ref}
