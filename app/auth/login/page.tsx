@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import FormLogin from "@/features/login";
+import { FormLogin } from "@/features/auth";
 import { METADATA } from "@/constants/metadata";
 
 export const metadata: Metadata = {
