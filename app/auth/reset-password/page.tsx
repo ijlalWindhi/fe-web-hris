@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Login() {
+export default function ResetPassword() {
   return (
     <div className="space-y-4 w-full p-4">
       <div className="text-center lg:text-left">
