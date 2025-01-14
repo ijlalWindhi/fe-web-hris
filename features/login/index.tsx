@@ -1,3 +1,3 @@
-import FormLogin from "./components/Form";
+import FormLogin from "./components/form";
 
 export default FormLogin;
