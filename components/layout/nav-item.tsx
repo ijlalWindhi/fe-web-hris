@@ -11,6 +11,7 @@ import { ChevronDown } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { INavItem } from "@/types";
 import { cn } from "@/utils/utils";
+import { ICONS } from "@/constants/icons";
 
 // Types
 interface NavItemProps {
@@ -59,6 +60,7 @@ const SubMenuItems: React.FC<{
   mode: "header" | "sidebar";
   isSidebarOpen?: boolean;
 }> = React.memo(({ subItems, pathname, onItemClick, mode, isSidebarOpen }) => {
+  const isMobile = useIsMobile();
   const getSubItemClasses = useCallback(
     (isActive: boolean) => {
       if (mode === "header") {
@@ -89,6 +91,7 @@ const SubMenuItems: React.FC<{
           onClick={onItemClick}
           className={getSubItemClasses(pathname === subItem.path)}
         >
+          {subItem.icon && !isMobile && ICONS[subItem.icon]}
           {mode === "sidebar" && <div className=" w-2 h-2 rounded-full" />}
           <span
             className={`text-sm font-normal capitalize ${
@@ -232,7 +235,7 @@ const NavItem: React.FC<NavItemProps> = ({
 
           {/* Dropdown for header mode */}
           {navigationMode === "header" && isDropdownOpen && haveSubItems && (
-            <div className="absolute z-10 mt-2 w-[160px] rounded-3xl bg-white shadow-lg border">
+            <div className="absolute z-10 mt-2 w-[200px] rounded-3xl bg-white shadow-lg border">
               <SubMenuItems
                 subItems={menuItem.sub}
                 pathname={pathname}
