@@ -1,7 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server";
 
 // Define auth-related pages
-const publicPages = ["/auth/login"];
+const publicPages = [
+  "/auth/login",
+  "/auth/reset-password",
+  "/auth/new-password",
+];
 
 // Define public assets paths that should always be accessible
 const publicAssets = [

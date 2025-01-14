@@ -17,6 +17,6 @@ interface IModalSuccess {
     | "secondary"
     | "ghost"
     | "link";
-  animation?: "success";
+  animation?: "success" | "email";
   action?: () => void;
 }

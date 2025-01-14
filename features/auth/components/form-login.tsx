@@ -2,9 +2,11 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { ArrowRight, Mail } from "lucide-react";
 
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -25,7 +27,7 @@ export default function FormLogin() {
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -56,15 +58,20 @@ export default function FormLogin() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 bg-white rounded-lg p-4 w-full mx-auto sm:w-3/4 md:w-1/2 lg:w-1/3 shadow"
+        className="flex flex-col gap-4 w-full"
       >
         <InputField
-          name="username"
-          label="Username"
+          name="email"
+          label="Email Address"
           primary
           control={form.control}
           render={({ field }) => (
-            <Input type="text" placeholder="Enter your username" {...field} />
+            <Input
+              type="email"
+              placeholder="Enter your email address"
+              icon={Mail}
+              {...field}
+            />
           )}
         />
         <InputField
@@ -76,8 +83,13 @@ export default function FormLogin() {
             <InputPassword placeholder="Enter your password" {...field} />
           )}
         />
+        <Link href="/auth/reset-password">
+          <p className="text-xs md:text-sm text-primary text-right">
+            Forgot Password?
+          </p>
+        </Link>
         <Button type="submit" className="w-full" loading={loading}>
-          Login
+          Login <ArrowRight size={16} />
         </Button>
       </form>
     </Form>
