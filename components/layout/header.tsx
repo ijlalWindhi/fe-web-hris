@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown } from "lucide-react";
+import { Menu, Bell } from "lucide-react";
 
 import NavItem from "@/components/layout/nav-item";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -24,8 +24,8 @@ function Header() {
   return (
     <nav
       className={`
-        w-full flex justify-between items-center gap-6 bg-gray-50 relative z-20
-        ${isMobile ? "px-4 py-3" : "p-6"}
+        w-full flex justify-between items-center lg:gap-2 xl:gap-6 bg-gray-50 relative z-20
+        ${isMobile ? "px-4 py-3" : "lg:py-4 lg:px-2 xl:p-6"}
       `}
     >
       <div className="flex items-center gap-1">
@@ -56,7 +56,7 @@ function Header() {
 
       {!isMobile && (
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <div className="flex justify-center gap-2 !min-w-[542px]">
+          <div className="flex justify-center gap-1 xl:gap-2 !min-w-[542px]">
             {menu.map((menuItem, index) => (
               <NavItem
                 key={index}
@@ -70,30 +70,22 @@ function Header() {
           </div>
         </div>
       )}
+
       <div className="flex items-center gap-2">
-        {/* <DropdownMenuDemo /> */}
+        <div className="bg-white rounded-full p-2">
+          <Bell size={24} className="cursor-pointer" />
+        </div>
         <Link href={"/profile"}>
-          <div className="flex flex-row items-center justify-center rounded-full bg-white hover:bg-gray-100 p-1.5 gap-2 cursor-pointer">
-            <Avatar className="h-8 w-8">
-              <AvatarImage
-                src={profile.image}
-                alt="avatar"
-                className="object-cover w-full h-full rounded-full"
-              />
-              <AvatarFallback>
-                {profile?.name?.charAt(0)?.toUpperCase() || "-"}
-              </AvatarFallback>
-            </Avatar>
-            <div className="hidden xl:block">
-              <p className="text-slate-900 font-normal text-sm">
-                {profile.name}
-              </p>
-              <p className="text-slate-500 font-normal text-xs">
-                {profile.role?.nama}
-              </p>
-            </div>
-            <ChevronDown size={24} />
-          </div>
+          <Avatar className="h-10 w-10">
+            <AvatarImage
+              src={profile.image}
+              alt="avatar"
+              className="object-cover w-full h-full rounded-full"
+            />
+            <AvatarFallback>
+              {profile?.name?.charAt(0)?.toUpperCase() || "-"}
+            </AvatarFallback>
+          </Avatar>
         </Link>
       </div>
     </nav>
