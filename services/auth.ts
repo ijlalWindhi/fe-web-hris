@@ -7,8 +7,8 @@ import {
   TPayloadNewPassword,
   TResponseProfile,
   TResponsePermission,
-  TResponseMenu,
 } from "@/types/modules/auth";
+import { INavItem } from "@/types";
 
 export async function login(data: TPayloadLogin): Promise<TResponseLogin> {
   try {
@@ -45,10 +45,10 @@ export async function getPermissions(): Promise<
   }
 }
 
-export async function getMenu(): Promise<IResponsePagination<TResponseMenu[]>> {
+export async function getMenu(): Promise<IResponsePagination<INavItem[]>> {
   try {
     const response =
-      await axios.get<IResponsePagination<TResponseMenu[]>>("/auth/menu");
+      await axios.get<IResponsePagination<INavItem[]>>("/auth/menu");
     return response.data;
   } catch (error) {
     console.error("Error from service getMenu: ", error);

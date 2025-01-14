@@ -25,6 +25,7 @@ interface IModalSuccess {
 
 // Header Dashboard
 export interface INavItem {
+  id: number;
   title: string;
   path: string;
   icon: string;

@@ -1,10 +1,12 @@
+import { INavItem } from "./theme";
+
 export interface IAuthStore {
   profile: TResponseProfile;
   permission: TResponsePermission[];
-  menu: TResponseMenu[];
+  menu: INavItem[];
   getProfile: () => Promise<TResponseProfile>;
   getPermission: () => Promise<TResponsePermission[]>;
-  getMenu: () => Promise<TResponseMenu[]>;
+  getMenu: () => Promise<INavItem[]>;
 }
 
 // Login
@@ -45,20 +47,6 @@ export type TResponseProfile = {
     id: number;
     nama: string;
   };
-};
-
-// Menu
-export interface ISubNavItem {
-  title: string;
-  path: string;
-}
-
-export type TResponseMenu = {
-  id: number;
-  title: string;
-  path: string;
-  icon: string;
-  sub: boolean | ISubNavItem[];
 };
 
 // Permission
