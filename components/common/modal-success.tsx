@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 import useTheme from "@/stores/theme";
 import successAnimation from "@/public/animations/success.json";
+import emailAnimation from "@/public/animations/send-email.json";
 
 export default function ModalSuccess() {
   // variables
@@ -26,10 +27,17 @@ export default function ModalSuccess() {
     });
   };
 
+  const renderAnimation = () => {
+    if (modalSuccess.animation === "email") {
+      return emailAnimation;
+    }
+    return successAnimation;
+  };
+
   return (
     <Dialog open={modalSuccess.open} onOpenChange={() => handleAction}>
       <DialogContent className="sm:max-w-[425px] flex flex-col justify-center items-center gap-4">
-        <Lottie animation={successAnimation} height={180} width={180} />
+        <Lottie animation={renderAnimation()} height={180} width={180} />
         <div className="flex flex-col gap-1">
           <DialogTitle className="font-semibold text-center">
             {modalSuccess.title}

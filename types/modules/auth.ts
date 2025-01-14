@@ -9,7 +9,7 @@ export interface IAuthStore {
 
 // Login
 export type TPayloadLogin = {
-  username: string;
+  email: string;
   password: string;
 };
 
@@ -19,6 +19,17 @@ export type TResponseLogin = {
   username: string;
   is_active: boolean;
   token: string;
+};
+
+// Reset Password
+export type TPayloadResetPassword = {
+  email: string;
+};
+
+// New Password
+export type TPayloadNewPassword = {
+  token: string;
+  password: string;
 };
 
 // Profile

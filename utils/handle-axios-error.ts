@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 
 import { toast } from "@/hooks/use-toast";
 import { IResponseMessage } from "@/types";
+import { deleteCookie } from "./cookie";
 
 type NotificationType = "destructive" | "default";
 
@@ -71,6 +72,7 @@ export const handleAxiosError = async (err: AxiosError<IResponseMessage>) => {
 
   if (status === 401) {
     // Redirect to login page
+    deleteCookie("token");
     window.location.href = "/auth/login";
   }
   return { error: true, message: errorMessage, status };
