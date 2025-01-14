@@ -1,22 +1,19 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Loader2 } from "lucide-react";
-import localFont from "next/font/local";
+import { Manrope } from "next/font/google";
 
-import Providers from "../lib/react-query";
 import { METADATA } from "@/constants/metadata";
 import { Toaster } from "@/components/ui/toaster";
+
+import Providers from "../lib/react-query";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const manrope = Manrope({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-manrope",
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -43,9 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${manrope.variable} antialiased`}>
         <Suspense
           fallback={
             <div className="w-screen h-screen flex items-center justify-center text-primary">
