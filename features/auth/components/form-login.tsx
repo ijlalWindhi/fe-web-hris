@@ -83,11 +83,13 @@ export default function FormLogin() {
             <InputPassword placeholder="Enter your password" {...field} />
           )}
         />
-        <Link href="/auth/reset-password">
-          <p className="text-xs md:text-sm text-primary text-right">
-            Forgot Password?
-          </p>
-        </Link>
+        <div className="flex justify-end w-full">
+          <Link href="/auth/reset-password">
+            <p className="text-xs md:text-sm text-primary text-right hover:underline">
+              Forgot Password?
+            </p>
+          </Link>
+        </div>
         <Button type="submit" className="w-full" loading={loading}>
           Login <ArrowRight size={16} />
         </Button>
