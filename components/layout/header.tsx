@@ -19,7 +19,8 @@ function Header() {
   const isMobile = useIsMobile();
   const { isSidebarOpen, toggleSidebar } = useTheme();
   const { menu, profile } = useAuth();
-  const isActiveTab = (path: string) => pathname === path;
+  const isActiveTab = (path: string) =>
+    pathname.split("/")[1] === path.split("/")[1];
 
   return (
     <nav
