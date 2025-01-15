@@ -1,6 +1,9 @@
 import React from "react";
 import { Metadata } from "next";
 
+import { Card } from "@/components/ui/card";
+import TalentMapping from "@/features/talent-mapping";
+
 import { METADATA } from "@/constants/metadata";
 
 export const metadata: Metadata = {
@@ -11,6 +14,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function TalentMapping() {
-  return <div>TalentMapping</div>;
+export default function TalentMappingList() {
+  return (
+    <Card>
+      <TalentMapping />
+    </Card>
+  );
 }
