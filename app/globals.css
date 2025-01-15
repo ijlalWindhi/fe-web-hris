@@ -72,3 +72,28 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* SETTINGS FOR SCROLLBAR */
+  /* Width */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #eff6ff;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
+  }
+  /* END OF SCROLLBAR */
+}

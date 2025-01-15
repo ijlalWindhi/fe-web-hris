@@ -6,8 +6,15 @@ import { CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import InputSearch from "@/components/common/input-search";
+import List from "./list";
+import ModalTalent from "./modal-talent";
+
+import useTalentMapping from "@/stores/talent-mapping";
 
 export default function TalentMapping() {
+  // variables
+  const { toggleModalTalentMapping } = useTalentMapping();
+
   // functions
   const handleSearch = (searchTerm: string) => {
     try {
@@ -38,12 +45,18 @@ export default function TalentMapping() {
             <Download size={16} />
             Download
           </Button>
-          <Button size="sm" className="w-full md:w-auto">
+          <Button
+            size="sm"
+            className="w-full md:w-auto"
+            onClick={() => toggleModalTalentMapping(true)}
+          >
             <Plus size={16} />
             Register Talent
           </Button>
         </div>
       </div>
+      <List />
+      <ModalTalent />
     </div>
   );
 }
