@@ -151,8 +151,10 @@ const NavItem: React.FC<NavItemProps> = ({
       <div
         className={cn(
           "flex items-center gap-2 rounded-full px-4 py-2.5",
-          isActive && !isMobile ? "bg-primary" : "bg-white hover:bg-gray-100",
-          isMobile && "!bg-transparent",
+          isActive && !isMobile
+            ? "bg-primary"
+            : "bg-white hover:bg-gray-100 border border-gray-200",
+          isMobile && "!bg-transparent !border-0",
         )}
       >
         <div className="flex flex-row items-center gap-2">
