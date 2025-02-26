@@ -98,8 +98,6 @@ body {
   /* END OF SCROLLBAR */
 }
 
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
