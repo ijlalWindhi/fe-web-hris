@@ -26,7 +26,7 @@ function Header() {
     <nav
       className={`
         w-full flex justify-between items-center lg:gap-2 xl:gap-6 bg-gray-50 relative z-20
-        ${isMobile ? "px-4 py-3" : "lg:py-4 lg:px-2 xl:p-6"}
+        ${isMobile ? "px-4 py-3" : "lg:pt-4 lg:pb-0 lg:px-4"}
       `}
     >
       <div className="flex items-center gap-1">
@@ -48,7 +48,7 @@ function Header() {
                 alt="logo"
                 width={100}
                 height={32}
-                className="h-auto w-24"
+                className="h-auto w-16"
               />
             </Link>
           </>
