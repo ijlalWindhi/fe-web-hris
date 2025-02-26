@@ -16,14 +16,14 @@ export function ClientLayoutWrapper({
   const { isSidebarOpen, toggleSidebar } = useTheme();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen h-full bg-gray-50">
       <div className="relative flex min-h-screen flex-col">
         <Header />
 
         {isMobile && <Navbar />}
 
         <main
-          className="flex-1 space-y-4 p-4 pt-6"
+          className="flex-1 space-y-4 p-2 md:p-4"
           onClick={() => {
             if (isSidebarOpen && isMobile) {
               toggleSidebar();

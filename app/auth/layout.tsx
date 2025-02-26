@@ -27,7 +27,7 @@ function AuthLayout({
 
         <div className="space-y-6">{children}</div>
 
-        <div className="pb-6 text-center text-sm text-muted-foreground">
+        <div className="pb-6 text-center text-xs md:text-sm text-muted-foreground">
           © {year}. All Right Reserved.
         </div>
       </div>

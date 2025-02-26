@@ -1,14 +1,15 @@
 import axios from "@/lib/axios";
-import { IResponseMessage, IResponsePagination } from "@/types";
 import {
+  IResponseMessage,
+  IResponsePagination,
+  INavItem,
   TPayloadLogin,
   TResponseLogin,
   TPayloadResetPassword,
   TPayloadNewPassword,
   TResponseProfile,
   TResponsePermission,
-} from "@/types/modules/auth";
-import { INavItem } from "@/types";
+} from "@/types";
 
 export async function login(data: TPayloadLogin): Promise<TResponseLogin> {
   try {
