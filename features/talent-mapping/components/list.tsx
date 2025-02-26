@@ -5,14 +5,14 @@ import { ITableHeader, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Table } from "@/components/common/table";
-
-import { IResponseList } from "@/types/modules/talent-mapping";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import { IResponseList } from "@/types";
 
 const TableHeader: ITableHeader[] = [
   {

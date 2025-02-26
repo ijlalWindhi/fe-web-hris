@@ -3,11 +3,11 @@ import { persist } from "zustand/middleware";
 
 import { getProfile, getPermissions, getMenu } from "@/services/auth";
 import {
+  INavItem,
   IAuthStore,
   TResponseProfile,
   TResponsePermission,
-} from "@/types/modules/auth";
-import { INavItem } from "@/types";
+} from "@/types";
 
 const useAuth = create<IAuthStore>()(
   persist(
