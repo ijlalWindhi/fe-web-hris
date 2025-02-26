@@ -93,7 +93,7 @@ const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordProps>(
         )}
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <Lock className="h-5 w-5 text-primary" aria-hidden />
+            <Lock className="h-4 w-4 md:h-5 md:w-5 text-primary" aria-hidden />
           </div>
           <input
             type={showPassword ? "text" : "password"}
