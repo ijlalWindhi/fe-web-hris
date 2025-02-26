@@ -16,7 +16,7 @@ export function ClientLayoutWrapper({
   const { isSidebarOpen, toggleSidebar } = useTheme();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen h-full bg-gray-50">
       <div className="relative flex min-h-screen flex-col">
         <Header />
 
