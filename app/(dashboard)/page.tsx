@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 
+import Dashboard from "@/features/dashboard";
+
 import { METADATA } from "@/constants/metadata";
 
 export const metadata: Metadata = {
@@ -11,5 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <h1>Dashboard</h1>;
+  return <Dashboard />;
 }

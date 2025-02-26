@@ -39,7 +39,7 @@ export default function MobileNav() {
               alt="logo"
               width={100}
               height={32}
-              className="h-auto w-24"
+              className="h-auto w-16"
             />
           </Link>
           <X

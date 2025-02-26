@@ -16,7 +16,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {icon && (
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             {React.createElement(icon, {
-              className: cn("h-5 w-5 text-primary", iconClassName),
+              className: cn(
+                "h-4 w-4 md:h-5 md:w-5 text-primary",
+                iconClassName,
+              ),
               "aria-hidden": true,
             })}
           </div>

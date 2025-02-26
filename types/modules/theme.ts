@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react";
+
 export interface IThemeStore {
   isLoading: boolean;
   isSidebarOpen: boolean;
@@ -28,6 +30,6 @@ export interface INavItem {
   id: number;
   title: string;
   path: string;
-  icon: string;
+  icon: LucideIcon | null;
   sub: INavItem[];
 }
