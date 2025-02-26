@@ -93,7 +93,7 @@ const data = [
   },
 ];
 
-export default function Chart() {
+export default function ChartSummary() {
   // variables
   const [view, setView] = useState<"daily" | "weekly" | "monthly">("monthly");
   const type: ("daily" | "weekly" | "monthly")[] = [
@@ -105,7 +105,9 @@ export default function Chart() {
   return (
     <div className="w-full">
       <div className="flex flex-col gap-4 xl:flex-row xl:items-center md:justify-between">
-        <h2 className="text-sm md:text-base">Attendance Graphics</h2>
+        <h2 className="text-sm md:text-base font-medium">
+          Attendance Graphics
+        </h2>
         <div className="flex flex-wrap gap-2 md:items-center">
           <DatePickerWithRange className="w-full md:w-auto" />
           {type.map((item) => (
