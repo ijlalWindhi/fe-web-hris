@@ -23,7 +23,7 @@ export function ClientLayoutWrapper({
         {isMobile && <Navbar />}
 
         <main
-          className="flex-1 space-y-4 p-4 pt-6"
+          className="flex-1 space-y-4 p-2 md:p-4"
           onClick={() => {
             if (isSidebarOpen && isMobile) {
               toggleSidebar();
