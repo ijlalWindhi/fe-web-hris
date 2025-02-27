@@ -29,7 +29,9 @@ export default function Summary() {
               Hello, Putri Ayu👋
             </span>
           </CardTitle>
-          <Badge className="w-fit">• Super Admin</Badge>
+          <Badge variant={"outline"} className="w-fit">
+            <span className="text-primary">•</span> Super Admin
+          </Badge>
         </div>
         <CardDescription>
           Empower your team with seamless control over user roles, permissions,
