@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { IResponseList } from "@/types";
+import useTheme from "@/stores/theme";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -54,6 +55,43 @@ const TableHeader: ITableHeader[] = [
 ];
 
 export default function List() {
+  // variables
+  const { setModalDelete, setModalSuccess } = useTheme();
+
+  // functions
+  const handleDelete = (id: number) => {
+    try {
+      setModalDelete({
+        open: true,
+        type: "talent",
+        action: () => {
+          console.log("Delete talent with ID: ", id);
+        },
+      });
+    } catch (error) {
+      console.error("Error from handleDelete: ", error);
+    }
+  };
+
+  const handleDownload = (id: number) => {
+    try {
+      setModalSuccess({
+        open: true,
+        title: "Download Successful!",
+        message:
+          "The talent data has been downloaded successfully. You can now review it on your device.",
+        actionMessage: "Close",
+        actionVariant: "outline",
+        animation: "success",
+        action: () => {
+          console.log("Download talent with ID: ", id);
+        },
+      });
+    } catch (error) {
+      console.error("Error from handleDownload: ", error);
+    }
+  };
+
   return (
     <Table<IResponseList>
       header={TableHeader}
@@ -106,11 +144,11 @@ export default function List() {
                   <Pencil className="h-5 w-5" />
                   Edit
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleDelete(row.id)}>
                   <Trash className="h-5 w-5" />
                   Delete
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleDownload(row.id)}>
                   <Download className="h-5 w-5" />
                   Download
                 </DropdownMenuItem>
