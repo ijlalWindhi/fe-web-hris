@@ -21,7 +21,7 @@ const stats = [
 
 export default function Summary() {
   return (
-    <Card className="w-full lg:w-4/6 h-full !p-2">
+    <Card className="w-full lg:w-4/6 h-full">
       <CardHeader>
         <div className="flex flex-col md:flex-row md:items-center gap-2">
           <CardTitle>
