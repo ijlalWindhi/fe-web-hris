@@ -6,8 +6,8 @@ import { CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import InputSearch from "@/components/common/input-search";
-import List from "./list";
-import ModalTalent from "./modal-talent";
+import List from "./List";
+import ModalTalent from "./ModalTalent";
 
 import useTalentMapping from "@/stores/talent-mapping";
 
