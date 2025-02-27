@@ -2,7 +2,13 @@
 import React from "react";
 import { Plus } from "lucide-react";
 
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import InputSearch from "@/components/common/input-search";
@@ -27,7 +33,7 @@ export default function TalentMapping() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center md:gap-4 w-full !py-2 !px-0">
+      <CardHeader className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center md:gap-4 w-full">
         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-[40%]">
           <CardTitle className="font-semibold">Talent List</CardTitle>
           <Badge variant={"outline"} className="w-fit">
@@ -52,16 +58,20 @@ export default function TalentMapping() {
           </Button>
         </div>
       </CardHeader>
-      <List />
-      <PaginationCompo
-        meta={{
-          page: 1,
-          page_size: 10,
-          count: 100,
-          page_count: 10,
-        }}
-        onPageChange={(page) => console.log(page)}
-      />
+      <CardContent>
+        <List />
+      </CardContent>
+      <CardFooter>
+        <PaginationCompo
+          meta={{
+            page: 1,
+            page_size: 10,
+            count: 100,
+            page_count: 10,
+          }}
+          onPageChange={(page) => console.log(page)}
+        />
+      </CardFooter>
       <ModalTalent />
     </Card>
   );
