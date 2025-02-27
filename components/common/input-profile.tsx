@@ -78,7 +78,7 @@ export default function InputProfile({
         <AvatarFallback />
       </Avatar>
       <div className="absolute bottom-0 right-0 p-2 bg-primary text-white rounded-full">
-        <Camera size={16} />
+        <Camera size={16} className="h-3 md:h-5 w-3 md:w-5" />
       </div>
       <input
         type="file"
