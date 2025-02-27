@@ -14,6 +14,11 @@ const useTheme = create<IThemeStore>((set) => ({
     actionVariant: "outline",
     animation: "success",
   },
+  modalDelete: {
+    open: false,
+    type: "",
+    action: () => {},
+  },
 
   // actions
   setLoading: (loading) => {
@@ -21,6 +26,9 @@ const useTheme = create<IThemeStore>((set) => ({
   },
   setModalSuccess: (modal) => {
     set({ modalSuccess: modal });
+  },
+  setModalDelete: (modal) => {
+    set({ modalDelete: modal });
   },
   toggleSidebar: () => {
     set((state) => ({ isSidebarOpen: !state.isSidebarOpen }));
