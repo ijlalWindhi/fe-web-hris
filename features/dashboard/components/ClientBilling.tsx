@@ -71,13 +71,13 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
 export default function ClientBilling() {
   return (
     <Card>
-      <CardHeader className="pb-2 md:pb-3">
+      <CardHeader className="pb-2 pt-0 md:pb-3">
         <CardTitle>Client Billing</CardTitle>
         <CardDescription>
           <DatePickerWithRange />
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0">
         <div className="border border-gray-200 bg-gray-50 rounded-lg p-2">
           <ChartContainer
             config={chartConfig}
