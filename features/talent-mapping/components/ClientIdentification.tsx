@@ -38,7 +38,7 @@ export default function ClientIdentification({
     } as any;
   };
   return (
-    <div className="space-y-2 max-h-[50vh] overflow-y-auto">
+    <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
       <InputField
         name="client_name"
         label="Client Name"
