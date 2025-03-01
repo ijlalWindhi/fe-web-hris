@@ -31,13 +31,13 @@ export default function ModalTalent() {
       address: "",
       client_name: "",
       date_of_birth: "",
-      end_time: "",
+      end_time: "00:00",
       id_number: "",
       outlet_mapping: "",
       phone_number: "",
-      start_time: "",
+      start_time: "00:00",
       shift_id: "",
-      workdays: "",
+      workdays: 0,
     },
   });
 
