@@ -5,6 +5,7 @@ import { z } from "zod";
 import { InputField } from "@/components/common/input-field";
 import { Input } from "@/components/ui/input";
 import InputNumber from "@/components/common/input-number";
+import InputTimePicker from "@/components/common/input-time-picker";
 
 import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
 
@@ -38,10 +39,13 @@ export default function WorkingArrangement({
           <InputField
             name="start_time"
             label="Set Time"
-            primary
             control={form.control}
             render={({ field }) => (
-              <Input type="time" placeholder="e.g. 08:00" {...field} />
+              <InputTimePicker
+                {...field}
+                value={field.value}
+                onChange={field.onChange}
+              />
             )}
           />
         </div>
@@ -49,10 +53,13 @@ export default function WorkingArrangement({
         <div className="w-full">
           <InputField
             name="end_time"
-            primary
             control={form.control}
             render={({ field }) => (
-              <Input type="time" placeholder="e.g. 17:00" {...field} />
+              <InputTimePicker
+                {...field}
+                value={field.value}
+                onChange={field.onChange}
+              />
             )}
           />
         </div>
