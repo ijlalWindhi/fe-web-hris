@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import dynamic from "next/dynamic";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,9 +9,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import InputProfile from "@/components/common/input-profile";
-import PersonalInformation from "./PersonalInformation";
-import ClientIdentification from "./ClientIdentification";
-import WorkingArrangement from "./WorkingArrangement";
+const PersonalInformation = dynamic(() => import("./PersonalInformation"));
+const ClientIdentification = dynamic(() => import("./ClientIdentification"));
+const WorkingArrangement = dynamic(() => import("./WorkingArrangement"));
 
 import useTalentMapping from "@/stores/talent-mapping";
 import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
