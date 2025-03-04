@@ -98,7 +98,7 @@ function DialogAction({
           </div>
           {title && <Separator />}
 
-          <div className={`${title ? "pt-6" : ""}`}>{children}</div>
+          <div>{children}</div>
         </div>
       </div>
     </div>,
