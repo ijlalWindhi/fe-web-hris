@@ -9,13 +9,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import InputProfile from "@/components/common/input-profile";
+import DialogAction from "@/components/common/dialog-action";
 const PersonalInformation = dynamic(() => import("./PersonalInformation"));
 const ClientIdentification = dynamic(() => import("./ClientIdentification"));
 const WorkingArrangement = dynamic(() => import("./WorkingArrangement"));
 
 import useTalentMapping from "@/stores/talent-mapping";
 import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
-import DialogAction from "@/components/common/dialog-action";
 
 export default function ModalTalent() {
   // variables
@@ -62,7 +62,7 @@ export default function ModalTalent() {
       className="max-w-full md:max-w-2xl"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="pt-6">
           <InputProfile
             width="w-16 md:w-20"
             height="h-16 md:h-20"
