@@ -5,6 +5,8 @@ import { Camera } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 import { cn } from "@/utils/utils";
+import { isValidImageFile } from "@/utils/image-validation";
+import { toast } from "@/hooks/use-toast";
 
 interface InputProfileProps {
   defaultImage?: string;
@@ -27,10 +29,26 @@ export default function InputProfile({
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      onFileChange(file);
-      // Create preview URL
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          const buffer = reader.result as ArrayBuffer;
+          const isValid = isValidImageFile(buffer);
+          if (!isValid) {
+            toast({
+              title: "Invalid Image",
+              description: "Please upload a valid image file.",
+              variant: "destructive",
+            });
+            return;
+          }
+          onFileChange(file);
+          // Create preview URL
+          const url = URL.createObjectURL(file);
+          setPreviewUrl(url);
+        }
+      };
+      reader.readAsArrayBuffer(file); // Read file as ArrayBuffer
     }
   };
 
@@ -53,20 +71,20 @@ export default function InputProfile({
     >
       <Avatar className={cn("mx-auto", width, height)}>
         <AvatarImage
-          src={previewUrl || defaultImage || "/images/unavailable-profile.webp"}
+          src={previewUrl ?? defaultImage ?? "/images/unavailable-profile.webp"}
           alt="avatar"
           className="object-cover w-full h-full rounded-full"
         />
         <AvatarFallback />
       </Avatar>
       <div className="absolute bottom-0 right-0 p-2 bg-primary text-white rounded-full">
-        <Camera size={16} />
+        <Camera size={16} className="h-3 md:h-5 w-3 md:w-5" />
       </div>
       <input
         type="file"
         ref={fileInputRef}
         onChange={handleFileChange}
-        accept="image/*"
+        accept=".jpeg,.png,.jpg,.webp"
         className="hidden"
       />
     </div>

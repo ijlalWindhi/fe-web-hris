@@ -58,14 +58,14 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
 
 export default function Talent() {
   return (
-    <Card className="!p-0 rounded-3xl">
-      <CardHeader className="pb-2 md:pb-3">
+    <Card>
+      <CardHeader className="pb-2 pt-0 md:pb-3">
         <CardTitle>Talent</CardTitle>
         <CardDescription>
           <DatePickerWithRange />
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pb-0">
         <div className="border border-gray-200 bg-gray-50 rounded-lg p-2 h-36">
           <ChartContainer
             config={chartConfig}

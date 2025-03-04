@@ -1,13 +1,23 @@
 "use client";
 import React from "react";
-import { Download, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
+import dynamic from "next/dynamic";
 
-import { CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import InputSearch from "@/components/common/input-search";
-import List from "./list";
-import ModalTalent from "./modal-talent";
+import { PaginationCompo } from "@/components/ui/pagination";
+import List from "./List";
+const ModalTalent = dynamic(() => import("./ModalTalent"));
+const ModalHistoryContract = dynamic(() => import("./ModalHistoryContract"));
+const DetailTalent = dynamic(() => import("./DetailTalent"));
 
 import useTalentMapping from "@/stores/talent-mapping";
 
@@ -25,9 +35,9 @@ export default function TalentMapping() {
   };
 
   return (
-    <div className="flex flex-col gap-2 md:gap-4 w-full">
-      <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center md:gap-4 w-full">
-        <div className="flex flex-col sm:flex-row gap-2 md:gap-1 w-full md:w-[40%]">
+    <Card>
+      <CardHeader className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center md:gap-4 w-full">
+        <div className="flex flex-col sm:flex-row gap-2 w-full md:w-[40%]">
           <CardTitle className="font-semibold">Talent List</CardTitle>
           <Badge variant={"outline"} className="w-fit">
             <span className="text-primary">•</span> Total 100 Talent
@@ -41,10 +51,6 @@ export default function TalentMapping() {
               defaultValue={""}
             />
           </div>
-          <Button variant="outline" size="sm" className="w-full md:w-auto">
-            <Download size={16} />
-            Download
-          </Button>
           <Button
             size="sm"
             className="w-full md:w-auto"
@@ -54,9 +60,24 @@ export default function TalentMapping() {
             Register Talent
           </Button>
         </div>
-      </div>
-      <List />
+      </CardHeader>
+      <CardContent>
+        <List />
+      </CardContent>
+      <CardFooter>
+        <PaginationCompo
+          meta={{
+            page: 1,
+            page_size: 10,
+            count: 100,
+            page_count: 10,
+          }}
+          onPageChange={(page) => console.log(page)}
+        />
+      </CardFooter>
       <ModalTalent />
-    </div>
+      <DetailTalent />
+      <ModalHistoryContract />
+    </Card>
   );
 }

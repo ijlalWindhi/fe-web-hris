@@ -1,6 +1,14 @@
+type Data<T = unknown> = T | null;
+export interface IMeta {
+  page: number;
+  page_size: number;
+  count: number;
+  page_count: number;
+}
+
 // Default Response type
 export interface IResponsePagination<T = unknown> {
-  results: T[];
+  results: Data<T>;
   page: number;
   page_size: number;
   count: number;

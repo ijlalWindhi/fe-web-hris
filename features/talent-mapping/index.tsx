@@ -1,3 +1,3 @@
-import TalentMapping from "./components/talent-mapping";
+import TalentMapping from "./components/TalentMapping";
 
 export default TalentMapping;

@@ -6,6 +6,7 @@ import { Manrope } from "next/font/google";
 import { METADATA } from "@/constants/metadata";
 import { Toaster } from "@/components/ui/toaster";
 import ModalSuccess from "@/components/common/modal-success";
+import ModalDelete from "@/components/common/modal-delete";
 import ScreenLoading from "@/components/common/screen-loading";
 
 import Providers from "../lib/react-query";
@@ -52,6 +53,7 @@ export default function RootLayout({
         >
           <ScreenLoading />
           <ModalSuccess />
+          <ModalDelete />
           <Toaster />
           <Providers>{children}</Providers>
         </Suspense>
