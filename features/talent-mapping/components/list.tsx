@@ -14,6 +14,7 @@ import {
 
 import { IResponseList } from "@/types";
 import useTheme from "@/stores/theme";
+import useTalentMapping from "@/stores/talent-mapping";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -57,6 +58,11 @@ const TableHeader: ITableHeader[] = [
 export default function List() {
   // variables
   const { setModalDelete, setModalSuccess } = useTheme();
+  const {
+    setSelectedId,
+    toggleModalTalentMapping,
+    toggleModalDetailTalentMapping,
+  } = useTalentMapping();
 
   // functions
   const handleDelete = (id: number) => {
@@ -136,11 +142,23 @@ export default function List() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setTimeout(() => {
+                      setSelectedId(row.id);
+                      toggleModalDetailTalentMapping(true);
+                    }, 100);
+                  }}
+                >
                   <Info className="h-5 w-5" />
                   Detail
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setSelectedId(row.id);
+                    toggleModalTalentMapping(true);
+                  }}
+                >
                   <Pencil className="h-5 w-5" />
                   Edit
                 </DropdownMenuItem>
