@@ -1,6 +1,8 @@
 import React from "react";
 import { Metadata } from "next";
 
+import ClientBillingCompo from "@/features/client-billing";
+
 import { METADATA } from "@/constants/metadata";
 
 export const metadata: Metadata = {
@@ -12,5 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function ClientBilling() {
-  return <div>ClientBilling</div>;
+  return <ClientBillingCompo />;
 }
