@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Plus } from "lucide-react";
+import dynamic from "next/dynamic";
 
 import {
   Card,
@@ -14,7 +15,9 @@ import { Button } from "@/components/ui/button";
 import InputSearch from "@/components/common/input-search";
 import { PaginationCompo } from "@/components/ui/pagination";
 import List from "./List";
-import ModalTalent from "./ModalTalent";
+const ModalTalent = dynamic(() => import("./ModalTalent"));
+const ModalHistoryContract = dynamic(() => import("./ModalHistoryContract"));
+const DetailTalent = dynamic(() => import("./DetailTalent"));
 
 import useTalentMapping from "@/stores/talent-mapping";
 
@@ -73,6 +76,8 @@ export default function TalentMapping() {
         />
       </CardFooter>
       <ModalTalent />
+      <DetailTalent />
+      <ModalHistoryContract />
     </Card>
   );
 }
