@@ -1,6 +1,8 @@
 import React from "react";
 import { Metadata } from "next";
 
+import UserManagementMain from "@/features/user-management";
+
 import { METADATA } from "@/constants/metadata";
 
 export const metadata: Metadata = {
@@ -12,5 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function UserManagement() {
-  return <div>UserManagement</div>;
+  return <UserManagementMain />;
 }
