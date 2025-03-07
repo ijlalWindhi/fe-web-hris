@@ -14,6 +14,7 @@ import {
 
 import { IResponseListClientBilling } from "@/types";
 import useClientBilling from "@/stores/client-billing";
+import { Badge } from "@/components/ui/badge";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -72,6 +73,13 @@ export default function List() {
             </Avatar>
             <span>{row.name}</span>
           </div>
+        )}
+      </TableCell>
+      <TableCell<IResponseListClientBilling> name="status">
+        {({ row }) => (
+          <Badge variant={row.status === "Pending" ? "pending" : "success"}>
+            • {row.status}
+          </Badge>
         )}
       </TableCell>
       <TableCell<IResponseListClientBilling> name="action">
