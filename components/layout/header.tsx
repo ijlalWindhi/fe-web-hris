@@ -32,7 +32,7 @@ function Header() {
       <div className="flex items-center gap-1">
         {!isMobile && (
           <Link href="/">
-            <Image src="/images/logo.webp" alt="logo" width={64} height={52} />
+            <Image src="/images/logo.webp" alt="logo" width={120} height={52} />
           </Link>
         )}
         {isMobile && (

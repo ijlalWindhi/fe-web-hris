@@ -37,7 +37,7 @@ export default function MobileNav() {
             <Image
               src="/images/logo.webp"
               alt="logo"
-              width={100}
+              width={120}
               height={32}
               className="h-auto w-16"
             />
