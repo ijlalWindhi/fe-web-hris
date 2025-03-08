@@ -38,7 +38,7 @@ const useAuth = create<IAuthStore>()(
           const permissions = await getPermissions();
           let flattenedPermissions: TResponsePermission[] = [];
           if (permissions) {
-            flattenedPermissions = permissions.results.flat();
+            flattenedPermissions = permissions?.results?.flat() || [];
             setState((state) => ({
               ...state,
               permission: flattenedPermissions || [],
@@ -55,7 +55,7 @@ const useAuth = create<IAuthStore>()(
           const menus = await getMenu();
           let flattenedMenus: INavItem[] = [];
           if (menus) {
-            flattenedMenus = menus.results.flat();
+            flattenedMenus = menus?.results?.flat() || [];
             setState((state) => ({
               ...state,
               menu: flattenedMenus || [],

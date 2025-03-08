@@ -91,7 +91,9 @@ const SubMenuItems: React.FC<{
           onClick={onItemClick}
           className={getSubItemClasses(pathname === subItem.path)}
         >
-          {subItem.icon && !isMobile && ICONS[subItem.icon]}
+          {subItem.icon &&
+            !isMobile &&
+            ICONS[subItem.icon as unknown as keyof typeof ICONS]}
           {mode === "sidebar" && <div className=" w-2 h-2 rounded-full" />}
           <span
             className={`text-sm font-normal capitalize ${
