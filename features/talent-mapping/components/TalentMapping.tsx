@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import InputSearch from "@/components/common/input-search";
 import { PaginationCompo } from "@/components/ui/pagination";
-// import List from "./list";
+import List from "./List";
 const ModalTalent = dynamic(() => import("./ModalTalent"));
 const ModalHistoryContract = dynamic(() => import("./ModalHistoryContract"));
 const DetailTalent = dynamic(() => import("./DetailTalent"));
@@ -61,7 +61,9 @@ export default function TalentMapping() {
           </Button>
         </div>
       </CardHeader>
-      <CardContent>{/* <List /> */}</CardContent>
+      <CardContent>
+        <List />
+      </CardContent>
       <CardFooter>
         <PaginationCompo
           meta={{
