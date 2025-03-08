@@ -38,10 +38,10 @@ export function middleware(request: NextRequest) {
   }
 
   // If user doesn't have token and tries to access protected pages
-  if (!token && !isAuthPage) {
-    const redirectUrl = new URL("/auth/login", request.url);
-    return NextResponse.redirect(redirectUrl);
-  }
+  // if (!token && !isAuthPage) {
+  //   const redirectUrl = new URL("/auth/login", request.url);
+  //   return NextResponse.redirect(redirectUrl);
+  // }
 
   // Allow the request to proceed
   return NextResponse.next();
