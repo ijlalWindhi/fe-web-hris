@@ -52,3 +52,10 @@ export const CreateMasterClientSchema = z.object({
     .min(1, "At least one BPJS Deduction is required"),
   payment_due_date: z.string().nonempty("Payment Due Date is required"),
 });
+
+export const CreateMasterClientOutletSchema = z.object({
+  name: z.string().nonempty("Outlet name is required"),
+  address: z.string().nonempty("Outlet address is required"),
+  long: z.string().nonempty("Outlet longitude is required"),
+  lat: z.string().nonempty("Outlet latitude is required"),
+});
