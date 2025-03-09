@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { Settings, User } from "lucide-react";
 
 import { getProfile, getPermissions, getMenu } from "@/services/auth";
 import {
@@ -15,7 +16,65 @@ const useAuth = create<IAuthStore>()(
       // state
       profile: {} as TResponseProfile,
       permission: [],
-      menu: [],
+      menu: [
+        {
+          id: 2,
+          title: "Dashboard",
+          path: "/",
+          icon: null,
+          sub: [],
+        },
+        {
+          id: 3,
+          title: "Talent Mapping",
+          path: "/talent-mapping",
+          icon: null,
+          sub: [],
+        },
+        {
+          id: 5,
+          title: "Talent Monitoring",
+          path: "/talent-monitoring",
+          icon: null,
+          sub: [],
+        },
+        {
+          id: 6,
+          title: "Client Billing",
+          path: "/client-billing",
+          icon: null,
+          sub: [],
+        },
+        {
+          id: 7,
+          title: "Master Client",
+          path: "/master-client",
+          icon: null,
+          sub: [],
+        },
+        {
+          id: 8,
+          title: "User Management",
+          path: "/user-management",
+          icon: null,
+          sub: [
+            {
+              id: 8,
+              title: "Role Management",
+              path: "/user-management/role-management",
+              icon: Settings,
+              sub: [],
+            },
+            {
+              id: 9,
+              title: "User Management",
+              path: "/user-management",
+              icon: User,
+              sub: [],
+            },
+          ],
+        },
+      ],
 
       // actions
       getProfile: async () => {
