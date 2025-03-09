@@ -152,7 +152,7 @@ export default function ModalOutlet() {
                 }}
                 setAddress={setAddress}
               />
-              <div className="border rounded-lg flex justify-between items-start p-2">
+              <div className="border rounded-lg flex flex-col md:flex-row justify-between items-start p-2">
                 <div className="space-y-2 text-xs text-gray-500">
                   <p>{address || "-"}</p>
                   <div className="flex items-center gap-1">
