@@ -23,7 +23,7 @@ export const CreateMasterClientSchema = z.object({
   outlet: z
     .array(
       z.object({
-        id: z.string().nullable().optional(),
+        outlet_id: z.string().nullable().optional(),
         name: z.string().nonempty("Outlet name is required"),
         address: z.string().nonempty("Outlet address is required"),
         long: z.string().nonempty("Outlet longitude is required"),
