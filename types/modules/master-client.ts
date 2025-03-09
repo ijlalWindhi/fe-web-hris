@@ -15,3 +15,9 @@ export interface IResponseListMasterClient {
   address: string;
   outlet: string[];
 }
+
+export interface IListOutlet {
+  id: number;
+  name: string;
+  address: string;
+}
