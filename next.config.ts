@@ -47,7 +47,7 @@ const nextConfig: NextConfig = {
           {
             key: "Permissions-Policy",
             value:
-              "camera=(), microphone=(), geolocation=(), interest-cohort=()", // Disable unnecessary permissions
+              "camera=(), microphone=(), interest-cohort=()", // Disable unnecessary permissions
           },
         ],
       },
