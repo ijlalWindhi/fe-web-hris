@@ -108,55 +108,57 @@ export default function ModalDownloadReport() {
       className="max-w-full md:max-w-xl"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="pt-6">
-          {fields.map((field, index) => (
-            <div key={field.id} className="mb-4">
-              <div className="flex w-full justify-between items-end gap-2 flex-col md:flex-row">
-                <InputField
-                  name={`filters.${index}.operator`}
-                  control={form.control}
-                  className="w-full"
-                  render={({ field }) => (
-                    <Input {...field} placeholder="Operator" disabled />
-                  )}
-                />
-                <div className="w-full">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="pt-2">
+          <div className="max-h-[50vh] overflow-y-auto">
+            {fields.map((field, index) => (
+              <div key={field.id} className="mb-4">
+                <div className="flex w-full justify-between items-end gap-2 flex-col md:flex-row">
                   <InputField
-                    name={`filters.${index}.item_seen`}
-                    label={"Item Seen"}
-                    primary
+                    name={`filters.${index}.operator`}
                     control={form.control}
+                    className="w-full"
                     render={({ field }) => (
-                      <InfiniteCombobox
-                        value={field.value}
-                        defaultValue={""}
-                        onChange={(value) => {
-                          field.onChange(value);
-                        }}
-                        onClear={() => field.onChange("")}
-                        fetchData={() => getOptionItem()}
-                        valueKey="id"
-                        labelKey="zona"
-                        pageSize={10}
-                        placeholder="Select item"
-                        className="w-full"
-                      />
+                      <Input {...field} placeholder="Operator" disabled />
                     )}
                   />
+                  <div className="w-full">
+                    <InputField
+                      name={`filters.${index}.item_seen`}
+                      label={"Item Seen"}
+                      primary
+                      control={form.control}
+                      render={({ field }) => (
+                        <InfiniteCombobox
+                          value={field.value}
+                          defaultValue={""}
+                          onChange={(value) => {
+                            field.onChange(value);
+                          }}
+                          onClear={() => field.onChange("")}
+                          fetchData={() => getOptionItem()}
+                          valueKey="id"
+                          labelKey="zona"
+                          pageSize={10}
+                          placeholder="Select item"
+                          className="w-full"
+                        />
+                      )}
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant={"outline"}
+                    size="icon"
+                    className="w-full md:w-20"
+                    onClick={() => handleRemoveField(index)}
+                    disabled={fields.length <= 1}
+                  >
+                    <MinusCircle size={16} />
+                  </Button>
                 </div>
-                <Button
-                  type="button"
-                  variant={"outline"}
-                  size="icon"
-                  className="w-20"
-                  onClick={() => handleRemoveField(index)}
-                  disabled={fields.length <= 1}
-                >
-                  <MinusCircle size={16} />
-                </Button>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
 
           <div
             className="flex gap-2 items-center my-4 w-fit text-primary text-sm cursor-pointer"
