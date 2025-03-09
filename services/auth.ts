@@ -10,6 +10,7 @@ import {
   TResponseProfile,
   TResponsePermission,
 } from "@/types";
+import { Settings, User } from "lucide-react";
 
 export async function login(data: TPayloadLogin): Promise<TResponseLogin> {
   try {
@@ -48,9 +49,74 @@ export async function getPermissions(): Promise<
 
 export async function getMenu(): Promise<IResponsePagination<INavItem[]>> {
   try {
-    const response =
-      await axios.get<IResponsePagination<INavItem[]>>("/auth/menu");
-    return response.data;
+    // const response =
+    //   await axios.get<IResponsePagination<INavItem[]>>("/auth/menu");
+    // return response.data;
+    return {
+      results: [
+        {
+          id: 2,
+          title: "Dashboard",
+          path: "/",
+          icon: null,
+          sub: [],
+        },
+        {
+          id: 3,
+          title: "Talent Mapping",
+          path: "/talent-mapping",
+          icon: null,
+          sub: [],
+        },
+        {
+          id: 5,
+          title: "Talent Monitoring",
+          path: "/talent-monitoring",
+          icon: null,
+          sub: [],
+        },
+        {
+          id: 6,
+          title: "Client Billing",
+          path: "/client-billing",
+          icon: null,
+          sub: [],
+        },
+        {
+          id: 7,
+          title: "Master Client",
+          path: "/master-client",
+          icon: null,
+          sub: [],
+        },
+        {
+          id: 8,
+          title: "User Management",
+          path: "/user-management",
+          icon: null,
+          sub: [
+            {
+              id: 8,
+              title: "Role Management",
+              path: "/user-management/role-management",
+              icon: Settings,
+              sub: [],
+            },
+            {
+              id: 9,
+              title: "User Management",
+              path: "/user-management",
+              icon: User,
+              sub: [],
+            },
+          ],
+        },
+      ],
+      page: 1,
+      page_size: 10,
+      count: 6,
+      page_count: 1,
+    };
   } catch (error) {
     console.error("Error from service getMenu: ", error);
     throw error;
