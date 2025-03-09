@@ -16,7 +16,7 @@ import { PaginationCompo } from "@/components/ui/pagination";
 import InputSearch from "@/components/common/input-search";
 import List from "./List";
 const ModalDownloadReport = dynamic(() => import("./ModalDownloadReport"));
-// const DetailClientBilling = dynamic(() => import("./DetailClientBilling"));
+const DetailMasterClient = dynamic(() => import("./DetailMasterClient"));
 
 import useTheme from "@/stores/theme";
 import useMasterClient from "@/stores/master-client";
@@ -86,7 +86,7 @@ export default function MasterClient() {
         />
       </CardFooter>
       <ModalDownloadReport />
-      {/* <DetailClientBilling /> */}
+      <DetailMasterClient />
     </Card>
   );
 }
