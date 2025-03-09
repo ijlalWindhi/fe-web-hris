@@ -11,13 +11,6 @@ import { Button } from "@/components/ui/button";
 import DialogAction from "@/components/common/dialog-action";
 import InfiniteCombobox from "@/components/common/input-infinite-select";
 import { InputField } from "@/components/common/input-field";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 import useMasterClient from "@/stores/master-client";
 import { Input } from "@/components/ui/input";
@@ -43,8 +36,6 @@ export default function ModalDownloadReport() {
       filters: [{ item_seen: "", operator: "AND" }],
     },
   });
-
-  // Setup field array untuk mengelola array fields
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "filters",
@@ -71,12 +62,10 @@ export default function ModalDownloadReport() {
     } as any;
   };
 
-  // Function untuk menambah field baru
   const handleAddField = () => {
     append({ item_seen: "", operator: fields.length > 0 ? "AND" : "AND" });
   };
 
-  // Function untuk menghapus field
   const handleRemoveField = (index: number) => {
     if (fields.length > 1) {
       remove(index);
