@@ -4,11 +4,13 @@ export interface IMasterClientStore {
   modalDownloadReport: boolean;
   modalAddOutlet: boolean;
   selectedId: null | number;
+  selectedIdOutlet: null | number;
   toggleModalMasterClient: (isOpen: boolean) => void;
   toggleModalDetailMasterClient: (isOpen: boolean) => void;
   toggleModalDownloadReport: (isOpen: boolean) => void;
   toggleModalAddOutlet: (isOpen: boolean) => void;
   setSelectedId: (id: number | null) => void;
+  toggleSelectedIdOutlet: (id: number | null) => void;
 }
 
 export interface IResponseListMasterClient {
@@ -22,4 +24,12 @@ export interface IListOutlet {
   id: number;
   name: string;
   address: string;
+}
+
+export interface IOutletList {
+  id: number;
+  name: string;
+  address: string;
+  lat: string;
+  long: string;
 }

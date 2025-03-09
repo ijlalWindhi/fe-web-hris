@@ -9,6 +9,7 @@ const useMasterClient = create<IMasterClientStore>((set) => ({
   modalDownloadReport: false,
   modalAddOutlet: false,
   selectedId: null,
+  selectedIdOutlet: null,
 
   // actions
   toggleModalMasterClient: (isOpen) => set({ modalMasterClient: isOpen }),
@@ -17,6 +18,7 @@ const useMasterClient = create<IMasterClientStore>((set) => ({
   toggleModalDownloadReport: (isOpen) => set({ modalDownloadReport: isOpen }),
   toggleModalAddOutlet: (isOpen) => set({ modalAddOutlet: isOpen }),
   setSelectedId: (id) => set({ selectedId: id }),
+  toggleSelectedIdOutlet: (id) => set({ selectedIdOutlet: id }),
 }));
 
 export default useMasterClient;
