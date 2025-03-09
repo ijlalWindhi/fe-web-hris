@@ -165,7 +165,7 @@ export default function ModalDownloadReport() {
             onClick={handleAddField}
           >
             <Plus size={16} />
-            <p>Tambah Data</p>
+            <p>Add Data</p>
           </div>
 
           <Button type="submit" className="w-full">
