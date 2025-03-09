@@ -24,8 +24,8 @@ import useMasterClient from "@/stores/master-client";
 
 export default function MasterClient() {
   // variables
-  const { setModalSuccess } = useTheme();
-  const { toggleModalDownloadReport } = useMasterClient();
+  const { toggleModalDownloadReport, toggleModalMasterClient } =
+    useMasterClient();
 
   // functions
   const handleSearch = (searchTerm: string) => {
@@ -65,7 +65,7 @@ export default function MasterClient() {
           <Button
             size="sm"
             className="w-full md:w-auto"
-            // onClick={handleDownload}
+            onClick={() => toggleModalMasterClient(true)}
           >
             <Plus size={16} />
             Register Client
