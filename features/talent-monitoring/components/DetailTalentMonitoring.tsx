@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { ChevronLeft, Download } from "lucide-react";
 
@@ -22,6 +21,7 @@ import TalentPerformance from "./TalentPerformance";
 import TalentAttendance from "./TalentAttendance";
 import TalentMapping from "./TalentMapping";
 import TalentTimesheet from "./TalentTimesheet";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { DATA_SIDEBAR } from "@/constants/talent-monitoring";
 
@@ -105,8 +105,8 @@ export default function DetailTalentMonitoring() {
             </div>
           </div>
           <div className="hidden lg:block min-h-[75vh] w-0.5 bg-gray-200" />
-          <div className="w-full lg:w-5/6 px-4">
-            <Breadcrumb className="hidden md:flex mb-2">
+          <div className="w-full lg:w-5/6 px-4 max-h-[75vh] overflow-y-auto">
+            <Breadcrumb className="hidden md:flex">
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <BreadcrumbLink href="/talent-monitoring">
@@ -126,6 +126,20 @@ export default function DetailTalentMonitoring() {
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
+            <div className="my-3 md:my-4 w-full h-20 bg-gradient-to-tr from-gray-50 to-gray-200 rounded-2xl flex items-center justify-start px-4 py-6 gap-2 border">
+              <Avatar className={"w-14 h-14"}>
+                <AvatarImage
+                  src={"/images/unavailable-profile.webp"}
+                  alt="avatar"
+                  className="object-cover w-full h-full rounded-full"
+                />
+                <AvatarFallback />
+              </Avatar>
+              <div>
+                <h1 className="font-semibold md:text-lg">Paimen Bin Kasimen</h1>
+                <p className="text-xs md:text-sm text-gray-500">Super Admin</p>
+              </div>
+            </div>
             {activePath === "talent-information" && <TalentInformation />}
             {activePath === "talent-performance" && <TalentPerformance />}
             {activePath === "talent-attendance" && <TalentAttendance />}
