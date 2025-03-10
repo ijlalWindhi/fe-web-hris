@@ -35,3 +35,10 @@ export interface ITalentPerformanceTalentMonitoring {
   total_point: number;
   notes: string;
 }
+
+export interface ITimesheetHistoryTalentMonitoring {
+  id: string;
+  date: string;
+  working_hours: string;
+  notes: string;
+}
