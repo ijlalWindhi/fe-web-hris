@@ -3,10 +3,10 @@ import { Star } from "lucide-react";
 
 import { ITableHeader, TableCell } from "@/components/ui/table";
 import { Table } from "@/components/common/table";
-
-import { ITalentPerformanceTalentMonitoring } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { StarRating } from "./StarRating";
+
+import { ITalentPerformanceTalentMonitoring } from "@/types";
 
 const TableHeader: ITableHeader[] = [
   {
