@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { IResponseList } from "@/types";
+import { IResponseListTalentMonitoring } from "@/types";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -59,7 +59,7 @@ export default function List() {
   const router = useRouter();
 
   return (
-    <Table<IResponseList>
+    <Table<IResponseListTalentMonitoring>
       header={TableHeader}
       data={[
         {
@@ -74,7 +74,7 @@ export default function List() {
       ]}
       loading={false}
     >
-      <TableCell<IResponseList> name="name">
+      <TableCell<IResponseListTalentMonitoring> name="name">
         {({ row }) => (
           <div className="flex items-center gap-1">
             <Avatar className="h-8 w-8 rounded-lg">
@@ -91,7 +91,7 @@ export default function List() {
           </div>
         )}
       </TableCell>
-      <TableCell<IResponseList> name="action">
+      <TableCell<IResponseListTalentMonitoring> name="action">
         {({ row }) => (
           <div className="flex gap-1">
             <DropdownMenu>
