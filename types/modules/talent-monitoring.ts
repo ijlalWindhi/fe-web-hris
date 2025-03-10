@@ -26,3 +26,12 @@ export interface IPayrollDetailsTaletMonitoring {
   agency_fee: string;
   total: string;
 }
+
+export interface ITalentPerformanceTalentMonitoring {
+  id: string;
+  month: string;
+  soft_skill: number;
+  hard_skill: number;
+  total_point: number;
+  notes: string;
+}
