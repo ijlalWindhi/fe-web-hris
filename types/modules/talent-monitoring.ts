@@ -42,3 +42,21 @@ export interface ITimesheetHistoryTalentMonitoring {
   working_hours: string;
   notes: string;
 }
+
+export interface ILeaveSubmissionTalentMonitoring {
+  id: string;
+  leave_type: string;
+  date_period: string;
+  total_days: number;
+  notes: string;
+  evidence: string | null;
+  status: string;
+}
+
+export interface IAttendanceHistoryTalentMonitoring {
+  id: string;
+  date: string;
+  location: string;
+  clock_in: string;
+  clock_out: string;
+}
