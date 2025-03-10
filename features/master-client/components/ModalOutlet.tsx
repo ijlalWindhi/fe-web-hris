@@ -152,7 +152,7 @@ export default function ModalOutlet() {
                 }}
                 setAddress={setAddress}
               />
-              <div className="border rounded-lg flex flex-col md:flex-row justify-between items-start p-2">
+              <div className="border rounded-lg flex flex-col md:flex-row justify-between items-start p-2 gap-1 md:gap-2">
                 <div className="space-y-2 text-xs text-gray-500">
                   <p>{address || "-"}</p>
                   <div className="flex items-center gap-1">
@@ -167,6 +167,7 @@ export default function ModalOutlet() {
                   type={"button"}
                   onClick={handleGetCurrentLocation}
                   loading={loading}
+                  className="w-full md:w-fit"
                 >
                   <MapPin size={16} />
                   Update Current Location
