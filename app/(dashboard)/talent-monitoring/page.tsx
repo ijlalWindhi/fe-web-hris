@@ -1,6 +1,8 @@
 import React from "react";
 import { Metadata } from "next";
 
+import TalentMonitoringMain from "@/features/talent-monitoring";
+
 import { METADATA } from "@/constants/metadata";
 
 export const metadata: Metadata = {
@@ -12,5 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function TalentMonitoring() {
-  return <div>TalentMonitoring</div>;
+  return <TalentMonitoringMain />;
 }
