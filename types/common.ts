@@ -15,6 +15,10 @@ export interface IResponsePagination<T = unknown> {
   page_count: number;
 }
 
-export interface IResponseMessage {
+export interface IResponse<T = unknown> {
+  meta: IMeta | string;
+  data: Data<T>;
+  status: string;
+  code: number;
   message: string;
 }
