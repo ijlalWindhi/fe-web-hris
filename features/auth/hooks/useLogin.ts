@@ -18,8 +18,9 @@ export function useLogin() {
   return useMutation({
     mutationFn: (data: TPayloadLogin) => login(data),
     onSuccess: async (response) => {
-      if (response?.token) {
-        setCookies("token", response.token);
+      const data = response.data;
+      if (response.status === "success" && data) {
+        setCookies("token", data.token);
 
         await Promise.all([
           queryClient.prefetchQuery({
