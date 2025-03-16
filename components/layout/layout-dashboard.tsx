@@ -1,19 +1,111 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 import Header from "@/components/layout/header";
 import Navbar from "@/components/layout/mobile-nav";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import useTheme from "@/stores/theme";
+import useAuth from "@/stores/auth";
+import { INavItem, TPermission } from "@/types";
 
 export function ClientLayoutWrapper({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // variables
   const isMobile = useIsMobile();
+  const pathname = usePathname();
   const { isSidebarOpen, toggleSidebar } = useTheme();
+  const { permission, menu } = useAuth();
+
+  // functions
+  const findMenuItemByPath = (
+    items: INavItem[],
+    currentPath: string,
+  ): INavItem | null => {
+    // Helper function to check if path matches, including dynamic segments
+    const isPathMatch = (menuPath: string, currentPath: string): boolean => {
+      // Convert menu path pattern into regex pattern
+      const pathPattern = menuPath
+        .replace(/\{dynamic\}/g, "[^/]+") // Replace {dynamic} with regex for any characters except /
+        .replace(/\//g, "\\/"); // Escape forward slashes
+
+      const regex = new RegExp(`^${pathPattern}$`);
+      return regex.test(currentPath);
+    };
+
+    // Check main menu items
+    for (const item of items) {
+      if (isPathMatch(item.path, currentPath)) return item;
+
+      // Check sub-menu items if they exist
+      if (Array.isArray(item.sub)) {
+        for (const subItem of item.sub) {
+          if (isPathMatch(subItem.path, currentPath)) return subItem;
+        }
+      }
+    }
+    return null;
+  };
+
+  const getModuleNameFromTitle = (title: string): string => {
+    const moduleMapping: { [key: string]: string } = {
+      Dashboard: "Dashboard",
+      "Talent Mapping": "Talent Mapping",
+      "Talent Monitoring": "Talent Monitoring",
+      "Client Billing": "Client Billing",
+      "Master Client": "Master Client",
+      "User Management": "User Management",
+      "Role Management": "Role Management",
+    };
+
+    return moduleMapping[title] || title;
+  };
+
+  async function checkUserPermission() {
+    try {
+      if (
+        permission.length === 0 ||
+        menu.length === 0 ||
+        pathname === "/profile"
+      )
+        return;
+
+      // Find current menu item
+      const currentMenuItem = findMenuItemByPath(menu, pathname);
+
+      if (!currentMenuItem && permission.length > 0 && menu.length > 0) {
+        console.warn(`No menu item found for path: ${pathname}`);
+        window.location.href = "/forbidden-access";
+        return;
+      }
+
+      // Get module name for current menu item
+      const moduleName = getModuleNameFromTitle(currentMenuItem?.title ?? "");
+
+      // Check if user has permission for this module
+      const hasPermission = permission.some(
+        (p: TPermission) =>
+          p.module.nama === moduleName && p.permission === "view",
+      );
+
+      if (!hasPermission) {
+        // Redirect to forbidden page if no permission
+        window.location.href = "/forbidden-access";
+      }
+    } catch (error) {
+      console.error("Error from checkUserPermission: ", error);
+    }
+  }
+
+  // lifecycle
+  useEffect(() => {
+    checkUserPermission();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [permission, menu]);
 
   return (
     <div className="min-h-screen h-full bg-gray-50">
