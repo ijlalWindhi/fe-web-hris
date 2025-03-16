@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Settings, User } from "lucide-react";
 
 import { getProfile, getPermissions, getMenu } from "@/services/auth";
 import {

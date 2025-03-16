@@ -38,14 +38,14 @@ export type TPayloadNewPassword = {
 export type TResponseProfile = {
   id: string;
   email: string;
-  username: string;
   name: string;
-  is_active: boolean;
+  isact: boolean;
+  phone: string;
   refreshed_token: string;
   image: string;
   role: {
     id: number;
-    nama: string;
+    name: string;
   };
 };
 
