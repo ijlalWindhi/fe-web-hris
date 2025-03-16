@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -42,14 +42,14 @@ export default function InputSearch({
   const searchValue = form.watch("src");
   const debouncedSearch = useDebounce(searchValue, debounceMs);
 
-  React.useEffect(() => {
-    if (debouncedSearch !== undefined) {
+  useEffect(() => {
+    if (debouncedSearch !== undefined && debouncedSearch !== defaultValue) {
       onSearch(debouncedSearch);
     }
-  }, [debouncedSearch, onSearch]);
+  }, [debouncedSearch, onSearch, defaultValue]);
 
   const onSubmit = (values: SearchFormValues) => {
-    onSearch(values.src || "");
+    onSearch(values.src ?? "");
   };
 
   return (
