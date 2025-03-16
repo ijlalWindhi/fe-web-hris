@@ -1,8 +1,6 @@
 import axios from "@/lib/axios";
 import {
   IResponse,
-  IResponsePagination,
-  INavItem,
   TPayloadLogin,
   TResponseLogin,
   TPayloadResetPassword,
