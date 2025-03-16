@@ -2,10 +2,10 @@ import { INavItem } from "./theme";
 
 export interface IAuthStore {
   profile: TResponseProfile;
-  permission: TResponsePermission[];
+  permission: TPermission[];
   menu: INavItem[];
   getProfile: () => Promise<TResponseProfile>;
-  getPermission: () => Promise<TResponsePermission[]>;
+  getPermission: () => Promise<TPermission[]>;
   getMenu: () => Promise<INavItem[]>;
 }
 
@@ -50,13 +50,20 @@ export type TResponseProfile = {
 };
 
 // Permission
-export type TModule = {
+export type TPermission = {
   id: number;
-  nama: string;
+  permission: string;
+  module: {
+    id: number;
+    nama: string;
+  };
 };
 
 export type TResponsePermission = {
-  id: number;
-  permission: string;
-  module: TModule;
+  results: TPermission[];
+};
+
+// Menu
+export type TResponseMenu = {
+  results: INavItem[];
 };

@@ -8,6 +8,8 @@ import {
   IAuthStore,
   TResponseProfile,
   TResponsePermission,
+  TResponseMenu,
+  TPermission,
 } from "@/types";
 
 const useAuth = create<IAuthStore>()(
@@ -80,13 +82,14 @@ const useAuth = create<IAuthStore>()(
       getProfile: async () => {
         try {
           const profile = await getProfile();
-          if (profile) {
+          const data = profile.data || ({} as TResponseProfile);
+          if (profile.status === "success" && data) {
             setState((state) => ({
               ...state,
-              profile: profile,
+              profile: data,
             }));
           }
-          return profile || {};
+          return data || {};
         } catch (error) {
           console.error("Error store getProfile:", error);
           throw error;
@@ -95,9 +98,10 @@ const useAuth = create<IAuthStore>()(
       getPermission: async () => {
         try {
           const permissions = await getPermissions();
-          let flattenedPermissions: TResponsePermission[] = [];
-          if (permissions) {
-            flattenedPermissions = permissions?.results?.flat() || [];
+          const data = permissions.data || ({} as TResponsePermission);
+          let flattenedPermissions: TPermission[] = [];
+          if (permissions.status === "success" && data?.results?.length > 0) {
+            flattenedPermissions = data?.results?.flat() || [];
             setState((state) => ({
               ...state,
               permission: flattenedPermissions || [],
@@ -112,9 +116,10 @@ const useAuth = create<IAuthStore>()(
       getMenu: async () => {
         try {
           const menus = await getMenu();
+          const data = menus.data || ({} as TResponseMenu);
           let flattenedMenus: INavItem[] = [];
           if (menus) {
-            flattenedMenus = menus?.results?.flat() || [];
+            flattenedMenus = data?.results?.flat() || [];
             setState((state) => ({
               ...state,
               menu: flattenedMenus || [],
