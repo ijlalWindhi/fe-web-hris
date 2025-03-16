@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -10,11 +11,23 @@ import InputProfile from "@/components/common/input-profile";
 import { truncateText } from "@/utils/truncate";
 import { useIsMobile } from "@/hooks/use-mobile";
 import useAuth from "@/stores/auth";
+import { deleteCookie } from "@/utils/cookie";
 
 export default function Profile() {
   // variables
+  const router = useRouter();
   const isMobile = useIsMobile();
   const { profile, getProfile } = useAuth();
+
+  // functions
+  const handleLogout = () => {
+    try {
+      deleteCookie("token");
+      router.push("/auth/login");
+    } catch (error) {
+      console.error("Error from handleLogout: ", error);
+    }
+  };
 
   // lifecycle
   useEffect(() => {
@@ -41,7 +54,7 @@ export default function Profile() {
                 </p>
               </div>
             </div>
-            <Button className="mt-2" variant="outline">
+            <Button className="mt-2" variant="outline" onClick={handleLogout}>
               <LogOut />
               Logout
             </Button>
