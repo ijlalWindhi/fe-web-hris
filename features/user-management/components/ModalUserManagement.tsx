@@ -67,6 +67,7 @@ export default function ModalTalent() {
         ...values,
         photo: "",
         role_id: parseInt(values.role_id),
+        status: true,
       };
       if (file) {
         const response = await uploadFile(file);

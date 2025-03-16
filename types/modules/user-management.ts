@@ -30,4 +30,5 @@ export type TPayloadUserManagement = {
   role_id: number;
   address: string;
   photo: string;
+  status: boolean;
 };

@@ -19,6 +19,7 @@ import useTheme from "@/stores/theme";
 import {
   useUserList,
   useDeleteUserManagement,
+  useUpdateUserManagement,
 } from "../hooks/useUserManagement";
 import useUserManagement from "@/stores/user-management";
 
@@ -66,11 +67,14 @@ interface IListProps {
 }
 
 export default function List({ queryParams }: Readonly<IListProps>) {
+  // variables
   const { setModalDelete } = useTheme();
   const { setSelectedData, toggleModalUserManagement } = useUserManagement();
   const { data, isLoading } = useUserList(queryParams);
   const deleteUser = useDeleteUserManagement();
+  const updateUser = useUpdateUserManagement();
 
+  // functions
   const handleDelete = (id: string) => {
     try {
       setModalDelete({
@@ -82,6 +86,21 @@ export default function List({ queryParams }: Readonly<IListProps>) {
       });
     } catch (error) {
       console.error("Error from handleDelete: ", error);
+    }
+  };
+
+  const handleChangeStatus = (data: IResponseUserManagement) => {
+    try {
+      updateUser.mutate({
+        id: data.id_user,
+        data: {
+          ...data,
+          role_id: data.role.id,
+          status: !data.status,
+        },
+      });
+    } catch (error) {
+      console.error("Error from handleChangeStatus: ", error);
     }
   };
 
@@ -121,7 +140,10 @@ export default function List({ queryParams }: Readonly<IListProps>) {
       <TableCell<IResponseUserManagement> name="status">
         {({ row }) => (
           <div className="flex items-center gap-2">
-            <Switch checked={row.status} />
+            <Switch
+              checked={row.status}
+              onClick={() => handleChangeStatus(row)}
+            />
             <span>{row.status ? "Active" : "Inactive"}</span>
           </div>
         )}
