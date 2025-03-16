@@ -12,7 +12,8 @@ interface InputProfileProps {
   defaultImage?: string;
   width?: string;
   height?: string;
-  onFileChange: (file: File) => void;
+  onFileChange?: (file: File) => void;
+  shouldChange?: boolean;
 }
 
 export default function InputProfile({
@@ -20,6 +21,7 @@ export default function InputProfile({
   width = "w-24",
   height = "h-24",
   onFileChange,
+  shouldChange = true,
 }: Readonly<InputProfileProps>) {
   // variables
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -28,7 +30,7 @@ export default function InputProfile({
   // functions
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (file && onFileChange && shouldChange) {
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.result) {
@@ -66,8 +68,11 @@ export default function InputProfile({
   }, [previewUrl]);
   return (
     <div
-      className="w-fit h-fit relative mx-auto cursor-pointer"
-      onClick={handleAvatarClick}
+      className={cn(
+        "w-fit h-fit relative mx-auto",
+        shouldChange ? "cursor-pointer" : "",
+      )}
+      onClick={shouldChange ? handleAvatarClick : undefined}
     >
       <Avatar className={cn("mx-auto", width, height)}>
         <AvatarImage
@@ -77,9 +82,11 @@ export default function InputProfile({
         />
         <AvatarFallback />
       </Avatar>
-      <div className="absolute bottom-0 right-0 p-2 bg-primary text-white rounded-full">
-        <Camera size={16} className="h-3 md:h-5 w-3 md:w-5" />
-      </div>
+      {shouldChange && (
+        <div className="absolute bottom-0 right-0 p-2 bg-primary text-white rounded-full">
+          <Camera size={16} className="h-3 md:h-5 w-3 md:w-5" />
+        </div>
+      )}
       <input
         type="file"
         ref={fileInputRef}
