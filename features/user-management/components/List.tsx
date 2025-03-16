@@ -1,7 +1,7 @@
 import React from "react";
 import { EllipsisVertical, Pencil, Trash } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 
+import { Badge } from "@/components/ui/badge";
 import { ITableHeader, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -14,16 +14,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Switch } from "@/components/ui/switch";
 
-import { IResponseListUserManagement } from "@/types";
+import { IResponseUserManagement, TSearchParams } from "@/types";
 import useTheme from "@/stores/theme";
+import {
+  useUserList,
+  useDeleteUserManagement,
+} from "../hooks/useUserManagement";
 import useUserManagement from "@/stores/user-management";
 
 const TableHeader: ITableHeader[] = [
-  {
-    key: "id",
-    title: "User ID",
-    className: "min-w-[6rem]",
-  },
   {
     key: "name",
     title: "Name",
@@ -62,19 +61,23 @@ const TableHeader: ITableHeader[] = [
   { key: "action", title: "Action" },
 ];
 
-export default function List() {
-  // variables
-  const { setModalDelete } = useTheme();
-  const { setSelectedId, toggleModalUserManagement } = useUserManagement();
+interface IListProps {
+  queryParams: TSearchParams;
+}
 
-  // functions
-  const handleDelete = (id: number) => {
+export default function List({ queryParams }: Readonly<IListProps>) {
+  const { setModalDelete } = useTheme();
+  const { setSelectedData, toggleModalUserManagement } = useUserManagement();
+  const { data, isLoading } = useUserList(queryParams);
+  const deleteUser = useDeleteUserManagement();
+
+  const handleDelete = (id: string) => {
     try {
       setModalDelete({
         open: true,
         type: "user",
         action: () => {
-          console.log("Delete talent with ID: ", id);
+          deleteUser.mutate(id);
         },
       });
     } catch (error) {
@@ -83,28 +86,17 @@ export default function List() {
   };
 
   return (
-    <Table<IResponseListUserManagement>
+    <Table<IResponseUserManagement>
       header={TableHeader}
-      data={[
-        {
-          id: 1,
-          name: "John Doe",
-          email: "asd@mail.com",
-          phone: "081234567890",
-          address: "Jl. Lorem Ipsum Dolor Sit Amet",
-          client_name: "CV. Sinergi Baru",
-          role: "Super Admin",
-          status: "Active",
-        },
-      ]}
-      loading={false}
+      data={data?.data || []}
+      loading={isLoading}
     >
-      <TableCell<IResponseListUserManagement> name="name">
+      <TableCell<IResponseUserManagement> name="name">
         {({ row }) => (
           <div className="flex items-center gap-1">
             <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage
-                src={"/images/unavailable-profile.webp"}
+                src={row.photo ?? "/images/unavailable-profile.webp"}
                 alt="avatar"
                 className="object-cover w-full h-full"
               />
@@ -116,22 +108,25 @@ export default function List() {
           </div>
         )}
       </TableCell>
-      <TableCell<IResponseListUserManagement> name="role">
+      <TableCell<IResponseUserManagement> name="client">
+        {({ row }) => row.client?.name ?? "-"}
+      </TableCell>
+      <TableCell<IResponseUserManagement> name="role">
         {({ row }) => (
-          <Badge variant="outline" className="ml-2 bg-white w-fit">
-            <span className="text-primary">•</span> {row.role}
+          <Badge variant="outline" className="ml-2 bg-white w-fit capitalize">
+            <span className="text-primary">•</span> {row?.role?.name || "-"}
           </Badge>
         )}
       </TableCell>
-      <TableCell<IResponseListUserManagement> name="status">
+      <TableCell<IResponseUserManagement> name="status">
         {({ row }) => (
           <div className="flex items-center gap-2">
-            <Switch checked={row.status === "Active"} />
-            <span>{row.status}</span>
+            <Switch checked={row.status} />
+            <span>{row.status ? "Active" : "Inactive"}</span>
           </div>
         )}
       </TableCell>
-      <TableCell<IResponseListUserManagement> name="action">
+      <TableCell<IResponseUserManagement> name="action">
         {({ row }) => (
           <div className="flex gap-1">
             <DropdownMenu>
@@ -145,7 +140,7 @@ export default function List() {
                 <DropdownMenuItem
                   onClick={() => {
                     setTimeout(() => {
-                      setSelectedId(row.id);
+                      setSelectedData(row);
                       toggleModalUserManagement(true);
                     }, 100);
                   }}
@@ -156,7 +151,7 @@ export default function List() {
                 <DropdownMenuItem
                   onClick={() => {
                     setTimeout(() => {
-                      handleDelete(row.id);
+                      handleDelete(row.id_user);
                     }, 100);
                   }}
                 >
