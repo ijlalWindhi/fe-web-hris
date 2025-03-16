@@ -9,7 +9,7 @@ export default function ScreenLoading() {
 
   return (
     isLoading && (
-      <div className="w-full h-full flex items-center justify-center bg-gray-500/60 z-50 absolute">
+      <div className="w-full h-full flex items-center justify-center bg-gray-500/60 z-[9999999] absolute">
         <Loader2 className="h-10 w-10 animate-spin text-primary" />
       </div>
     )
