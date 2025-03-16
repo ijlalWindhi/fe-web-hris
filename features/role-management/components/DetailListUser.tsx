@@ -47,7 +47,13 @@ export default function DetailListUser() {
           />
         </div>
       </div>
-      <List />
+      <List
+        queryParams={{
+          page: 1,
+          page_size: 10,
+          src: "",
+        }}
+      />
       <PaginationCompo
         meta={{
           page: 1,
