@@ -18,65 +18,7 @@ const useAuth = create<IAuthStore>()(
       // state
       profile: {} as TResponseProfile,
       permission: [],
-      menu: [
-        {
-          id: 2,
-          title: "Dashboard",
-          path: "/",
-          icon: null,
-          sub: [],
-        },
-        {
-          id: 3,
-          title: "Talent Mapping",
-          path: "/talent-mapping",
-          icon: null,
-          sub: [],
-        },
-        {
-          id: 5,
-          title: "Talent Monitoring",
-          path: "/talent-monitoring",
-          icon: null,
-          sub: [],
-        },
-        {
-          id: 6,
-          title: "Client Billing",
-          path: "/client-billing",
-          icon: null,
-          sub: [],
-        },
-        {
-          id: 7,
-          title: "Master Client",
-          path: "/master-client",
-          icon: null,
-          sub: [],
-        },
-        {
-          id: 8,
-          title: "User Management",
-          path: "/user-management",
-          icon: null,
-          sub: [
-            {
-              id: 8,
-              title: "Role Management",
-              path: "/user-management/role-management",
-              icon: Settings,
-              sub: [],
-            },
-            {
-              id: 9,
-              title: "User Management",
-              path: "/user-management",
-              icon: User,
-              sub: [],
-            },
-          ],
-        },
-      ],
+      menu: [],
 
       // actions
       getProfile: async () => {
