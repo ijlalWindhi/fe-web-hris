@@ -37,18 +37,24 @@ export function ClientLayoutWrapper({
       return regex.test(currentPath);
     };
 
-    // Check main menu items
-    for (const item of items) {
-      if (isPathMatch(item.path, currentPath)) return item;
+    // Recursive function to search through menu items
+    const searchMenu = (menuItems: INavItem[]): INavItem | null => {
+      for (const item of menuItems) {
+        if (isPathMatch(item.path, currentPath)) {
+          return item;
+        }
 
-      // Check sub-menu items if they exist
-      if (Array.isArray(item.sub)) {
-        for (const subItem of item.sub) {
-          if (isPathMatch(subItem.path, currentPath)) return subItem;
+        if (Array.isArray(item.sub)) {
+          const foundItem = searchMenu(item.sub);
+          if (foundItem) {
+            return foundItem;
+          }
         }
       }
-    }
-    return null;
+      return null;
+    };
+
+    return searchMenu(items);
   };
 
   const getModuleNameFromTitle = (title: string): string => {
