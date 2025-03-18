@@ -3,7 +3,7 @@ import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
 import { InputField } from "@/components/common/input-field";
-import { InputCurrency } from "@/components/common/input-currency";
+import { Input } from "@/components/ui/input";
 
 import { CreateMasterClientSchema } from "../schemas/master-client.schema";
 
@@ -17,33 +17,42 @@ export default function ClientInformation({
   return (
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
       <InputField
-        name="basic_salary"
-        label="Basic Salary"
+        name="name"
+        label="Client Name"
+        primary
+        control={form.control}
+        render={({ field }) => <Input placeholder="e.g. PT. ABC" {...field} />}
+      />
+      <InputField
+        name="address"
+        label="Client Address"
+        primary
+        control={form.control}
+        render={({ field }) => <Input placeholder="e.g. Jl. Raya" {...field} />}
+      />
+      <InputField
+        name="cs_person"
+        label="CS Name"
+        primary
+        control={form.control}
+        render={({ field }) => <Input placeholder="e.g. John Doe" {...field} />}
+      />
+      <InputField
+        name="cs_number"
+        label="CS Number"
         primary
         control={form.control}
         render={({ field }) => (
-          <InputCurrency
-            placeholder="e.g. 1.000.000"
-            value={field.value}
-            onChange={field.onChange}
-            onBlur={field.onBlur}
-            disabled={field.disabled}
-          />
+          <Input type="tel" placeholder="e.g. 081234567890" {...field} />
         )}
       />
       <InputField
-        name="agency_fee"
-        label="Agency Fee"
+        name="cs_email"
+        label="CS Email"
         primary
         control={form.control}
         render={({ field }) => (
-          <InputCurrency
-            placeholder="e.g. 1.000.000"
-            value={field.value}
-            onChange={field.onChange}
-            onBlur={field.onBlur}
-            disabled={field.disabled}
-          />
+          <Input type="email" placeholder="e.g. dhisa@mail.com" {...field} />
         )}
       />
     </div>

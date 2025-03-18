@@ -4,19 +4,20 @@ export interface IMasterClientStore {
   modalDownloadReport: boolean;
   modalAddOutlet: boolean;
   selectedData: IResponseListMasterClient | null;
-  selectedIdOutlet: null | string;
+  selectedOutlet: IOutletList | null;
   toggleModalMasterClient: (isOpen: boolean) => void;
   toggleModalDetailMasterClient: (isOpen: boolean) => void;
   toggleModalDownloadReport: (isOpen: boolean) => void;
   toggleModalAddOutlet: (isOpen: boolean) => void;
   setSelectedData: (id: IResponseListMasterClient | null) => void;
-  setSelectedOutletId: (id: string | null) => void;
+  setSelectedOutlet: (id: IOutletList | null) => void;
 }
 
 export interface IResponseListMasterClient {
   id: string;
   name: string;
   address: string;
+  photo: string;
   payment_date: string;
   outlet: {
     id: number;
@@ -33,6 +34,7 @@ export interface IResponseListMasterClient {
 }
 
 export type TPayloadMasterClient = {
+  photo: string;
   name: string;
   address: string;
   outlet: {
@@ -64,9 +66,9 @@ export interface IListOutlet {
 }
 
 export interface IOutletList {
-  id: string;
+  id?: string;
   name: string;
   address: string;
-  lat: string;
-  long: string;
+  latitude: number;
+  longitude: number;
 }

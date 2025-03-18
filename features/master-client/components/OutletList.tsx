@@ -1,5 +1,4 @@
 import React from "react";
-import dynamic from "next/dynamic";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { Plus, Pencil, Trash } from "lucide-react";
@@ -8,7 +7,7 @@ import OutletEmpty from "./OutletEmpty";
 import { TableCell, type ITableHeader } from "@/components/ui/table";
 import { Table } from "@/components/common/table";
 import { Button } from "@/components/ui/button";
-const ModalOutlet = dynamic(() => import("./ModalOutlet"));
+import ModalOutlet from "./ModalOutlet";
 
 import useMasterClient from "@/stores/master-client";
 import { CreateMasterClientSchema } from "../schemas/master-client.schema";
@@ -35,11 +34,11 @@ const TableHeader: ITableHeader[] = [
     className: "min-w-[16rem]",
   },
   {
-    key: "lat",
+    key: "latitude",
     title: "Latitude",
   },
   {
-    key: "long",
+    key: "longitude",
     title: "Longitude",
   },
   {
@@ -50,8 +49,7 @@ const TableHeader: ITableHeader[] = [
 
 export default function OutletList({ form }: Readonly<TOutletListProps>) {
   // variables
-  const { toggleModalDetailMasterClient, setSelectedOutletId } =
-    useMasterClient();
+  const { toggleModalAddOutlet, setSelectedOutlet } = useMasterClient();
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "outlet",
@@ -67,7 +65,7 @@ export default function OutletList({ form }: Readonly<TOutletListProps>) {
             <p className="text-sm">Outlet List</p>
             <div
               className="flex items-center text-primary cursor-pointer gap-1 text-sm"
-              onClick={() => toggleModalDetailMasterClient(true)}
+              onClick={() => toggleModalAddOutlet(true)}
             >
               <Plus size={16} />
               Add
@@ -78,6 +76,8 @@ export default function OutletList({ form }: Readonly<TOutletListProps>) {
             data={
               fields.map((field) => ({
                 ...field,
+                latitude: parseFloat(field.latitude),
+                longitude: parseFloat(field.longitude),
               })) as IOutletList[]
             }
             loading={false}
@@ -90,8 +90,8 @@ export default function OutletList({ form }: Readonly<TOutletListProps>) {
                     variant={"outline"}
                     size="icon"
                     onClick={() => {
-                      setSelectedOutletId(row.id);
-                      toggleModalDetailMasterClient(true);
+                      setSelectedOutlet(row);
+                      toggleModalAddOutlet(true);
                     }}
                   >
                     <Pencil size={16} />
@@ -112,7 +112,7 @@ export default function OutletList({ form }: Readonly<TOutletListProps>) {
           </Table>
         </div>
       )}
-      <ModalOutlet />
+      <ModalOutlet append={append} />
     </div>
   );
 }
