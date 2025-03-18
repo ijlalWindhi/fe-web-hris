@@ -44,8 +44,18 @@ export default function ModalTalent() {
       outlet: [],
       basic_salary: 0,
       agency_fee: 0,
-      bpjs: [],
-      allowences: [],
+      bpjs: [
+        {
+          name: "",
+          amount: 0,
+        },
+      ],
+      allowences: [
+        {
+          name: "",
+          amount: 0,
+        },
+      ],
       payment_date: "",
     },
   });
