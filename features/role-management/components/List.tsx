@@ -18,7 +18,7 @@ import { IResponseUserManagement, TSearchParams } from "@/types";
 import useTheme from "@/stores/theme";
 import {
   useDeleteUserManagement,
-  useUpdateUserManagement,
+  useUpdateStatus,
 } from "@/features/user-management/hooks/useUserManagement";
 import { useUserRole } from "../hooks/useRoleManagement";
 import useUserManagement from "@/stores/user-management";
@@ -73,7 +73,7 @@ export default function List({ queryParams, id }: Readonly<IListProps>) {
   const { setSelectedData, toggleModalUserManagement } = useUserManagement();
   const { data, isLoading } = useUserRole(id, queryParams);
   const deleteUser = useDeleteUserManagement();
-  const updateUser = useUpdateUserManagement();
+  const updateUserStatus = useUpdateStatus();
 
   // functions
   const handleDelete = (id: string) => {
@@ -90,15 +90,10 @@ export default function List({ queryParams, id }: Readonly<IListProps>) {
     }
   };
 
-  const handleChangeStatus = (data: IResponseUserManagement) => {
+  const handleChangeStatus = (id: string) => {
     try {
-      updateUser.mutate({
-        id: data.id_user,
-        data: {
-          ...data,
-          role_id: data.role.id,
-          status: !data.status,
-        },
+      updateUserStatus.mutate({
+        id: id,
       });
     } catch (error) {
       console.error("Error from handleChangeStatus: ", error);
@@ -143,7 +138,7 @@ export default function List({ queryParams, id }: Readonly<IListProps>) {
           <div className="flex items-center gap-2">
             <Switch
               checked={row.status}
-              onClick={() => handleChangeStatus(row)}
+              onClick={() => handleChangeStatus(row?.id_user)}
             />
             <span>{row.status ? "Active" : "Inactive"}</span>
           </div>

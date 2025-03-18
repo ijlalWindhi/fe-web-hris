@@ -3,6 +3,7 @@ import {
   getListUserManagement,
   createUserManagement,
   updateUserManagement,
+  updateStatus,
   deleteUserManagement,
   getDetailUserManagement,
 } from "@/services/user-management";
@@ -30,6 +31,16 @@ export function useUpdateUserManagement() {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: TPayloadUserManagement }) =>
       updateUserManagement(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userList"] });
+    },
+  });
+}
+
+export function useUpdateStatus() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id }: { id: string }) => updateStatus(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userList"] });
     },

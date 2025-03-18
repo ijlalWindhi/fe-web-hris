@@ -51,6 +51,16 @@ export async function updateUserManagement(
   }
 }
 
+export async function updateStatus(id: string): Promise<IResponse<null>> {
+  try {
+    const response = await axios.put<IResponse<null>>(`/user/status/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error from service updateStatus: ", error);
+    throw error;
+  }
+}
+
 export async function deleteUserManagement(
   id: string,
 ): Promise<IResponse<null>> {
