@@ -13,6 +13,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function DetailRoleManagement() {
-  return <DetailRoleManagementMain />;
+export default async function DetailRoleManagement({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  return <DetailRoleManagementMain id={id} />;
 }
