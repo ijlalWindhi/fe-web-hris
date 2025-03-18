@@ -9,14 +9,17 @@ import DataRow from "@/components/common/data-row";
 import InputProfile from "@/components/common/input-profile";
 
 import { truncateText } from "@/utils/truncate";
+import { deleteCookie } from "@/utils/cookie";
 import { useIsMobile } from "@/hooks/use-mobile";
 import useAuth from "@/stores/auth";
-import { deleteCookie } from "@/utils/cookie";
+import { uploadFile } from "@/services/file";
+import { useUpdateUserManagement } from "@/features/user-management/hooks/useUserManagement";
 
 export default function Profile() {
   // variables
   const router = useRouter();
   const isMobile = useIsMobile();
+  const updateUserManagement = useUpdateUserManagement();
   const { profile, getProfile } = useAuth();
 
   // functions
@@ -26,6 +29,28 @@ export default function Profile() {
       router.push("/auth/login");
     } catch (error) {
       console.error("Error from handleLogout: ", error);
+    }
+  };
+
+  const handleUploadImage = async (file: File) => {
+    try {
+      const response = await uploadFile(file);
+      const payload = {
+        name: profile?.name,
+        email: profile?.email,
+        phone: profile?.phone,
+        role_id: profile?.role?.id,
+        address: profile?.address,
+        photo: response,
+        status: true,
+      };
+      await updateUserManagement.mutateAsync({
+        id: profile?.id,
+        data: payload,
+      });
+      await getProfile();
+    } catch (error) {
+      console.error("Error from handleUploadImage: ", error);
     }
   };
 
@@ -43,7 +68,8 @@ export default function Profile() {
               <InputProfile
                 width="w-16 md:w-24"
                 height="h-16 md:h-24"
-                shouldChange={false}
+                defaultImage={profile?.image}
+                onFileChange={(file) => handleUploadImage(file)}
               />
               <div>
                 <h1 className="font-semibold md:text-lg lg:text-2xl">
@@ -67,7 +93,7 @@ export default function Profile() {
           <DataRow label="Name" value={profile?.name} />
           <DataRow label="Email Address" value={profile?.email} />
           <DataRow label="Number Phone" value={profile?.phone} />
-          <DataRow label="Address" value={profile?.email} />
+          <DataRow label="Address" value={profile?.address} />
         </dl>
       </Card>
     </div>
