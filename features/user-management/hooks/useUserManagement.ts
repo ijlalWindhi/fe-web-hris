@@ -43,6 +43,7 @@ export function useUpdateStatus() {
     mutationFn: ({ id }: { id: string }) => updateStatus(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userList"] });
+      queryClient.invalidateQueries({ queryKey: ["userRole"] });
     },
   });
 }
