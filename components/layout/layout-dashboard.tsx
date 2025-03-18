@@ -60,6 +60,7 @@ export function ClientLayoutWrapper({
       "Master Client": "Master Client",
       "User Management": "User Management",
       "Role Management": "Role Management",
+      "Detail Role Management": "Role Management",
     };
 
     return moduleMapping[title] || title;
