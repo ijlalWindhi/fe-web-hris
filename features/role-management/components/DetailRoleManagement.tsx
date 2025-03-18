@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Loader2 } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -26,7 +26,7 @@ export default function DetailRoleManagement({ id }: { readonly id: string }) {
     src: searchParams.get("src") ?? undefined,
   });
   const { data: roleData } = useUserRole(id, queryParams);
-  const { data } = useRoleDetail(id);
+  const { data, isLoading } = useRoleDetail(id);
 
   // functions
   const handleSearch = useCallback(
@@ -82,6 +82,11 @@ export default function DetailRoleManagement({ id }: { readonly id: string }) {
                 </Badge>
               </div>
               <ul className="space-y-1">
+                {isLoading && (
+                  <li>
+                    <Loader2 className="h-6 w-6 mx-auto animate-spin text-primary" />
+                  </li>
+                )}
                 {data?.data?.permission?.map((permission) => (
                   <li key={permission.id} className="text-sm capitalize">
                     <span className="text-primary mr-1">•</span>{" "}
