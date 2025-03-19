@@ -75,7 +75,9 @@ export default function Payroll({ form }: Readonly<TPayrollProps>) {
       />
       <div className="space-y-4 pt-2">
         <div className="flex items-center justify-between">
-          <Label>BPJS Deduction</Label>
+          <Label>
+            BPJS Deduction <span className="text-red-500">*</span>
+          </Label>
           <div
             className="flex gap-2 items-center w-fit text-primary text-sm cursor-pointer"
             onClick={handleAddFieldBpjs}
@@ -126,7 +128,9 @@ export default function Payroll({ form }: Readonly<TPayrollProps>) {
       </div>
       <div className="space-y-4 pt-2">
         <div className="flex items-center justify-between">
-          <Label>Allowence</Label>
+          <Label>
+            Allowence <span className="text-red-500">*</span>
+          </Label>
           <div
             className="flex gap-2 items-center w-fit text-primary text-sm cursor-pointer"
             onClick={handleAddFieldAllowences}
