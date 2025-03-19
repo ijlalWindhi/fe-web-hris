@@ -33,6 +33,36 @@ export interface IResponseListMasterClient {
   isact: boolean;
 }
 
+export interface IResponseDetailMasterClient {
+  id: string;
+  name: string;
+  address: string;
+  outlet: {
+    id_outlet: string;
+    name: string;
+    address: string;
+    total_active: number;
+    latitude: number;
+    longitude: number;
+  }[];
+  basic_salary: string;
+  agency_fee: string;
+  payment_date: string;
+  bpjs: {
+    id: string;
+    name: string;
+    amount: string;
+  }[];
+  allowences: {
+    id: string;
+    name: string;
+    amount: string;
+  }[];
+  cs_person: string;
+  cs_number: string;
+  cs_email: string;
+}
+
 export type TPayloadMasterClient = {
   photo: string;
   name: string;
@@ -66,9 +96,10 @@ export interface IListOutlet {
 }
 
 export interface IOutletList {
-  id?: string;
+  id_outlet?: string;
   name: string;
   address: string;
   latitude: number;
   longitude: number;
+  index: number;
 }
