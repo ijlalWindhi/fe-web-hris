@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +18,7 @@ import { CreateMasterClientSchema } from "../schemas/master-client.schema";
 import {
   useCreateMasterClient,
   useUpdateMasterClient,
+  useDetailMasterClient,
 } from "../hooks/useMasterClient";
 import { uploadFile } from "@/services/file";
 import { TPayloadMasterClient } from "@/types";
@@ -34,6 +35,9 @@ export default function ModalTalent() {
   } = useMasterClient();
   const createMasterClient = useCreateMasterClient();
   const updateMasterClient = useUpdateMasterClient();
+  const { data: detailData, refetch } = useDetailMasterClient(
+    selectedData?.id ?? "",
+  );
   const form = useForm<z.infer<typeof CreateMasterClientSchema>>({
     resolver: zodResolver(CreateMasterClientSchema),
     defaultValues: {
@@ -89,7 +93,11 @@ export default function ModalTalent() {
           ...item,
           amount: item.amount,
         })),
-        payment_date: formatDate(values.payment_date),
+        payment_date: formatDate({
+          inputDate: values.payment_date,
+          formatFrom: "dd MMMM yyyy",
+          formatTo: "dd-MM-yyyy",
+        }),
       };
 
       if (file) {
@@ -115,6 +123,46 @@ export default function ModalTalent() {
       handleClose();
     }
   };
+
+  // lifecycle
+  useEffect(() => {
+    if (selectedData?.id) {
+      refetch();
+    }
+  }, [selectedData?.id, refetch]);
+
+  useEffect(() => {
+    if (detailData) {
+      const data = detailData.data;
+      const formattedData = {
+        ...data,
+        outlet:
+          data?.outlet?.map((item) => ({
+            ...item,
+            latitude: item.latitude.toString() ?? "",
+            longitude: item.longitude.toString() ?? "",
+          })) ?? [],
+        basic_salary: Number(data?.basic_salary ?? 0),
+        agency_fee: Number(data?.agency_fee ?? 0),
+        bpjs:
+          data?.bpjs?.map((item) => ({
+            ...item,
+            amount: Number(item.amount ?? 0),
+          })) ?? [],
+        allowences:
+          data?.allowences?.map((item) => ({
+            ...item,
+            amount: Number(item.amount ?? 0),
+          })) ?? [],
+        payment_date: formatDate({
+          inputDate: data?.payment_date ?? "",
+          formatFrom: "dd-MM-yyyy",
+          formatTo: "dd MMMM yyyy",
+        }),
+      };
+      form.reset(formattedData);
+    }
+  }, [detailData, form]);
 
   return (
     <DialogAction
