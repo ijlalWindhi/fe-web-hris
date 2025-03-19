@@ -14,11 +14,14 @@ import { Label } from "@/components/ui/label";
 import Map from "@/components/common/map";
 
 import useMasterClient from "@/stores/master-client";
-import { CreateMasterClientOutletSchema } from "../schemas/master-client.schema";
+import {
+  CreateMasterClientOutletSchema,
+  CreateMasterClientSchema,
+} from "../schemas/master-client.schema";
 import { IOutletList } from "@/types";
 
 interface IModalOutletProps {
-  append: UseFieldArrayAppend<z.infer<typeof CreateMasterClientOutletSchema>>;
+  append: UseFieldArrayAppend<z.infer<typeof CreateMasterClientSchema>>;
 }
 
 export default function ModalOutlet({ append }: Readonly<IModalOutletProps>) {
@@ -108,11 +111,11 @@ export default function ModalOutlet({ append }: Readonly<IModalOutletProps>) {
     values: z.infer<typeof CreateMasterClientOutletSchema>,
   ) => {
     try {
-      const payload: IOutletList = {
+      const payload = {
         name: values.name,
         address: values.address,
-        latitude: parseFloat(values.lat),
-        longitude: parseFloat(values.long),
+        latitude: values.lat,
+        longitude: values.long,
       };
       append(payload);
       handleClose();
