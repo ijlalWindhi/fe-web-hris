@@ -46,10 +46,10 @@ export function useDeleteMasterClient() {
   });
 }
 
-export function useDetailMasterClient(id: number) {
+export function useDetailMasterClient(id: string) {
   return useQuery({
     queryKey: ["masterClientDetail", id],
     queryFn: () => getDetailMasterClient(id),
-    enabled: !!id,
+    enabled: false,
   });
 }

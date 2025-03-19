@@ -1,6 +1,7 @@
 import axios from "@/lib/axios";
 import {
   IResponse,
+  IResponseDetailMasterClient,
   IResponseListMasterClient,
   TPayloadMasterClient,
   TSearchParams,
@@ -64,10 +65,10 @@ export async function deleteMasterClient(id: string): Promise<IResponse<null>> {
 }
 
 export async function getDetailMasterClient(
-  id: number,
-): Promise<IResponse<IResponseListMasterClient>> {
+  id: string,
+): Promise<IResponse<IResponseDetailMasterClient>> {
   try {
-    const response = await axios.get<IResponse<IResponseListMasterClient>>(
+    const response = await axios.get<IResponse<IResponseDetailMasterClient>>(
       `/client/${id}`,
     );
     return response.data;
