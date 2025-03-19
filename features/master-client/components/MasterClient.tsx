@@ -20,7 +20,6 @@ const ModalDownloadReport = dynamic(() => import("./ModalDownloadReport"));
 const ModalMasterClient = dynamic(() => import("./ModalMasterClient"));
 const DetailMasterClient = dynamic(() => import("./DetailMasterClient"));
 
-import useTheme from "@/stores/theme";
 import useMasterClient from "@/stores/master-client";
 import { TSearchParams } from "@/types";
 import { useSetParams } from "@/utils/set-params";
