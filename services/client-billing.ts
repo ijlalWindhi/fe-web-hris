@@ -28,7 +28,7 @@ export async function getDetailClientBilling(
 ): Promise<IResponse<IResponseDetailClientBilling>> {
   try {
     const response = await axios.get<IResponse<IResponseDetailClientBilling>>(
-      `/client-billing/list/${id}`,
+      `/client-billing/list-detail/${id}`,
     );
     return response.data;
   } catch (error) {

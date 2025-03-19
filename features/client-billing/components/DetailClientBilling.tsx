@@ -14,6 +14,7 @@ import { Table } from "@/components/common/table";
 
 import type { IResponseDetailClientBilling } from "@/types";
 import useClientBilling from "@/stores/client-billing";
+import { useDetailClientBilling } from "../hooks/useClientBilling";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -52,6 +53,7 @@ export default function DetailClientBilling() {
     toggleModalDetailClientBilling,
   } = useClientBilling();
   const [header, setHeader] = useState<ITableHeader[]>(TableHeader);
+  const { data, refetch } = useDetailClientBilling(selectedId ?? "");
 
   // lifecycle
   useEffect(() => {
@@ -68,6 +70,12 @@ export default function DetailClientBilling() {
       setHeader(TableHeader);
     }
   }, [detailType]);
+
+  useEffect(() => {
+    if (selectedId) {
+      refetch();
+    }
+  }, [selectedId, refetch]);
 
   return (
     <Sheet
