@@ -50,7 +50,7 @@ const TableHeader: ITableHeader[] = [
 export default function OutletList({ form }: Readonly<TOutletListProps>) {
   // variables
   const { toggleModalAddOutlet, setSelectedOutlet } = useMasterClient();
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     control: form.control,
     name: "outlet",
   });
@@ -74,14 +74,18 @@ export default function OutletList({ form }: Readonly<TOutletListProps>) {
           <Table<IOutletList>
             header={TableHeader}
             data={
-              fields.map((field) => ({
+              fields.map((field, index) => ({
                 ...field,
                 latitude: parseFloat(field.latitude),
                 longitude: parseFloat(field.longitude),
+                index,
               })) as IOutletList[]
             }
             loading={false}
           >
+            <TableCell<IOutletList> name="id">
+              {({ row }) => <span>{row.id_outlet ?? "-"}</span>}
+            </TableCell>
             <TableCell<IOutletList> name="action">
               {({ row }) => (
                 <div className="flex gap-2">
@@ -90,7 +94,10 @@ export default function OutletList({ form }: Readonly<TOutletListProps>) {
                     variant={"outline"}
                     size="icon"
                     onClick={() => {
-                      setSelectedOutlet(row);
+                      setSelectedOutlet({
+                        ...row,
+                        index: fields.findIndex((f) => f.id === row.id_outlet),
+                      });
                       toggleModalAddOutlet(true);
                     }}
                   >
@@ -101,7 +108,7 @@ export default function OutletList({ form }: Readonly<TOutletListProps>) {
                     variant={"outline"}
                     size="icon"
                     onClick={() =>
-                      remove(fields.findIndex((f) => f.id === row.id))
+                      remove(fields.findIndex((f) => f.id === row.id_outlet))
                     }
                   >
                     <Trash size={16} />
@@ -112,7 +119,7 @@ export default function OutletList({ form }: Readonly<TOutletListProps>) {
           </Table>
         </div>
       )}
-      <ModalOutlet append={append} />
+      <ModalOutlet append={append} update={update} />
     </div>
   );
 }
