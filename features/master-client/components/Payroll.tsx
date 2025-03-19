@@ -64,8 +64,8 @@ export default function Payroll({ form }: Readonly<TPayrollProps>) {
         primary
         control={form.control}
         render={({ field }) => (
-          <InputCurrency
-            placeholder="e.g. 1.000.000"
+          <InputPercentage
+            placeholder="e.g. 10%"
             value={field.value}
             onChange={field.onChange}
             onBlur={field.onBlur}
@@ -185,7 +185,12 @@ export default function Payroll({ form }: Readonly<TPayrollProps>) {
         primary
         control={form.control}
         render={({ field }) => (
-          <DatePicker placeholder="Choose payment due date" {...field} />
+          <DatePicker
+            placeholder="Choose payment due date"
+            value={field.value}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+          />
         )}
       />
     </div>
