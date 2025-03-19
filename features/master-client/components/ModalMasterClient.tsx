@@ -21,6 +21,7 @@ import {
 } from "../hooks/useMasterClient";
 import { uploadFile } from "@/services/file";
 import { TPayloadMasterClient } from "@/types";
+import { formatDate } from "@/utils/format-date";
 
 export default function ModalTalent() {
   // variables
@@ -88,6 +89,7 @@ export default function ModalTalent() {
           ...item,
           amount: item.amount,
         })),
+        payment_date: formatDate(values.payment_date),
       };
 
       if (file) {
