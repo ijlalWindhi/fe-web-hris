@@ -1,7 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import * as z from "zod";
-import { useForm, type UseFieldArrayAppend } from "react-hook-form";
+import {
+  UseFieldArrayUpdate,
+  useForm,
+  type UseFieldArrayAppend,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MapPin } from "lucide-react";
 
@@ -18,13 +22,19 @@ import {
   CreateMasterClientOutletSchema,
   CreateMasterClientSchema,
 } from "../schemas/master-client.schema";
-import { IOutletList } from "@/types";
 
 interface IModalOutletProps {
   append: UseFieldArrayAppend<z.infer<typeof CreateMasterClientSchema>>;
+  update: UseFieldArrayUpdate<
+    z.infer<typeof CreateMasterClientSchema>,
+    "outlet"
+  >;
 }
 
-export default function ModalOutlet({ append }: Readonly<IModalOutletProps>) {
+export default function ModalOutlet({
+  append,
+  update,
+}: Readonly<IModalOutletProps>) {
   // variables
   const {
     modalAddOutlet,
@@ -117,7 +127,11 @@ export default function ModalOutlet({ append }: Readonly<IModalOutletProps>) {
         latitude: values.lat,
         longitude: values.long,
       };
-      append(payload);
+      if (selectedOutlet) {
+        update(selectedOutlet?.index ?? 0, payload);
+      } else {
+        append(payload);
+      }
       handleClose();
     } catch (error) {
       console.error("Error from onSubmit: ", error);
