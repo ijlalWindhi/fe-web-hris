@@ -7,8 +7,8 @@
  * truncateText("Hello, World!", 5) // Hello...
  */
 export const truncateText = (text: string, length: number): string => {
-  if (text.length <= length) {
+  if (text?.length <= length) {
     return text;
   }
-  return text.substring(0, length) + "...";
+  return text?.substring(0, length) + "...";
 };
