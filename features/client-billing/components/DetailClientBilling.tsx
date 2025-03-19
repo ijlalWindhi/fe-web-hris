@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { type ITableHeader, TableCell } from "@/components/ui/table";
 import { Table } from "@/components/common/table";
 
-import type { IListDetailClientBilling } from "@/types";
+import type { IResponseDetailClientBilling } from "@/types";
 import useClientBilling from "@/stores/client-billing";
 
 const TableHeader: ITableHeader[] = [
@@ -99,7 +99,7 @@ export default function DetailClientBilling() {
           </div>
         </div>
         <h3 className="text-sm font-medium">Client Billing</h3>
-        <Table<IListDetailClientBilling>
+        <Table<IResponseDetailClientBilling>
           header={header}
           data={[
             {
@@ -112,14 +112,14 @@ export default function DetailClientBilling() {
           ]}
           loading={false}
         >
-          <TableCell<IListDetailClientBilling> name="status">
+          <TableCell<IResponseDetailClientBilling> name="status">
             {({ row }) => (
               <Badge variant={row.status === "Pending" ? "pending" : "success"}>
                 • {row.status}
               </Badge>
             )}
           </TableCell>
-          <TableCell<IListDetailClientBilling> name="payment">
+          <TableCell<IResponseDetailClientBilling> name="payment">
             {({ row }) => (
               <div className="flex items-center gap-1 cursor-pointer">
                 {row.payment}{" "}
@@ -128,7 +128,7 @@ export default function DetailClientBilling() {
             )}
           </TableCell>
           {selectedId && (
-            <TableCell<IListDetailClientBilling> name="action">
+            <TableCell<IResponseDetailClientBilling> name="action">
               {({ row }) => (
                 <div className="flex items-center gap-2 cursor-pointer">
                   <BadgeCheck size={16} className="text-green-500" />
