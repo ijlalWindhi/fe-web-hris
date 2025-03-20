@@ -1,9 +1,9 @@
 export interface IClientBillingStore {
   modalDetailClientBilling: boolean;
-  selectedId: null | string;
+  selectedData: IResponseListClientBilling | null;
   detailType: "detail" | "edit";
   toggleModalDetailClientBilling: (isOpen: boolean) => void;
-  setSelectedId: (id: string | null) => void;
+  setSelectedData: (data: IResponseListClientBilling | null) => void;
   setDetailType: (type: "detail" | "edit") => void;
 }
 
@@ -17,9 +17,9 @@ export interface IResponseListClientBilling {
 }
 
 export interface IResponseDetailClientBilling {
-  month: string;
+  invoice_date: string;
+  amount_billed: number;
   talent_resource: number;
-  billing: string;
-  status: string;
+  status: boolean;
   payment: string;
 }

@@ -5,13 +5,13 @@ import { IClientBillingStore } from "@/types";
 const useClientBilling = create<IClientBillingStore>((set) => ({
   // state
   modalDetailClientBilling: false,
-  selectedId: null,
+  selectedData: null,
   detailType: "detail",
 
   // actions
   toggleModalDetailClientBilling: (isOpen) =>
     set({ modalDetailClientBilling: isOpen }),
-  setSelectedId: (id) => set({ selectedId: id }),
+  setSelectedData: (data) => set({ selectedData: data }),
   setDetailType: (type) => set({ detailType: type }),
 }));
 

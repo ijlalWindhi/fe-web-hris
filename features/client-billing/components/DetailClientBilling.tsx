@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
-import { Download, BadgeCheck } from "lucide-react";
+import { Download, BadgeCheck, Info } from "lucide-react";
 
 import {
   Sheet,
@@ -15,21 +15,23 @@ import { Table } from "@/components/common/table";
 import type { IResponseDetailClientBilling } from "@/types";
 import useClientBilling from "@/stores/client-billing";
 import { useDetailClientBilling } from "../hooks/useClientBilling";
+import { formatCurrency } from "@/utils/format-currency";
+import { Button } from "@/components/ui/button";
 
 const TableHeader: ITableHeader[] = [
   {
-    key: "month",
-    title: "Month",
+    key: "invoice_date",
+    title: "Invoice Date",
+    className: "min-w-[10rem]",
+  },
+  {
+    key: "amount_billed",
+    title: "Amount Billed",
     className: "min-w-[10rem]",
   },
   {
     key: "talent_resource",
     title: "Talent Resource",
-    className: "min-w-[10rem]",
-  },
-  {
-    key: "billing",
-    title: "Billing",
     className: "min-w-[10rem]",
   },
   {
@@ -42,40 +44,30 @@ const TableHeader: ITableHeader[] = [
     title: "Payment",
     className: "min-w-[10rem]",
   },
+  {
+    key: "action",
+    title: "Action",
+  },
 ];
 
 export default function DetailClientBilling() {
   // variables
   const {
     modalDetailClientBilling,
-    selectedId,
+    selectedData,
     detailType,
     toggleModalDetailClientBilling,
   } = useClientBilling();
-  const [header, setHeader] = useState<ITableHeader[]>(TableHeader);
-  const { data, refetch } = useDetailClientBilling(selectedId ?? "");
+  const { data, refetch, isLoading } = useDetailClientBilling(
+    selectedData?.id ?? "",
+  );
 
   // lifecycle
   useEffect(() => {
-    if (detailType === "edit") {
-      setHeader([
-        ...TableHeader,
-        {
-          key: "action",
-          title: "Action",
-          className: "min-w-[10rem]",
-        },
-      ]);
-    } else {
-      setHeader(TableHeader);
-    }
-  }, [detailType]);
-
-  useEffect(() => {
-    if (selectedId) {
+    if (selectedData) {
       refetch();
     }
-  }, [selectedId, refetch]);
+  }, [selectedData, refetch]);
 
   return (
     <Sheet
@@ -84,7 +76,9 @@ export default function DetailClientBilling() {
     >
       <SheetContent className="!min-w-[100vw] md:!min-w-[60vw] lg:!min-w-[40vw] overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>{selectedId ? "View" : "Edit"} Client Billing</SheetTitle>
+          <SheetTitle>
+            {detailType === "detail" ? "View" : "Edit"} Client Billing
+          </SheetTitle>
         </SheetHeader>
         <div className="flex items-center gap-2 bg-blue-50 p-2 md:p-3 rounded-lg my-4">
           <Image
@@ -96,34 +90,43 @@ export default function DetailClientBilling() {
           />
           <div className="space-y-1.5">
             <div className="flex items-center">
-              <h2 className="font-semibold text-sm">PT. Testing Jaya</h2>
+              <h2 className="font-semibold text-sm">
+                {selectedData?.name ?? "-"}
+              </h2>
               <Badge variant="outline" className="ml-2 bg-white w-fit">
-                <span className="text-primary">•</span> 001
+                <span className="text-primary">•</span>{" "}
+                {selectedData?.id ?? "-"}
               </Badge>
             </div>
-            <p className="text-xs">
-              Jl. Lorem Ipsum Dolor Sit Amet, No. 123, Jakarta Selatan
-            </p>
+            <p className="text-xs">{selectedData?.address ?? "-"}</p>
           </div>
         </div>
         <h3 className="text-sm font-medium">Client Billing</h3>
         <Table<IResponseDetailClientBilling>
-          header={header}
+          header={TableHeader}
+          // data={Array.isArray(data?.data) ? data.data : []}
           data={[
             {
-              month: "January 2022",
-              talent_resource: 100,
-              billing: "Rp 1.000.000",
-              status: "Pending",
-              payment: "payment.png",
+              invoice_date: "2021-10-01",
+              amount_billed: 1000000,
+              talent_resource: 1,
+              status: true,
+              payment: "Payment.pdf",
             },
           ]}
-          loading={false}
+          loading={isLoading}
         >
+          <TableCell<IResponseDetailClientBilling> name="amount_billed">
+            {({ row }) => (
+              <span className="text-sm">
+                Rp{formatCurrency(row.amount_billed)}
+              </span>
+            )}
+          </TableCell>
           <TableCell<IResponseDetailClientBilling> name="status">
             {({ row }) => (
-              <Badge variant={row.status === "Pending" ? "pending" : "success"}>
-                • {row.status}
+              <Badge variant={row.status ? "success" : "pending"}>
+                • {row.status ? "Complete" : "Pending"}
               </Badge>
             )}
           </TableCell>
@@ -135,16 +138,21 @@ export default function DetailClientBilling() {
               </div>
             )}
           </TableCell>
-          {selectedId && (
-            <TableCell<IResponseDetailClientBilling> name="action">
-              {({ row }) => (
-                <div className="flex items-center gap-2 cursor-pointer">
-                  <BadgeCheck size={16} className="text-green-500" />
-                  Verify
-                </div>
-              )}
-            </TableCell>
-          )}
+          <TableCell<IResponseDetailClientBilling> name="action">
+            {({ row }) => (
+              <div className="flex items-center justify-between gap-1">
+                {detailType === "edit" && (
+                  <Button variant={"outline"} size="sm">
+                    <BadgeCheck size={16} className="text-green-500" />
+                    Verify
+                  </Button>
+                )}
+                <Button variant={"outline"} size="icon">
+                  <Info size={16} />
+                </Button>
+              </div>
+            )}
+          </TableCell>
         </Table>
       </SheetContent>
     </Sheet>

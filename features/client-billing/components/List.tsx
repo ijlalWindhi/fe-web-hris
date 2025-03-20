@@ -47,7 +47,7 @@ interface IListProps {
 
 export default function List({ queryParams }: Readonly<IListProps>) {
   // variables
-  const { setSelectedId, toggleModalDetailClientBilling, setDetailType } =
+  const { setSelectedData, toggleModalDetailClientBilling, setDetailType } =
     useClientBilling();
   const { data, isLoading } = useClientBillingList(queryParams);
 
@@ -77,7 +77,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
       <TableCell<IResponseListClientBilling> name="status">
         {({ row }) => (
           <Badge variant={row.payment_status ? "success" : "pending"}>
-            • {row.payment_status ? "Success" : "Pending"}
+            • {row.payment_status ? "Complete" : "Pending"}
           </Badge>
         )}
       </TableCell>
@@ -95,7 +95,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                 <DropdownMenuItem
                   onClick={() => {
                     setTimeout(() => {
-                      setSelectedId(row.id);
+                      setSelectedData(row);
                       setDetailType("detail");
                       toggleModalDetailClientBilling(true);
                     }, 100);
@@ -107,7 +107,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                 <DropdownMenuItem
                   onClick={() => {
                     setTimeout(() => {
-                      setSelectedId(row.id);
+                      setSelectedData(row);
                       setDetailType("edit");
                       toggleModalDetailClientBilling(true);
                     }, 100);
