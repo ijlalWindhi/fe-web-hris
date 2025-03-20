@@ -9,14 +9,59 @@ export interface ITalentMappingStore {
   setSelectedId: (id: number | null) => void;
 }
 
-export interface IResponseList {
-  id: number;
+export interface IResponseListTalentMapping {
+  talend_id: string;
+  photo: string;
   name: string;
-  date_of_birth: string;
-  id_number: string;
+  dob: string;
+  nik: string;
   email: string;
   phone: string;
   address: string;
+}
+
+export interface IResponseDetailTalentMapping {
+  talent_id: string;
+  photo: string;
+  name: string;
+  dob: string;
+  nik: string;
+  email: string;
+  phone: string;
+  address: string;
+  client: {
+    id: string;
+    name: string;
+  };
+  outlet: {
+    id: string;
+    name: string;
+  };
+  workdays: string;
+  shift: {
+    shift_id: string;
+    day: string;
+    start_time: string;
+    end_time: string;
+  }[];
+}
+
+export interface TPayloadTalentMapping {
+  photo: string;
+  name: string;
+  dob: string;
+  nik: string;
+  email: string;
+  phone: string;
+  address: string;
+  client_id: number;
+  outlet_id: number;
+  shift: {
+    day: string;
+    start_time: string;
+    end_time: string;
+  }[];
+  workdays: number;
 }
 
 export interface IHistoryContract {
