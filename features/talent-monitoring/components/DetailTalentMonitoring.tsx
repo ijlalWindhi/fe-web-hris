@@ -24,13 +24,21 @@ import TalentTimesheet from "./TalentTimesheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { DATA_SIDEBAR } from "@/constants/talent-monitoring";
+import { useTalentInformation } from "../hooks/useTalentMonitoring";
 
-export default function DetailTalentMonitoring() {
+interface IDetailTalentMonitoringProps {
+  id: string;
+}
+
+export default function DetailTalentMonitoring({
+  id,
+}: Readonly<IDetailTalentMonitoringProps>) {
   // variables
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [activePath, setActivePath] = useState("");
+  const { data, isLoading } = useTalentInformation(id);
 
   // functions
   const handleNavigation = (path: string) => {
@@ -136,11 +144,17 @@ export default function DetailTalentMonitoring() {
                 <AvatarFallback />
               </Avatar>
               <div>
-                <h1 className="font-semibold md:text-lg">Paimen Bin Kasimen</h1>
-                <p className="text-xs md:text-sm text-gray-500">Super Admin</p>
+                <h1 className="font-semibold md:text-lg">
+                  {data?.data?.name ?? "-"}
+                </h1>
+                <p className="text-xs md:text-sm text-gray-500">
+                  {data?.data?.role?.name ?? "-"}
+                </p>
               </div>
             </div>
-            {activePath === "talent-information" && <TalentInformation />}
+            {activePath === "talent-information" && (
+              <TalentInformation talentId={id} />
+            )}
             {activePath === "talent-performance" && <TalentPerformance />}
             {activePath === "talent-attendance" && <TalentAttendance />}
             {activePath === "talent-mapping" && <TalentMapping />}

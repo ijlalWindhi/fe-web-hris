@@ -13,6 +13,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function DetailTalentMonitoring() {
-  return <DetailTalentMonitoringMain />;
+export default async function DetailTalentMonitoring({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  return <DetailTalentMonitoringMain id={id} />;
 }
