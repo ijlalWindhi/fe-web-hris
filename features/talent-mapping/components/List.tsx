@@ -12,13 +12,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { IResponseList } from "@/types";
+import { IResponseListTalentMapping, TSearchParams } from "@/types";
 import useTheme from "@/stores/theme";
 import useTalentMapping from "@/stores/talent-mapping";
+import { useTalentMappingList } from "../hooks/useTalentMapping";
 
 const TableHeader: ITableHeader[] = [
   {
-    key: "id",
+    key: "talend_id",
     title: "Talent ID",
     className: "min-w-[6rem]",
   },
@@ -28,12 +29,12 @@ const TableHeader: ITableHeader[] = [
     className: "min-w-[10rem]",
   },
   {
-    key: "date_of_birth",
+    key: "dob",
     title: "Date of Birth",
     className: "min-w-[14rem]",
   },
   {
-    key: "id_number",
+    key: "nik",
     title: "ID Number",
     className: "min-w-[14rem]",
   },
@@ -55,7 +56,11 @@ const TableHeader: ITableHeader[] = [
   { key: "action", title: "Action" },
 ];
 
-export default function List() {
+interface IListProps {
+  queryParams: TSearchParams;
+}
+
+export default function List({ queryParams }: Readonly<IListProps>) {
   // variables
   const { setModalDelete, setModalSuccess } = useTheme();
   const {
@@ -63,9 +68,10 @@ export default function List() {
     toggleModalTalentMapping,
     toggleModalDetailTalentMapping,
   } = useTalentMapping();
+  const { data, isLoading } = useTalentMappingList(queryParams);
 
   // functions
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     try {
       setModalDelete({
         open: true,
@@ -79,7 +85,7 @@ export default function List() {
     }
   };
 
-  const handleDownload = (id: number) => {
+  const handleDownload = (id: string) => {
     try {
       setModalSuccess({
         open: true,
@@ -99,22 +105,12 @@ export default function List() {
   };
 
   return (
-    <Table<IResponseList>
+    <Table<IResponseListTalentMapping>
       header={TableHeader}
-      data={[
-        {
-          id: 1,
-          name: "John Doe",
-          date_of_birth: "1990-01-01",
-          id_number: "1234567890",
-          email: "asd@mail.com",
-          phone: "081234567890",
-          address: "Jl. Lorem Ipsum Dolor Sit Amet",
-        },
-      ]}
-      loading={false}
+      data={data?.data || []}
+      loading={isLoading}
     >
-      <TableCell<IResponseList> name="name">
+      <TableCell<IResponseListTalentMapping> name="name">
         {({ row }) => (
           <div className="flex items-center gap-1">
             <Avatar className="h-8 w-8 rounded-lg">
@@ -131,7 +127,7 @@ export default function List() {
           </div>
         )}
       </TableCell>
-      <TableCell<IResponseList> name="action">
+      <TableCell<IResponseListTalentMapping> name="action">
         {({ row }) => (
           <div className="flex gap-1">
             <DropdownMenu>
@@ -145,7 +141,7 @@ export default function List() {
                 <DropdownMenuItem
                   onClick={() => {
                     setTimeout(() => {
-                      setSelectedId(row.id);
+                      setSelectedId(row.talend_id);
                       toggleModalDetailTalentMapping(true);
                     }, 100);
                   }}
@@ -155,18 +151,18 @@ export default function List() {
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
-                    setSelectedId(row.id);
+                    setSelectedId(row.talend_id);
                     toggleModalTalentMapping(true);
                   }}
                 >
                   <Pencil className="h-5 w-5" />
                   Edit
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDelete(row.id)}>
+                <DropdownMenuItem onClick={() => handleDelete(row.talend_id)}>
                   <Trash className="h-5 w-5" />
                   Delete
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDownload(row.id)}>
+                <DropdownMenuItem onClick={() => handleDownload(row.talend_id)}>
                   <Download className="h-5 w-5" />
                   Download
                 </DropdownMenuItem>

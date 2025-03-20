@@ -2,11 +2,11 @@ export interface ITalentMappingStore {
   modalDetailTalentMapping: boolean;
   modalTalentMapping: boolean;
   modalHistoryContract: boolean;
-  selectedId: null | number;
+  selectedId: null | string;
   toggleModalDetailTalentMapping: (isOpen: boolean) => void;
   toggleModalTalentMapping: (isOpen: boolean) => void;
   toggleModalHistoryContract: (isOpen: boolean) => void;
-  setSelectedId: (id: number | null) => void;
+  setSelectedId: (id: string | null) => void;
 }
 
 export interface IResponseListTalentMapping {

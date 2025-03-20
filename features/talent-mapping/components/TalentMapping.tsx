@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import React, { useCallback, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Plus } from "lucide-react";
 import dynamic from "next/dynamic";
 
@@ -20,17 +21,59 @@ const ModalHistoryContract = dynamic(() => import("./ModalHistoryContract"));
 const DetailTalent = dynamic(() => import("./DetailTalent"));
 
 import useTalentMapping from "@/stores/talent-mapping";
+import { TSearchParams } from "@/types";
+import { useSetParams } from "@/utils/set-params";
+import { useTalentMappingList } from "../hooks/useTalentMapping";
 
 export default function TalentMapping() {
   // variables
   const { toggleModalTalentMapping } = useTalentMapping();
+  const updateParams = useSetParams();
+  const searchParams = useSearchParams();
+  const [queryParams, setQueryParams] = useState<TSearchParams>({
+    page: parseInt(searchParams.get("page") ?? "1"),
+    page_size: parseInt(searchParams.get("page_size") ?? "10"),
+    src: searchParams.get("src") ?? undefined,
+  });
+  const { data } = useTalentMappingList(queryParams);
 
   // functions
-  const handleSearch = (searchTerm: string) => {
+  const handleSearch = useCallback(
+    async (searchTerm: string) => {
+      try {
+        const newParams: TSearchParams = {
+          ...queryParams,
+          src: searchTerm || undefined,
+          page: 1,
+        };
+
+        setQueryParams(newParams);
+        updateParams(newParams);
+      } catch (error) {
+        console.error("Error from handleSearch: ", error);
+      }
+    },
+    [queryParams, updateParams],
+  );
+
+  const handlePageChange = async ({
+    page,
+    pageSize,
+  }: {
+    page: number;
+    pageSize: number;
+  }) => {
     try {
-      console.log(searchTerm);
+      const newParams: TSearchParams = {
+        ...queryParams,
+        page: page,
+        page_size: pageSize,
+      };
+
+      setQueryParams(newParams);
+      updateParams(newParams);
     } catch (error) {
-      console.error("Error from handleSearch: ", error);
+      console.error("Error from handlePageChange:", error);
     }
   };
 
@@ -40,7 +83,8 @@ export default function TalentMapping() {
         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-[40%]">
           <CardTitle className="font-semibold">Talent List</CardTitle>
           <Badge variant={"outline"} className="w-fit">
-            <span className="text-primary">•</span> Total 100 Talent
+            <span className="text-primary">•</span> Total{" "}
+            {data?.meta?.count ?? 0} Talent
           </Badge>
         </div>
         <div className="flex flex-col sm:flex-row w-full md:w-[60%] items-center justify-end gap-2">
@@ -48,7 +92,7 @@ export default function TalentMapping() {
             <InputSearch
               onSearch={handleSearch}
               placeholder="Search talent here..."
-              defaultValue={""}
+              defaultValue={queryParams.src}
             />
           </div>
           <Button
@@ -62,17 +106,19 @@ export default function TalentMapping() {
         </div>
       </CardHeader>
       <CardContent>
-        <List />
+        <List queryParams={queryParams} />
       </CardContent>
       <CardFooter>
         <PaginationCompo
           meta={{
-            page: 1,
-            page_size: 10,
-            count: 100,
-            page_count: 10,
+            page: queryParams.page,
+            page_size: queryParams.page_size,
+            count: data?.meta?.count ?? 0,
+            page_count: Math.ceil(
+              (data?.meta?.count ?? 0) / queryParams.page_size,
+            ),
           }}
-          onPageChange={(page) => console.log(page)}
+          onPageChange={(data) => handlePageChange(data)}
         />
       </CardFooter>
       <ModalTalent />
