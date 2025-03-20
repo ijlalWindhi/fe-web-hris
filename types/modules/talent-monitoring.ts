@@ -1,11 +1,26 @@
 export interface IResponseListTalentMonitoring {
-  id: number;
+  talend_id: string;
   name: string;
-  date_of_birth: string;
-  id_number: string;
+  dob: string;
+  nik: string;
   email: string;
   phone: string;
   address: string;
+}
+
+export interface IResponseTalentInformation {
+  name: string;
+  role: {
+    id: number;
+    name: string;
+  };
+  talent_id: string;
+  dob: string;
+  phone: string;
+  address: string;
+  nik: string;
+  email: string;
+  photo: string;
 }
 
 export interface IHistoryContractTalentMonitoring {
