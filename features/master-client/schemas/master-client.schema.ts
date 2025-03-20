@@ -61,3 +61,13 @@ export const CreateMasterClientOutletSchema = z.object({
   long: z.string().nonempty("Outlet longitude is required"),
   lat: z.string().nonempty("Outlet latitude is required"),
 });
+
+export const UploadSignatureSchema = z.object({
+  manager: z
+    .instanceof(File)
+    .optional()
+    .nullable()
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+      message: "Ukuran file maksimal 5MB",
+    }),
+});

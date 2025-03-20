@@ -92,6 +92,10 @@ export type TPayloadMasterClient = {
 export interface IListOutlet {
   id: number;
   name: string;
+  total_active: number;
+  cs_name: string;
+  cs_email: string;
+  cs_phone: string;
   address: string;
 }
 
