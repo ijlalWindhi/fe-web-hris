@@ -22,6 +22,7 @@ import useTheme from "@/stores/theme";
 import { TSearchParams } from "@/types";
 import { useSetParams } from "@/utils/set-params";
 import { useMasterClientList } from "@/features/master-client/hooks/useMasterClient";
+import ModalDetailBilling from "./ModalDetailBilling";
 
 export default function ClientBilling() {
   // variables
@@ -140,6 +141,7 @@ export default function ClientBilling() {
       </CardFooter>
 
       <DetailClientBilling />
+      <ModalDetailBilling />
     </Card>
   );
 }

@@ -57,10 +57,23 @@ export default function DetailClientBilling() {
     selectedData,
     detailType,
     toggleModalDetailClientBilling,
+    toggleModalDetailBilling,
+    setSelectedIdBilling,
   } = useClientBilling();
   const { data, refetch, isLoading } = useDetailClientBilling(
     selectedData?.id ?? "",
   );
+
+  // functions
+  const handleOpenDetailBilling = (id: string) => {
+    try {
+      setSelectedIdBilling(id);
+      toggleModalDetailBilling(true);
+      toggleModalDetailClientBilling(false);
+    } catch (error) {
+      console.error("Error from handleOpenDetailBilling: ", error);
+    }
+  };
 
   // lifecycle
   useEffect(() => {
@@ -107,6 +120,7 @@ export default function DetailClientBilling() {
           // data={Array.isArray(data?.data) ? data.data : []}
           data={[
             {
+              id: "1",
               invoice_date: "2021-10-01",
               amount_billed: 1000000,
               talent_resource: 1,
@@ -147,7 +161,11 @@ export default function DetailClientBilling() {
                     Verify
                   </Button>
                 )}
-                <Button variant={"outline"} size="icon">
+                <Button
+                  variant={"outline"}
+                  size="icon"
+                  onClick={() => handleOpenDetailBilling(row.id)}
+                >
                   <Info size={16} />
                 </Button>
               </div>
