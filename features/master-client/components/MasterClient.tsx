@@ -1,7 +1,6 @@
 "use client";
 import React, { useCallback, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import dynamic from "next/dynamic";
 import { Download, Plus } from "lucide-react";
 
 import {
@@ -16,9 +15,9 @@ import { Button } from "@/components/ui/button";
 import { PaginationCompo } from "@/components/ui/pagination";
 import InputSearch from "@/components/common/input-search";
 import List from "./List";
-const ModalDownloadReport = dynamic(() => import("./ModalDownloadReport"));
-const ModalMasterClient = dynamic(() => import("./ModalMasterClient"));
-const DetailMasterClient = dynamic(() => import("./DetailMasterClient"));
+import ModalDownloadReport from "./ModalDownloadReport";
+import ModalMasterClient from "./ModalMasterClient";
+import DetailMasterClient from "./DetailMasterClient";
 
 import useMasterClient from "@/stores/master-client";
 import { TSearchParams } from "@/types";

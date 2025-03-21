@@ -1,7 +1,6 @@
 "use client";
 import React, { useCallback, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import dynamic from "next/dynamic";
 import { Download } from "lucide-react";
 
 import {
@@ -16,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { PaginationCompo } from "@/components/ui/pagination";
 import InputSearch from "@/components/common/input-search";
 import List from "./List";
-const DetailClientBilling = dynamic(() => import("./DetailClientBilling"));
+import DetailClientBilling from "./DetailClientBilling";
 
 import useTheme from "@/stores/theme";
 import { TSearchParams } from "@/types";

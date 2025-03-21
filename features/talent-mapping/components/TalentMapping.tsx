@@ -2,7 +2,6 @@
 import React, { useCallback, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Plus } from "lucide-react";
-import dynamic from "next/dynamic";
 
 import {
   Card,
@@ -16,9 +15,9 @@ import { Button } from "@/components/ui/button";
 import InputSearch from "@/components/common/input-search";
 import { PaginationCompo } from "@/components/ui/pagination";
 import List from "./List";
-const ModalTalent = dynamic(() => import("./ModalTalent"));
-const ModalHistoryContract = dynamic(() => import("./ModalHistoryContract"));
-const DetailTalent = dynamic(() => import("./DetailTalent"));
+import ModalTalent from "./ModalTalent";
+import ModalHistoryContract from "./ModalHistoryContract";
+import DetailTalent from "./DetailTalent";
 
 import useTalentMapping from "@/stores/talent-mapping";
 import { TSearchParams } from "@/types";

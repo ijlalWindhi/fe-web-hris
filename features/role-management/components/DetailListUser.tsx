@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import dynamic from "next/dynamic";
 
 import { PaginationCompo } from "@/components/ui/pagination";
 import {
@@ -12,9 +11,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import InputSearch from "@/components/common/input-search";
-const ModalUserManagement = dynamic(
-  () => import("@/features/user-management/components/ModalUserManagement"),
-);
+import ModalUserManagement from "@/features/user-management/components/ModalUserManagement";
 import List from "./List";
 
 import { TSearchParams } from "@/types";

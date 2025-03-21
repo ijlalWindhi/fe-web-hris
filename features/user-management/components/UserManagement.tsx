@@ -2,7 +2,6 @@
 import React, { useCallback, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Plus } from "lucide-react";
-import dynamic from "next/dynamic";
 
 import {
   Card,
@@ -16,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import InputSearch from "@/components/common/input-search";
 import { PaginationCompo } from "@/components/ui/pagination";
 import List from "./List";
-const ModalUserManagement = dynamic(() => import("./ModalUserManagement"));
+import ModalUserManagement from "./ModalUserManagement";
 
 import useUserManagement from "@/stores/user-management";
 import { TSearchParams } from "@/types";

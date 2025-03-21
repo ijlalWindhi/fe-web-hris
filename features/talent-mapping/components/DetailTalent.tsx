@@ -1,5 +1,4 @@
 import React from "react";
-import dynamic from "next/dynamic";
 import { Pencil } from "lucide-react";
 
 import {
@@ -12,12 +11,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import HeaderDetailTalent from "./HeaderDetail";
-const PersonalInformationDetail = dynamic(
-  () => import("./PersonalInformationDetail"),
-);
-const MappingInformationDetail = dynamic(
-  () => import("./MappingInformationDetail"),
-);
+import PersonalInformationDetail from "./PersonalInformationDetail";
+import MappingInformationDetail from "./MappingInformationDetail";
 
 import useTalentMapping from "@/stores/talent-mapping";
 
