@@ -62,6 +62,7 @@ export function ClientLayoutWrapper({
       Dashboard: "Dashboard",
       "Talent Mapping": "Talent Mapping",
       "Talent Monitoring": "Talent Monitoring",
+      "Detail Talent Monitoring": "Talent Monitoring",
       "Client Billing": "Client Billing",
       "Master Client": "Master Client",
       "User Management": "User Management",
