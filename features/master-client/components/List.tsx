@@ -84,11 +84,19 @@ export default function List({ queryParams }: Readonly<IListProps>) {
       <TableCell<IResponseListMasterClient> name="outlet">
         {({ row }) => (
           <div className="flex gap-1 flex-wrap">
-            {row.outlet.map((outlet, index) => (
-              <Badge key={index} variant={"outline"} className="w-fit bg-white">
-                <span className="text-primary">•</span> {outlet?.name ?? "-"}
-              </Badge>
-            ))}
+            {row?.outlet?.length > 0 ? (
+              row?.outlet?.map((outlet, index) => (
+                <Badge
+                  key={index}
+                  variant={"outline"}
+                  className="w-fit bg-white"
+                >
+                  <span className="text-primary">•</span> {outlet?.name ?? "-"}
+                </Badge>
+              ))
+            ) : (
+              <span>-</span>
+            )}
           </div>
         )}
       </TableCell>
