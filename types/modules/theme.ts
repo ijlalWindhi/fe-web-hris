@@ -39,5 +39,6 @@ export interface INavItem {
   title: string;
   path: string;
   icon: LucideIcon | null;
+  is_show: boolean;
   sub: INavItem[];
 }
