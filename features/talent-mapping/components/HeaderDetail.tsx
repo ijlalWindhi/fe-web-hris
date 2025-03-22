@@ -10,7 +10,7 @@ import useTalentMapping from "@/stores/talent-mapping";
 export default function HeaderDetailTalent() {
   // variables
   const { setModalDelete, setModalSuccess } = useTheme();
-  const { selectedId, toggleModalDetailTalentMapping } = useTalentMapping();
+  const { selectedData, toggleModalDetailTalentMapping } = useTalentMapping();
 
   // functions
   const handleDelete = () => {
@@ -19,7 +19,7 @@ export default function HeaderDetailTalent() {
         open: true,
         type: "talent",
         action: () => {
-          console.log("Delete talent with ID: ", selectedId);
+          console.log("Delete talent with ID: ", selectedData);
           toggleModalDetailTalentMapping(false);
         },
       });
@@ -39,7 +39,7 @@ export default function HeaderDetailTalent() {
         actionVariant: "outline",
         animation: "success",
         action: () => {
-          console.log("Download talent with ID: ", selectedId);
+          console.log("Download talent with ID: ", selectedData);
           toggleModalDetailTalentMapping(false);
         },
       });
