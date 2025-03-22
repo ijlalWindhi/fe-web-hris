@@ -2,11 +2,13 @@ export interface ITalentMappingStore {
   modalDetailTalentMapping: boolean;
   modalTalentMapping: boolean;
   modalHistoryContract: boolean;
-  selectedId: null | string;
+  modalDetailWorkingArrangement: boolean;
+  selectedData: IResponseListTalentMapping | null;
   toggleModalDetailTalentMapping: (isOpen: boolean) => void;
   toggleModalTalentMapping: (isOpen: boolean) => void;
   toggleModalHistoryContract: (isOpen: boolean) => void;
-  setSelectedId: (id: string | null) => void;
+  toggleModalDetailWorkingArrangement: (isOpen: boolean) => void;
+  setSelectedData: (id: IResponseListTalentMapping | null) => void;
 }
 
 export interface IResponseListTalentMapping {
@@ -38,12 +40,14 @@ export interface IResponseDetailTalentMapping {
     name: string;
   };
   workdays: string;
-  shift: {
-    shift_id: string;
-    day: string;
-    start_time: string;
-    end_time: string;
-  }[];
+  shift: TShift[];
+}
+
+export interface TShift {
+  shift_id: string;
+  day: string;
+  start_time: string;
+  end_time: string;
 }
 
 export interface TPayloadTalentMapping {

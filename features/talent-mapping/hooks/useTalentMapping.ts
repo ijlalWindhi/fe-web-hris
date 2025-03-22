@@ -14,7 +14,7 @@ export function useTalentMappingList(params: TSearchParams) {
   });
 }
 
-export function useCreatedTalentMapping() {
+export function useCreateTalentMapping() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: TPayloadTalentMapping) => createTalentMapping(data),
@@ -24,7 +24,7 @@ export function useCreatedTalentMapping() {
   });
 }
 
-export function useUpdatedTalentMapping() {
+export function useUpdateTalentMapping() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: TPayloadTalentMapping }) =>
@@ -35,10 +35,10 @@ export function useUpdatedTalentMapping() {
   });
 }
 
-export function useDetaildTalentMapping(id: string) {
+export function useDetailTalentMapping(id: string) {
   return useQuery({
     queryKey: ["talentMapping", id],
     queryFn: () => getDetailTalentMapping(id),
-    enabled: !!id,
+    enabled: false,
   });
 }

@@ -7,7 +7,8 @@ const useTalentMapping = create<ITalentMappingStore>((set) => ({
   modalDetailTalentMapping: false,
   modalTalentMapping: false,
   modalHistoryContract: false,
-  selectedId: null,
+  modalDetailWorkingArrangement: false,
+  selectedData: null,
 
   // actions
   toggleModalDetailTalentMapping: (isOpen) =>
@@ -17,7 +18,9 @@ const useTalentMapping = create<ITalentMappingStore>((set) => ({
     set({
       modalHistoryContract: isOpen,
     }),
-  setSelectedId: (id) => set({ selectedId: id }),
+  toggleModalDetailWorkingArrangement: (isOpen) =>
+    set({ modalDetailWorkingArrangement: isOpen }),
+  setSelectedData: (id) => set({ selectedData: id }),
 }));
 
 export default useTalentMapping;
