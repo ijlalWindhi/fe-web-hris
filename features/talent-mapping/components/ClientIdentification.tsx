@@ -115,6 +115,24 @@ export default function ClientIdentification({
           <Input disabled placeholder="Outlet Address" {...field} />
         )}
       />
+      <InputField
+        name="outlet_lat"
+        label="Outlet Latitude"
+        primary
+        control={form.control}
+        render={({ field }) => (
+          <Input disabled placeholder="Outlet Latitude" {...field} />
+        )}
+      />
+      <InputField
+        name="outlet_long"
+        label="Outlet Longitude"
+        primary
+        control={form.control}
+        render={({ field }) => (
+          <Input disabled placeholder="Outlet Longitude" {...field} />
+        )}
+      />
     </div>
   );
 }

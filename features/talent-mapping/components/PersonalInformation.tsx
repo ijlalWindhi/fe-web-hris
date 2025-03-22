@@ -27,23 +27,28 @@ export default function PersonalInformation({
         )}
       />
       <InputField
-        name="workdays"
-        label="Workdays"
+        name="name"
+        label="Talent Name"
         primary
         control={form.control}
-        render={({ field }) => <Input placeholder="e.g. Dhisa" {...field} />}
+        render={({ field }) => <Input placeholder="e.g Dhisa" {...field} />}
       />
       <InputField
-        name="date_of_birth"
+        name="dob"
         label="Date of Birth"
         primary
         control={form.control}
         render={({ field }) => (
-          <DatePicker placeholder="Choose date of birth" {...field} />
+          <DatePicker
+            placeholder="Choose date of birth"
+            value={field.value}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+          />
         )}
       />
       <InputField
-        name="id_number"
+        name="nik"
         label="ID Number"
         primary
         control={form.control}
@@ -65,7 +70,7 @@ export default function PersonalInformation({
         )}
       />
       <InputField
-        name="phone_number"
+        name="phone"
         label="Phone Number"
         primary
         control={form.control}

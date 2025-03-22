@@ -18,6 +18,7 @@ import List from "./List";
 import ModalTalent from "./ModalTalent";
 import ModalHistoryContract from "./ModalHistoryContract";
 import DetailTalent from "./DetailTalent";
+import ModalDetailWorkingArrangement from "./ModalDetailWorkingArrangement";
 
 import useTalentMapping from "@/stores/talent-mapping";
 import { TSearchParams } from "@/types";
@@ -123,6 +124,7 @@ export default function TalentMapping() {
       <ModalTalent />
       <DetailTalent />
       <ModalHistoryContract />
+      <ModalDetailWorkingArrangement />
     </Card>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,36 +15,42 @@ import WorkingArrangement from "./WorkingArrangement";
 
 import useTalentMapping from "@/stores/talent-mapping";
 import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
+import { useDetailTalentMapping } from "../hooks/useTalentMapping";
+import { formatDate } from "@/utils/format-date";
 
 export default function ModalTalent() {
   // variables
+  const [file, setFile] = useState<File | null>(null);
   const {
     modalTalentMapping,
-    selectedId,
+    selectedData,
     toggleModalTalentMapping,
-    setSelectedId,
+    setSelectedData,
   } = useTalentMapping();
   const form = useForm<z.infer<typeof CreateTalentMappingSchema>>({
     resolver: zodResolver(CreateTalentMappingSchema),
     defaultValues: {
+      name: "",
+      dob: "",
+      nik: "",
       email: "",
+      phone: "",
       address: "",
-      client_name: "",
-      date_of_birth: "",
-      end_time: "00:00",
-      id_number: "",
-      outlet_mapping: "",
-      phone_number: "",
-      start_time: "00:00",
-      shift_id: "",
+      client_id: "",
+      outlet_id: "",
       workdays: 0,
     },
   });
+  const { data, refetch } = useDetailTalentMapping(
+    selectedData?.talend_id ?? "",
+  );
 
   // functions
   const handleClose = () => {
-    setSelectedId(null);
+    setSelectedData(null);
     toggleModalTalentMapping(false);
+    form.reset();
+    setFile(null);
   };
 
   const onSubmit = async (
@@ -53,11 +59,40 @@ export default function ModalTalent() {
     console.log(values);
   };
 
+  // lifecycle
+  useEffect(() => {
+    if (selectedData?.talend_id) {
+      refetch();
+    }
+  }, [selectedData, refetch]);
+
+  useEffect(() => {
+    if (data) {
+      const initialValue = data?.data;
+      form.reset({
+        talent_id: initialValue?.talent_id,
+        name: initialValue?.name,
+        dob: formatDate({
+          inputDate: initialValue?.dob ?? "",
+          formatFrom: "dd-MM-yyyy",
+          formatTo: "dd MMMM yyyy",
+        }),
+        nik: initialValue?.nik,
+        email: initialValue?.email,
+        phone: initialValue?.phone,
+        address: initialValue?.address,
+        client_id: initialValue?.client?.id,
+        outlet_id: initialValue?.outlet?.id,
+        workdays: Number(initialValue?.workdays ?? 0),
+      });
+    }
+  }, [data, form]);
+
   return (
     <DialogAction
       isOpen={modalTalentMapping}
       onClose={handleClose}
-      title={`${selectedId ? "Edit" : "Register"} Talent`}
+      title={`${selectedData ? "Edit" : "Register"} Talent`}
       className="max-w-full md:max-w-2xl"
     >
       <Form {...form}>
@@ -65,7 +100,8 @@ export default function ModalTalent() {
           <InputProfile
             width="w-16 md:w-20"
             height="h-16 md:h-20"
-            onFileChange={(file) => console.log(file)}
+            onFileChange={(file) => setFile(file)}
+            defaultImage={selectedData?.photo}
           />
           <Tabs defaultValue="personal_information" className="min-w-full mt-2">
             <TabsList className="w-full">
@@ -86,7 +122,7 @@ export default function ModalTalent() {
               <ClientIdentification form={form} />
             </TabsContent>
             <TabsContent value="working_arrangement">
-              <WorkingArrangement form={form} />
+              <WorkingArrangement />
             </TabsContent>
           </Tabs>
           <Button type="submit" className="mt-4 w-full">

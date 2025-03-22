@@ -64,7 +64,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
   // variables
   const { setModalDelete, setModalSuccess } = useTheme();
   const {
-    setSelectedId,
+    setSelectedData,
     toggleModalTalentMapping,
     toggleModalDetailTalentMapping,
   } = useTalentMapping();
@@ -141,7 +141,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                 <DropdownMenuItem
                   onClick={() => {
                     setTimeout(() => {
-                      setSelectedId(row.talend_id);
+                      setSelectedData(row);
                       toggleModalDetailTalentMapping(true);
                     }, 100);
                   }}
@@ -151,7 +151,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
-                    setSelectedId(row.talend_id);
+                    setSelectedData(row);
                     toggleModalTalentMapping(true);
                   }}
                 >
