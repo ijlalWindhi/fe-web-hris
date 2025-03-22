@@ -63,6 +63,22 @@ export interface IResponseDetailMasterClient {
   cs_email: string;
 }
 
+export interface IResponseOptionMasterClient {
+  id: number;
+  id_client: string;
+  name: string;
+  address: string;
+}
+
+export interface IResponseOptionOutlet {
+  id: number;
+  outlet_id: string;
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+}
+
 export type TPayloadMasterClient = {
   photo: string;
   name: string;

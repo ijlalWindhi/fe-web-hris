@@ -3,6 +3,8 @@ import {
   IResponse,
   IResponseDetailMasterClient,
   IResponseListMasterClient,
+  IResponseOptionMasterClient,
+  IResponseOptionOutlet,
   TPayloadMasterClient,
   TSearchParams,
 } from "@/types";
@@ -74,6 +76,46 @@ export async function getDetailMasterClient(
     return response.data;
   } catch (error) {
     console.error("Error from service getDetailMasterClient: ", error);
+    throw error;
+  }
+}
+
+export async function getOptionMasterClient(
+  src: string,
+): Promise<IResponse<IResponseOptionMasterClient[]>> {
+  try {
+    const response = await axios.get<IResponse<IResponseOptionMasterClient[]>>(
+      "/client/option",
+      {
+        params: {
+          src,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getOptionMasterClient: ", error);
+    throw error;
+  }
+}
+
+export async function getOptionOutlet(
+  client_id: string,
+  src: string,
+): Promise<IResponse<IResponseOptionOutlet[]>> {
+  try {
+    const response = await axios.get<IResponse<IResponseOptionOutlet[]>>(
+      "/outlet/option",
+      {
+        params: {
+          src,
+          client_id,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getOptionOutlet: ", error);
     throw error;
   }
 }

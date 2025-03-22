@@ -5,6 +5,8 @@ import {
   updateMasterClient,
   deleteMasterClient,
   getDetailMasterClient,
+  getOptionMasterClient,
+  getOptionOutlet,
 } from "@/services/master-client";
 import { TSearchParams, TPayloadMasterClient } from "@/types";
 
@@ -51,5 +53,19 @@ export function useDetailMasterClient(id: string) {
     queryKey: ["masterClientDetail", id],
     queryFn: () => getDetailMasterClient(id),
     enabled: false,
+  });
+}
+
+export function useOptionMasterClient(src: string) {
+  return useQuery({
+    queryKey: ["masterClientOption", src],
+    queryFn: () => getOptionMasterClient(src),
+  });
+}
+
+export function useOptionOutlet(client_id: string, src: string) {
+  return useQuery({
+    queryKey: ["outletOption", client_id, src],
+    queryFn: () => getOptionOutlet(client_id, src),
   });
 }
