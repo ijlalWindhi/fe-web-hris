@@ -28,6 +28,7 @@ interface ITableCompoProps<T>
   header: ITableHeader[];
   data: T[];
   children?: React.ReactNode;
+  withoutHeader?: boolean;
 }
 
 function TableCompo<T>({
@@ -133,7 +134,7 @@ function TableCompo<T>({
   return (
     <Table className={className} {...props}>
       {caption && <TableCaption>{caption}</TableCaption>}
-      {memoizedHeader}
+      {!props.withoutHeader && memoizedHeader}
       {memoizedBody}
     </Table>
   );
