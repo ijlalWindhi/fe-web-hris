@@ -6,11 +6,17 @@ import { Button } from "@/components/ui/button";
 
 import useTheme from "@/stores/theme";
 import useTalentMapping from "@/stores/talent-mapping";
+import {
+  useViewTalentMapping,
+  useDeleteTalentMapping,
+} from "../hooks/useTalentMapping";
 
 export default function HeaderDetailTalent() {
   // variables
   const { setModalDelete, setModalSuccess } = useTheme();
   const { selectedData, toggleModalDetailTalentMapping } = useTalentMapping();
+  const { data } = useViewTalentMapping(selectedData?.talend_id ?? "");
+  const deleteTalentMapping = useDeleteTalentMapping();
 
   // functions
   const handleDelete = () => {
@@ -19,7 +25,7 @@ export default function HeaderDetailTalent() {
         open: true,
         type: "talent",
         action: () => {
-          console.log("Delete talent with ID: ", selectedData);
+          deleteTalentMapping.mutate(selectedData?.talend_id ?? "");
           toggleModalDetailTalentMapping(false);
         },
       });
@@ -52,14 +58,19 @@ export default function HeaderDetailTalent() {
       <div className="flex flex-col gap-2 items-center justify-center">
         <div className="relative h-16 w-16 rounded-full overflow-hidden">
           <Image
-            src="/images/unavailable-profile.webp"
+            src={
+              data?.data?.personal?.face_id ||
+              "/images/unavailable-profile.webp"
+            }
             alt="avatar"
             layout="fill"
             objectFit="cover"
           />
         </div>
         <div className="text-center">
-          <h1 className="md:text-lg font-semibold">John Doe</h1>
+          <h1 className="md:text-lg font-semibold">
+            {data?.data?.personal?.name ?? "-"}
+          </h1>
           <p className="text-sm text-gray-500">Software Engineer</p>
         </div>
       </div>

@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { Pencil } from "lucide-react";
 
 import {
@@ -15,14 +16,23 @@ import PersonalInformationDetail from "./PersonalInformationDetail";
 import MappingInformationDetail from "./MappingInformationDetail";
 
 import useTalentMapping from "@/stores/talent-mapping";
+import { useViewTalentMapping } from "../hooks/useTalentMapping";
 
 export default function DetailTalent() {
   // variables
   const {
     modalDetailTalentMapping,
+    selectedData,
     toggleModalDetailTalentMapping,
     toggleModalTalentMapping,
   } = useTalentMapping();
+  const { refetch } = useViewTalentMapping(selectedData?.talend_id ?? "");
+
+  useEffect(() => {
+    if (selectedData?.talend_id) {
+      refetch();
+    }
+  }, [selectedData, refetch]);
 
   return (
     <Sheet

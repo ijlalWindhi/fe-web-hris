@@ -87,7 +87,7 @@ export default function TalentMapping({
               </tr>
             </thead>
             <tbody>
-              {data?.data?.workarr.map((shift) => (
+              {data?.data?.workarr?.map((shift) => (
                 <tr key={shift.shift_id} className="border-b border-gray-100">
                   <td className="py-3 pr-4">Shift ID</td>
                   <td className="py-3 pr-4 font-medium">{shift.shift_id}</td>
