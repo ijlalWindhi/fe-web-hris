@@ -26,6 +26,8 @@ export default function ModalTalent() {
     selectedData,
     toggleModalTalentMapping,
     setSelectedData,
+    fetchOptionsClient,
+    fetchOptionsOutlet,
   } = useTalentMapping();
   const form = useForm<z.infer<typeof CreateTalentMappingSchema>>({
     resolver: zodResolver(CreateTalentMappingSchema),
@@ -59,15 +61,8 @@ export default function ModalTalent() {
     console.log(values);
   };
 
-  // lifecycle
-  useEffect(() => {
-    if (selectedData?.talend_id) {
-      refetch();
-    }
-  }, [selectedData, refetch]);
-
-  useEffect(() => {
-    if (data) {
+  const getData = async () => {
+    try {
       const initialValue = data?.data;
       form.reset({
         talent_id: initialValue?.talent_id,
@@ -82,11 +77,72 @@ export default function ModalTalent() {
         phone: initialValue?.phone,
         address: initialValue?.address,
         client_id: initialValue?.client?.id,
-        outlet_id: initialValue?.outlet?.id,
+        outlet_mapping: initialValue?.outlet?.id,
         workdays: Number(initialValue?.workdays ?? 0),
       });
+      const resClientOptions = await fetchOptionsClient();
+      const resOutletOptions = await fetchOptionsOutlet(
+        initialValue?.client?.id?.toString() ?? "",
+      );
+      const client = resClientOptions?.find(
+        (item) => item.id?.toString() === initialValue?.client?.id?.toString(),
+      );
+      const outlet = resOutletOptions?.find(
+        (item) => item.id?.toString() === initialValue?.outlet?.id?.toString(),
+      );
+      if (client) {
+        form.setValue("client_name", client.id?.toString() ?? "");
+        form.setValue("client_id", client.id_client ?? "");
+        form.setValue("client_address", client.address ?? "");
+      }
+      if (outlet) {
+        form.setValue("outlet_mapping", outlet.id?.toString());
+        form.setValue("outlet_id", outlet.outlet_id ?? "");
+        form.setValue("outlet_address", outlet.address ?? "");
+        form.setValue("outlet_lat", outlet.latitude?.toString() ?? "");
+        form.setValue("outlet_long", outlet.longitude?.toString() ?? "");
+      }
+    } catch (error) {
+      console.error("Error from getData: ", error);
     }
-  }, [data, form]);
+  };
+
+  // lifecycle
+  useEffect(() => {
+    if (selectedData?.talend_id) {
+      refetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedData, refetch]);
+
+  useEffect(() => {
+    if (data && selectedData?.talend_id) {
+      getData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  useEffect(() => {
+    if (modalTalentMapping && !selectedData) {
+      fetchOptionsClient();
+      form.setValue("talent_id", "");
+      form.setValue("name", "");
+      form.setValue("dob", "");
+      form.setValue("nik", "");
+      form.setValue("email", "");
+      form.setValue("phone", "");
+      form.setValue("address", "");
+      form.setValue("client_name", "");
+      form.setValue("client_id", "");
+      form.setValue("client_address", "");
+      form.setValue("outlet_mapping", "");
+      form.setValue("outlet_id", "");
+      form.setValue("outlet_address", "");
+      form.setValue("outlet_lat", "");
+      form.setValue("outlet_long", "");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modalTalentMapping]);
 
   return (
     <DialogAction

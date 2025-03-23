@@ -1,14 +1,23 @@
+import {
+  IResponseOptionMasterClient,
+  IResponseOptionOutlet,
+} from "./master-client";
+
 export interface ITalentMappingStore {
   modalDetailTalentMapping: boolean;
   modalTalentMapping: boolean;
   modalHistoryContract: boolean;
   modalDetailWorkingArrangement: boolean;
   selectedData: IResponseListTalentMapping | null;
+  optionsClient: IResponseOptionMasterClient[];
+  optionsOutlet: IResponseOptionOutlet[];
   toggleModalDetailTalentMapping: (isOpen: boolean) => void;
   toggleModalTalentMapping: (isOpen: boolean) => void;
   toggleModalHistoryContract: (isOpen: boolean) => void;
   toggleModalDetailWorkingArrangement: (isOpen: boolean) => void;
   setSelectedData: (id: IResponseListTalentMapping | null) => void;
+  fetchOptionsClient: () => Promise<IResponseOptionMasterClient[]>;
+  fetchOptionsOutlet: (clientId: string) => Promise<IResponseOptionOutlet[]>;
 }
 
 export interface IResponseListTalentMapping {

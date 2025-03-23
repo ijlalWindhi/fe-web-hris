@@ -99,7 +99,7 @@ export async function getDetailInformationMasterClient(
 }
 
 export async function getOptionMasterClient(
-  src: string,
+  src?: string,
 ): Promise<IResponse<IResponseOptionMasterClient[]>> {
   try {
     const response = await axios.get<IResponse<IResponseOptionMasterClient[]>>(
@@ -118,15 +118,13 @@ export async function getOptionMasterClient(
 }
 
 export async function getOptionOutlet(
-  client_id: string,
-  src: string,
+  client_id?: string,
 ): Promise<IResponse<IResponseOptionOutlet[]>> {
   try {
     const response = await axios.get<IResponse<IResponseOptionOutlet[]>>(
       "/outlet/option",
       {
         params: {
-          src,
           client_id,
         },
       },

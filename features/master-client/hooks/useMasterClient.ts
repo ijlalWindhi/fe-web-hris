@@ -65,16 +65,17 @@ export function useDetailInformationMasterClient(id: string) {
   });
 }
 
-export function useOptionMasterClient(src: string) {
+export function useOptionMasterClient(src?: string) {
   return useQuery({
     queryKey: ["masterClientOption", src],
     queryFn: () => getOptionMasterClient(src),
   });
 }
 
-export function useOptionOutlet(client_id: string, src: string) {
+export function useOptionOutlet(client_id?: string) {
   return useQuery({
-    queryKey: ["outletOption", client_id, src],
-    queryFn: () => getOptionOutlet(client_id, src),
+    queryKey: ["outletOption", client_id],
+    queryFn: () => getOptionOutlet(client_id),
+    enabled: !!client_id,
   });
 }

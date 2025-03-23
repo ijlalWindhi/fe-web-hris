@@ -19,8 +19,10 @@ export const CreateTalentMappingSchema = z.object({
     .min(10, "Phone number must be at least 10 characters")
     .max(15, "Phone number must be at most 15 characters"),
   address: z.string().nonempty("Address is required"),
+  client_name: z.string().nonempty("Client Name is required"),
   client_id: z.string().nonempty("Client ID is required"),
   client_address: z.string().nonempty("Client Address is required"),
+  outlet_mapping: z.string().nonempty("Outlet Mapping is required"),
   outlet_id: z.string().nonempty("Outlet ID is required"),
   outlet_address: z.string().nonempty("Outlet Address is required"),
   outlet_lat: z.string().nonempty("Outlet Latitude is required"),
