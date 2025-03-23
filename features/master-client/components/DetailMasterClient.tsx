@@ -42,21 +42,6 @@ const TableHeader: ITableHeader[] = [
     className: "min-w-[10rem]",
   },
   {
-    key: "cs_name",
-    title: "CS Name",
-    className: "min-w-[10rem]",
-  },
-  {
-    key: "cs_email",
-    title: "CS Email",
-    className: "min-w-[10rem]",
-  },
-  {
-    key: "cs_phone",
-    title: "CS Phone Number",
-    className: "min-w-[10rem]",
-  },
-  {
     key: "address",
     title: "Address",
     className: "min-w-[20rem]",
@@ -103,7 +88,7 @@ export default function DetailMasterClient() {
         </SheetHeader>
         <div className="flex items-center gap-2 bg-blue-50 p-2 md:p-3 rounded-lg my-4">
           <Image
-            src={"/images/unavailable-profile.webp"}
+            src={data?.data?.photo || "/images/unavailable-profile.webp"}
             alt="logo client"
             width={50}
             height={50}
@@ -121,6 +106,15 @@ export default function DetailMasterClient() {
             </div>
             <p className="text-xs">{data?.data?.address ?? "-"}</p>
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <DataRow label="CS Name" value={data?.data?.cs_person ?? "-"} />
+          <DataRow label="CS Email" value={data?.data?.cs_email ?? "-"} />
+          <DataRow
+            label="CS Phone Number"
+            value={data?.data?.cs_number ?? "-"}
+          />
         </div>
 
         <Tabs defaultValue="outlet_list" className="min-w-full mt-2">

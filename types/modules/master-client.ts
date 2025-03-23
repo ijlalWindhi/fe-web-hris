@@ -79,6 +79,10 @@ export interface IResponseDetailInformationMasterClient {
   total_active: string;
   manager_signature: string;
   technical_signature: string;
+  cs_person: string;
+  cs_number: string;
+  cs_email: string;
+  photo: string;
 }
 
 export interface IResponseOptionMasterClient {
