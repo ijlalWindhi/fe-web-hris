@@ -15,7 +15,10 @@ import {
 import { IResponseListTalentMapping, TSearchParams } from "@/types";
 import useTheme from "@/stores/theme";
 import useTalentMapping from "@/stores/talent-mapping";
-import { useTalentMappingList } from "../hooks/useTalentMapping";
+import {
+  useTalentMappingList,
+  useDeleteTalentMapping,
+} from "../hooks/useTalentMapping";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -69,6 +72,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
     toggleModalDetailTalentMapping,
   } = useTalentMapping();
   const { data, isLoading } = useTalentMappingList(queryParams);
+  const deleteTalentMapping = useDeleteTalentMapping();
 
   // functions
   const handleDelete = (id: string) => {
@@ -77,7 +81,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
         open: true,
         type: "talent",
         action: () => {
-          console.log("Delete talent with ID: ", id);
+          deleteTalentMapping.mutate(id);
         },
       });
     } catch (error) {
