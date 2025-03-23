@@ -22,9 +22,13 @@ export interface IResponseListClientBilling {
 
 export interface IResponseDetailClientBilling {
   id: string;
-  invoice_date: string;
-  amount_billed: number;
-  talent_resource: number;
-  status: boolean;
-  payment: string;
+  date: string;
+  client_id: number;
+  amount: number;
+  total_talent: number;
+  status: {
+    id: number;
+    name: string;
+  };
+  evidence_payment: string;
 }

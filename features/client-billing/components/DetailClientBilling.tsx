@@ -20,17 +20,17 @@ import { Button } from "@/components/ui/button";
 
 const TableHeader: ITableHeader[] = [
   {
-    key: "invoice_date",
+    key: "date",
     title: "Invoice Date",
     className: "min-w-[10rem]",
   },
   {
-    key: "amount_billed",
+    key: "amount",
     title: "Amount Billed",
     className: "min-w-[10rem]",
   },
   {
-    key: "talent_resource",
+    key: "total_talent",
     title: "Talent Resource",
     className: "min-w-[10rem]",
   },
@@ -40,7 +40,7 @@ const TableHeader: ITableHeader[] = [
     className: "min-w-[10rem]",
   },
   {
-    key: "payment",
+    key: "evidence_payment",
     title: "Payment",
     className: "min-w-[10rem]",
   },
@@ -117,40 +117,32 @@ export default function DetailClientBilling() {
         <h3 className="text-sm font-medium">Client Billing</h3>
         <Table<IResponseDetailClientBilling>
           header={TableHeader}
-          // data={Array.isArray(data?.data) ? data.data : []}
-          data={[
-            {
-              id: "1",
-              invoice_date: "2021-10-01",
-              amount_billed: 1000000,
-              talent_resource: 1,
-              status: true,
-              payment: "Payment.pdf",
-            },
-          ]}
+          data={Array.isArray(data?.data) ? data.data : []}
           loading={isLoading}
         >
-          <TableCell<IResponseDetailClientBilling> name="amount_billed">
+          <TableCell<IResponseDetailClientBilling> name="amount">
             {({ row }) => (
-              <span className="text-sm">
-                Rp{formatCurrency(row.amount_billed)}
-              </span>
+              <span className="text-sm">Rp{formatCurrency(row.amount)}</span>
             )}
           </TableCell>
           <TableCell<IResponseDetailClientBilling> name="status">
             {({ row }) => (
               <Badge variant={row.status ? "success" : "pending"}>
-                • {row.status ? "Complete" : "Pending"}
+                • {row?.status?.name ?? "-"}
               </Badge>
             )}
           </TableCell>
-          <TableCell<IResponseDetailClientBilling> name="payment">
-            {({ row }) => (
-              <div className="flex items-center gap-1 cursor-pointer">
-                {row.payment}{" "}
-                <Download size={16} className="text-primary ml-2" />
-              </div>
-            )}
+          <TableCell<IResponseDetailClientBilling> name="evidence_payment">
+            {({ row }) =>
+              row.evidence_payment ? (
+                <div className="flex items-center gap-1 cursor-pointer">
+                  {row.evidence_payment}{" "}
+                  <Download size={16} className="text-primary ml-2" />
+                </div>
+              ) : (
+                "-"
+              )
+            }
           </TableCell>
           <TableCell<IResponseDetailClientBilling> name="action">
             {({ row }) => (
