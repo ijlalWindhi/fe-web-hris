@@ -3,6 +3,7 @@ import {
   IResponse,
   IResponseListClientBilling,
   IResponseDetailClientBilling,
+  IResponseDetailBilling,
   TSearchParams,
 } from "@/types";
 
@@ -33,6 +34,20 @@ export async function getDetailClientBilling(
     return response.data;
   } catch (error) {
     console.error("Error from service getDetailClientBilling: ", error);
+    throw error;
+  }
+}
+
+export async function getDetailBilling(
+  id: string,
+): Promise<IResponse<IResponseDetailBilling>> {
+  try {
+    const response = await axios.get<IResponse<IResponseDetailBilling>>(
+      `/client-billing/list-detail/action/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getDetailBilling: ", error);
     throw error;
   }
 }

@@ -1,17 +1,46 @@
 "use client";
+import { useEffect } from "react";
+
 import DialogAction from "@/components/common/dialog-action";
 
 import useClientBilling from "@/stores/client-billing";
+import { useDetailBilling } from "../hooks/useClientBilling";
+import { cn } from "@/utils/utils";
+
+const formatRupiah = (angka: number) => {
+  if (angka === null || angka === undefined) return "";
+
+  const stringAngka = angka?.toString();
+  const split = stringAngka?.split(".");
+  const depan = split?.[0];
+  let belakang = split?.length > 1 ? split[1] : "";
+
+  if (belakang?.length > 2) {
+    belakang = belakang?.substring(0, 2);
+  } else if (belakang?.length === 1) {
+    belakang = belakang + "0";
+  } else if (belakang?.length === 0 && split?.length > 1) {
+    belakang = "00";
+  }
+
+  const reverseDepan = depan?.toString()?.split("")?.reverse()?.join("");
+  const ribuan = reverseDepan?.match(/\d{1,3}/g);
+  const hasilRibuan = ribuan?.join(".")?.split("")?.reverse()?.join("");
+
+  return belakang ? `${hasilRibuan},${belakang}` : hasilRibuan;
+};
 
 export default function ModalDetailBilling() {
   // variables
   const {
     modalDetailBilling,
     selectedData,
+    selectedIdBilling,
     toggleModalDetailBilling,
     toggleModalDetailClientBilling,
     setSelectedData,
   } = useClientBilling();
+  const { data, refetch } = useDetailBilling(selectedIdBilling ?? "");
 
   // functions
   const handleClose = () => {
@@ -23,6 +52,13 @@ export default function ModalDetailBilling() {
       console.error("Error from handleClose: ", error);
     }
   };
+
+  // lifecycle
+  useEffect(() => {
+    if (selectedIdBilling) {
+      refetch();
+    }
+  }, [selectedIdBilling, refetch]);
 
   return (
     <DialogAction
@@ -36,9 +72,12 @@ export default function ModalDetailBilling() {
           <h2 className="text-xs md:text-sm">
             Laporan Pengeluaran Biaya Program Gea RSA Cabang Bandung
           </h2>
-          <h3 className="text-sm md:text-base font-semibold">PT. ABC</h3>
+          <h3 className="text-sm md:text-base font-semibold">
+            {data?.data?.client_name ?? "-"}
+          </h3>
           <p className="text-xs md:text-sm">
-            Periode: 16-11-2024 s/d 01-01-2025
+            Periode: {data?.data?.start_period ?? "-"} s/d{" "}
+            {data?.data?.end_period ?? "-"}
           </p>
         </div>
 
@@ -50,54 +89,23 @@ export default function ModalDetailBilling() {
             <div className="text-right">Jumlah</div>
           </div>
 
-          <div className="grid grid-cols-4 text-sm px-3 py-3 border-b">
-            <div>Biaya Operasional</div>
-            <div className="text-right">Rp.</div>
-            <div className="text-right">9,280,684</div>
-            <div className="text-right"></div>
-          </div>
-
-          <div className="grid grid-cols-4 text-sm px-3 py-3 bg-blue-50 border-b">
-            <div>Jumlah Biaya Operasional</div>
-            <div className="text-right">Rp.</div>
-            <div className="text-right"></div>
-            <div className="text-right">9,280,684</div>
-          </div>
-
-          <div className="grid grid-cols-4 text-sm px-3 py-3 border-b">
-            <div>Agency 6%</div>
-            <div className="text-right">Rp.</div>
-            <div className="text-right">505,117</div>
-            <div className="text-right"></div>
-          </div>
-
-          <div className="grid grid-cols-4 text-sm px-3 py-3 bg-blue-50 border-b">
-            <div>Jumlah Biaya</div>
-            <div className="text-right">Rp.</div>
-            <div className="text-right"></div>
-            <div className="text-right">9,785,802</div>
-          </div>
-
-          <div className="grid grid-cols-4 text-sm px-3 py-3 border-b">
-            <div>PPN 1%</div>
-            <div className="text-right">Rp.</div>
-            <div className="text-right">55,563</div>
-            <div className="text-right"></div>
-          </div>
-
-          <div className="grid grid-cols-4 text-sm px-3 py-3 border-b">
-            <div>PPN 2%</div>
-            <div className="text-right">Rp.</div>
-            <div className="text-right">(10,102)</div>
-            <div className="text-right"></div>
-          </div>
-
-          <div className="grid grid-cols-4 text-sm px-3 py-3 bg-blue-50">
-            <div>Grand Total Biaya</div>
-            <div className="text-right">Rp.</div>
-            <div className="text-right"></div>
-            <div className="text-right">9,831,262</div>
-          </div>
+          {data?.data?.detail.map((item, index) => (
+            <div
+              key={index}
+              className={cn("grid grid-cols-4 text-sm px-3 py-3 border-b", {
+                "bg-blue-50": item?.jumlah > 0,
+              })}
+            >
+              <div>{item.keterangan}</div>
+              <div className="text-right">Rp.</div>
+              <div className="text-right">
+                {item?.nominal !== null ? formatRupiah(item.nominal) : ""}
+              </div>
+              <div className="text-right">
+                {item?.jumlah !== null ? formatRupiah(item.jumlah) : ""}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </DialogAction>

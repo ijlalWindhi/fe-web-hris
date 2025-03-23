@@ -32,3 +32,15 @@ export interface IResponseDetailClientBilling {
   };
   evidence_payment: string;
 }
+
+export interface IResponseDetailBilling {
+  client_id: number;
+  client_name: string;
+  start_period: string;
+  end_period: string;
+  detail: {
+    keterangan: string;
+    nominal: number;
+    jumlah: number;
+  }[];
+}
