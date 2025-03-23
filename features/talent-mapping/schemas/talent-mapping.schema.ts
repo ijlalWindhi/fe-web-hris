@@ -20,16 +20,11 @@ export const CreateTalentMappingSchema = z.object({
     .max(15, "Phone number must be at most 15 characters"),
   address: z.string().nonempty("Address is required"),
   client_name: z.string().nonempty("Client Name is required"),
-  client_id: z.string().nonempty("Client ID is required"),
-  client_address: z.string().nonempty("Client Address is required"),
+  client_id: z.string().optional().nullable(),
+  client_address: z.string().optional().nullable(),
   outlet_mapping: z.string().nonempty("Outlet Mapping is required"),
-  outlet_id: z.string().nonempty("Outlet ID is required"),
-  outlet_address: z.string().nonempty("Outlet Address is required"),
-  outlet_lat: z.string().nonempty("Outlet Latitude is required"),
-  outlet_long: z.string().nonempty("Outlet Longitude is required"),
-  workdays: z
-    .number()
-    .int()
-    .nonnegative("Workdays must be a positive number")
-    .min(1, "Workdays must be at least 1"),
+  outlet_id: z.string().optional().nullable(),
+  outlet_address: z.string().optional().nullable(),
+  outlet_lat: z.string().optional().nullable(),
+  outlet_long: z.string().optional().nullable(),
 });

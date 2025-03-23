@@ -111,10 +111,10 @@ export interface TPayloadTalentMapping {
   address: string;
   client_id: number;
   outlet_id: number;
-  shift: {
+  shift?: {
     day: string;
     start_time: string;
     end_time: string;
   }[];
-  workdays: number;
+  workdays?: number;
 }

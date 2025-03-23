@@ -15,8 +15,14 @@ import WorkingArrangement from "./WorkingArrangement";
 
 import useTalentMapping from "@/stores/talent-mapping";
 import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
-import { useDetailTalentMapping } from "../hooks/useTalentMapping";
+import {
+  useDetailTalentMapping,
+  useCreateTalentMapping,
+  useUpdateTalentMapping,
+} from "../hooks/useTalentMapping";
 import { formatDate } from "@/utils/format-date";
+import { uploadFile } from "@/services/file";
+import { TPayloadTalentMapping } from "@/types";
 
 export default function ModalTalent() {
   // variables
@@ -40,12 +46,13 @@ export default function ModalTalent() {
       address: "",
       client_id: "",
       outlet_id: "",
-      workdays: 0,
     },
   });
   const { data, refetch } = useDetailTalentMapping(
     selectedData?.talend_id ?? "",
   );
+  const createTalentMapping = useCreateTalentMapping();
+  const updateTalentMapping = useUpdateTalentMapping();
 
   // functions
   const handleClose = () => {
@@ -58,7 +65,39 @@ export default function ModalTalent() {
   const onSubmit = async (
     values: z.infer<typeof CreateTalentMappingSchema>,
   ) => {
-    console.log(values);
+    try {
+      const payload: TPayloadTalentMapping = {
+        photo: "",
+        name: values.name,
+        dob: formatDate({
+          inputDate: values.dob,
+          formatFrom: "dd MMMM yyyy",
+          formatTo: "dd-MM-yyyy",
+        }),
+        nik: values.nik,
+        email: values.email,
+        phone: values.phone,
+        address: values.address,
+        client_id: Number(values.client_name),
+        outlet_id: Number(values.outlet_mapping),
+      };
+      if (file) {
+        const response = await uploadFile(file);
+        payload.photo = response;
+      } else {
+        payload.photo = selectedData?.photo ?? "";
+      }
+      if (selectedData) {
+        await updateTalentMapping.mutateAsync({
+          id: selectedData.talend_id,
+          data: payload,
+        });
+      } else {
+        await createTalentMapping.mutateAsync(payload);
+      }
+    } catch (error) {
+      console.error("Error from onSubmit: ", error);
+    }
   };
 
   const getData = async () => {
@@ -78,7 +117,6 @@ export default function ModalTalent() {
         address: initialValue?.address,
         client_id: initialValue?.client?.id,
         outlet_mapping: initialValue?.outlet?.id,
-        workdays: Number(initialValue?.workdays ?? 0),
       });
       const resClientOptions = await fetchOptionsClient();
       const resOutletOptions = await fetchOptionsOutlet(
