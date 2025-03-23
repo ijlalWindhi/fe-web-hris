@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Lottie from "@/components/common/lottie";
 import { Plus } from "lucide-react";

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { MinusCircle, Plus } from "lucide-react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";

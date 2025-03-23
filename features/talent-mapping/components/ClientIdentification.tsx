@@ -9,6 +9,10 @@ import { Input } from "@/components/ui/input";
 import InfiniteCombobox from "@/components/common/input-infinite-select";
 
 import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
+import {
+  useOptionMasterClient,
+  useOptionOutlet,
+} from "@/features/master-client/hooks/useMasterClient";
 
 type TClientIdentificationProps = {
   form: UseFormReturn<z.infer<typeof CreateTalentMappingSchema>>;
