@@ -4,6 +4,8 @@ import {
   TPayloadTalentMapping,
   IResponseListTalentMapping,
   IResponseDetailTalentMapping,
+  IResponseViewTalentMapping,
+  IResponseHistoryTalentMapping,
   TSearchParams,
 } from "@/types";
 
@@ -52,6 +54,20 @@ export async function updateTalentMapping(
   }
 }
 
+export async function deleteTalentMapping(
+  id: string,
+): Promise<IResponse<null>> {
+  try {
+    const response = await axios.delete<IResponse<null>>(
+      `/talent-mapping/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service deleteTalentMapping: ", error);
+    throw error;
+  }
+}
+
 export async function getDetailTalentMapping(
   id: string,
 ): Promise<IResponse<IResponseDetailTalentMapping>> {
@@ -62,6 +78,34 @@ export async function getDetailTalentMapping(
     return response.data;
   } catch (error) {
     console.error("Error from service getDetailTalentMapping: ", error);
+    throw error;
+  }
+}
+
+export async function getViewTalentMapping(
+  id: string,
+): Promise<IResponse<IResponseViewTalentMapping>> {
+  try {
+    const response = await axios.get<IResponse<IResponseViewTalentMapping>>(
+      `/talent-mapping/view/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getViewTalentMapping: ", error);
+    throw error;
+  }
+}
+
+export async function getHistoryTalentMapping(
+  id: string,
+): Promise<IResponse<IResponseHistoryTalentMapping>> {
+  try {
+    const response = await axios.get<IResponse<IResponseHistoryTalentMapping>>(
+      `/talent-mapping/history/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getHistoryTalentMapping: ", error);
     throw error;
   }
 }
