@@ -3,6 +3,8 @@ import {
   IResponse,
   IResponseListTalentMonitoring,
   IResponseTalentInformation,
+  IResponseTalentMapping,
+  IResponseContract,
   TSearchParams,
 } from "@/types";
 
@@ -32,6 +34,34 @@ export async function getTalentInformation(
     return response.data;
   } catch (error) {
     console.error("Error from service getTalentInformation: ", error);
+    throw error;
+  }
+}
+
+export async function getTalentMapping(
+  id: string,
+): Promise<IResponse<IResponseTalentMapping>> {
+  try {
+    const response = await axios.get<IResponse<IResponseTalentMapping>>(
+      `/talent-monitor/talent-mapping/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getTalentMapping: ", error);
+    throw error;
+  }
+}
+
+export async function getContract(
+  id: string,
+): Promise<IResponse<IResponseContract>> {
+  try {
+    const response = await axios.get<IResponse<IResponseContract>>(
+      `/talent-monitor/contract/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getContract: ", error);
     throw error;
   }
 }

@@ -23,11 +23,45 @@ export interface IResponseTalentInformation {
   photo: string;
 }
 
+export interface IResponseTalentMapping {
+  client: {
+    id: number;
+    name: string;
+    address: string;
+  };
+  outlet: {
+    address: string;
+    name: string;
+    latitude: number;
+    longitude: number;
+  };
+  workdays: number;
+  workarr: {
+    shift_id: string;
+    day: string;
+    time_start: string;
+    time_end: string;
+  }[];
+}
+
+export interface IResponseContract {
+  talent_id: string;
+  talent_name: string;
+  talent_role: string;
+  contract: {
+    id: number;
+    start_date: string;
+    end_date: string;
+    file: string;
+  };
+  history: IHistoryContractTalentMonitoring[];
+}
+
 export interface IHistoryContractTalentMonitoring {
-  id: string;
   start_date: string;
   end_date: string;
-  contract_document: string;
+  file: string;
+  file_name: string;
 }
 
 export interface IPayrollDetailsTaletMonitoring {
