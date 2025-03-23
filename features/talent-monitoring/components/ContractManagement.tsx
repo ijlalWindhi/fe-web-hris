@@ -5,7 +5,9 @@ import { ITableHeader, TableCell } from "@/components/ui/table";
 import { Table } from "@/components/common/table";
 import { Button } from "@/components/ui/button";
 
+import { useContract } from "../hooks/useTalentMonitoring";
 import { IHistoryContractTalentMonitoring } from "@/types";
+import { truncateText } from "@/utils/truncate";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -19,14 +21,32 @@ const TableHeader: ITableHeader[] = [
     className: "min-w-[10rem]",
   },
   {
-    key: "contract_document",
+    key: "file",
     title: "Contract Document",
     className: "min-w-[14rem]",
   },
   { key: "action", title: "Action" },
 ];
 
-export default function ContractManagement() {
+interface IContractManagementProps {
+  talentId: string;
+}
+
+export default function ContractManagement({
+  talentId,
+}: Readonly<IContractManagementProps>) {
+  // variables
+  const { data } = useContract(talentId);
+
+  // functions
+  const handleDownload = (url: string) => {
+    try {
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Error from handleDownload: ", error);
+    }
+  };
+
   return (
     <div className="space-y-3 md:space-y-4">
       <div className="border rounded-xl p-4 space-y-2">
@@ -35,21 +55,33 @@ export default function ContractManagement() {
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Start</p>
-              <p className="font-medium">-</p>
+              <p className="font-medium">
+                {data?.data?.contract?.start_date ?? "-"}
+              </p>
             </div>
 
             <div>
               <p className="text-sm text-muted-foreground">
                 Contract Statement
               </p>
-              <p className="font-medium">-</p>
+              <div
+                className="flex items-center gap-1 cursor-pointer"
+                onClick={() => handleDownload(data?.data?.contract?.file ?? "")}
+              >
+                <p className="font-medium hover:text-primary hover:underline">
+                  {truncateText(data?.data?.contract?.file ?? "", 40) ?? "-"}
+                </p>
+                <Download className="text-primary" size={16} />
+              </div>
             </div>
           </div>
 
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">End</p>
-              <p className="font-medium">-</p>
+              <p className="font-medium">
+                {data?.data?.contract?.end_date ?? "-"}
+              </p>
             </div>
           </div>
         </div>
@@ -59,19 +91,19 @@ export default function ContractManagement() {
         <h2 className="md:text-lg font-semibold">Contract History</h2>
         <Table<IHistoryContractTalentMonitoring>
           header={TableHeader}
-          data={[
-            {
-              id: "1",
-              start_date: "2021-09-01",
-              end_date: "2021-10-01",
-              contract_document: "contract_document.pdf",
-            },
-          ]}
+          data={data?.data?.history ?? []}
           loading={false}
         >
+          <TableCell<IHistoryContractTalentMonitoring> name="file">
+            {({ row }) => <span>{truncateText(row.file ?? "", 40)}</span>}
+          </TableCell>
           <TableCell<IHistoryContractTalentMonitoring> name="action">
             {({ row }) => (
-              <Button variant={"outline"}>
+              <Button
+                variant={"outline"}
+                size={"sm"}
+                onClick={() => handleDownload(row.file)}
+              >
                 <Download size={16} />
                 Download
               </Button>
