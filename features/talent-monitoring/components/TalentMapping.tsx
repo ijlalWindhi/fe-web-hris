@@ -1,4 +1,7 @@
+"use client";
 import React from "react";
+
+import { useTalentMapping } from "../hooks/useTalentMonitoring";
 
 const shifts = [
   { shiftId: "S001", day: "Monday", time: "08:00 - 15:00" },
@@ -8,7 +11,16 @@ const shifts = [
   { shiftId: "S005", day: "Friday", time: "08:00 - 15:00" },
 ];
 
-export default function TalentMapping() {
+interface ITalentMappingProps {
+  talentId: string;
+}
+
+export default function TalentMapping({
+  talentId,
+}: Readonly<ITalentMappingProps>) {
+  // variables
+  const { data } = useTalentMapping(talentId);
+
   return (
     <div className="space-y-3 md:space-y-4">
       <div className="border rounded-xl p-4 space-y-2">
@@ -17,36 +29,43 @@ export default function TalentMapping() {
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Client ID</p>
-              <p className="font-medium">-</p>
+              <p className="font-medium">{data?.data?.client?.id}</p>
             </div>
 
             <div>
               <p className="text-sm text-muted-foreground">Client Address</p>
-              <p className="font-medium">-</p>
+              <p className="font-medium">
+                {data?.data?.client?.address ?? "-"}
+              </p>
             </div>
 
             <div>
               <p className="text-sm text-muted-foreground">Outlet Address</p>
-              <p className="font-medium">-</p>
+              <p className="font-medium">
+                {data?.data?.outlet?.address ?? "-"}
+              </p>
             </div>
           </div>
 
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Client Name</p>
-              <p className="font-medium">-</p>
+              <p className="font-medium">{data?.data?.client?.name ?? "-"}</p>
             </div>
 
             <div>
               <p className="text-sm text-muted-foreground">Outlet Mapping</p>
-              <p className="font-medium">-</p>
+              <p className="font-medium">{data?.data?.outlet?.name ?? "-"}</p>
             </div>
 
             <div>
               <p className="text-sm text-muted-foreground">
                 Outlet Latitude-Longitude
               </p>
-              <p className="font-medium">-</p>
+              <p className="font-medium">
+                {data?.data?.outlet?.latitude ?? "-"} -{" "}
+                {data?.data?.outlet?.longitude ?? "-"}
+              </p>
             </div>
           </div>
         </div>
@@ -62,18 +81,19 @@ export default function TalentMapping() {
                   Workdays
                 </th>
                 <th className="text-left py-2 font-medium text-muted-foreground">
-                  5
+                  {data?.data?.workdays ?? 0}
                 </th>
                 <th className="text-left py-2 font-medium text-muted-foreground"></th>
               </tr>
             </thead>
             <tbody>
-              {shifts.map((shift) => (
-                <tr key={shift.shiftId} className="border-b border-gray-100">
+              {data?.data?.workarr.map((shift) => (
+                <tr key={shift.shift_id} className="border-b border-gray-100">
                   <td className="py-3 pr-4">Shift ID</td>
-                  <td className="py-3 pr-4 font-medium">{shift.shiftId}</td>
+                  <td className="py-3 pr-4 font-medium">{shift.shift_id}</td>
                   <td className="py-3">
-                    <span className="mr-6">{shift.day}</span> {shift.time}
+                    <span className="mr-6">{shift.day}</span> {shift.time_start}
+                    -{shift.time_end}
                   </td>
                 </tr>
               ))}
