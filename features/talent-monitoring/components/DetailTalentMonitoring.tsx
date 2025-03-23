@@ -157,9 +157,11 @@ export default function DetailTalentMonitoring({
             )}
             {activePath === "talent-performance" && <TalentPerformance />}
             {activePath === "talent-attendance" && <TalentAttendance />}
-            {activePath === "talent-mapping" && <TalentMapping />}
+            {activePath === "talent-mapping" && <TalentMapping talentId={id} />}
             {activePath === "talent-timesheet" && <TalentTimesheet />}
-            {activePath === "contract-management" && <ContractManagement />}
+            {activePath === "contract-management" && (
+              <ContractManagement talentId={id} />
+            )}
             {activePath === "payroll-details" && <PayrollDetails />}
           </div>
         </div>
