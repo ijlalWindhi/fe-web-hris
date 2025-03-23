@@ -98,11 +98,11 @@ export async function getViewTalentMapping(
 
 export async function getHistoryTalentMapping(
   id: string,
-): Promise<IResponse<IResponseHistoryTalentMapping>> {
+): Promise<IResponse<IResponseHistoryTalentMapping[]>> {
   try {
-    const response = await axios.get<IResponse<IResponseHistoryTalentMapping>>(
-      `/talent-mapping/history/${id}`,
-    );
+    const response = await axios.get<
+      IResponse<IResponseHistoryTalentMapping[]>
+    >(`/talent-mapping/history/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error from service getHistoryTalentMapping: ", error);

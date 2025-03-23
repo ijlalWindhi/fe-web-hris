@@ -108,10 +108,3 @@ export interface TPayloadTalentMapping {
   }[];
   workdays: number;
 }
-
-export interface IHistoryContract {
-  id: string;
-  contract_start_date: string;
-  contract_end_date: string;
-  contract_document: string;
-}
