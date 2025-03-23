@@ -16,7 +16,7 @@ export default function DataRow({ label, value }: Readonly<IDataRowProps>) {
         <dd className="text-sm text-left md:text-right">
           <div className="relative h-10 w-10 rounded-lg overflow-hidden">
             <Image
-              src={value ?? "/images/unavailable-profile.webp"}
+              src={value || "/images/unavailable-profile.webp"}
               alt="avatar"
               layout="fill"
               objectFit="cover"
