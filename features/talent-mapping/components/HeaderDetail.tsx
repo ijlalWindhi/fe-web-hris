@@ -71,7 +71,9 @@ export default function HeaderDetailTalent() {
           <h1 className="md:text-lg font-semibold">
             {data?.data?.personal?.name ?? "-"}
           </h1>
-          <p className="text-sm text-gray-500">Software Engineer</p>
+          <p className="text-sm text-gray-500">
+            {data?.data?.personal?.role_name}
+          </p>
         </div>
       </div>
       <div className="flex gap-1 absolute top-0 right-0">

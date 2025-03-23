@@ -45,6 +45,7 @@ export interface IResponseDetailTalentMapping {
 
 export interface IResponseViewTalentMapping {
   personal: {
+    role_name: string;
     talent_id: string;
     name: string;
     dob: string;
