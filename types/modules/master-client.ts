@@ -106,6 +106,7 @@ export type TPayloadMasterClient = {
   name: string;
   address: string;
   outlet: {
+    id_outlet?: string;
     name: string;
     latitude: number;
     longitude: number;

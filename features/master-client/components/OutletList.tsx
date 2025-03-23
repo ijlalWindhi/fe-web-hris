@@ -97,7 +97,7 @@ export default function OutletList({ form }: Readonly<TOutletListProps>) {
                     onClick={() => {
                       setSelectedOutlet({
                         ...row,
-                        index: fields.findIndex((f) => f.id === row.id_outlet),
+                        index: fields.findIndex((f) => f.name === row.name),
                       });
                       toggleModalAddOutlet(true);
                     }}
@@ -109,7 +109,7 @@ export default function OutletList({ form }: Readonly<TOutletListProps>) {
                     variant={"outline"}
                     size="icon"
                     onClick={() =>
-                      remove(fields.findIndex((f) => f.id === row.id_outlet))
+                      remove(fields.findIndex((f) => f.name === row.name))
                     }
                   >
                     <Trash size={16} />

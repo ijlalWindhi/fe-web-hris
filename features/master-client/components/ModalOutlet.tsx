@@ -126,6 +126,7 @@ export default function ModalOutlet({
         address: values.address,
         latitude: values.lat,
         longitude: values.long,
+        id_outlet: selectedOutlet?.id_outlet ?? undefined,
       };
       if (selectedOutlet) {
         update(selectedOutlet?.index ?? 0, payload);
@@ -178,10 +179,7 @@ export default function ModalOutlet({
       className="max-w-full md:max-w-2xl"
     >
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit((values) => onSubmit(values))}
-          className="pt-2"
-        >
+        <form className="pt-2">
           <div className="space-y-4">
             <InputField
               name="name"
@@ -255,7 +253,11 @@ export default function ModalOutlet({
                 )}
               />
             </div>
-            <Button type="submit" className="w-full">
+            <Button
+              type="button"
+              onClick={form.handleSubmit((values) => onSubmit(values))}
+              className="w-full"
+            >
               Save
             </Button>
           </div>

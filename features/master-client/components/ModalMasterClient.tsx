@@ -75,14 +75,33 @@ export default function ModalTalent() {
 
   const onSubmit = async (values: z.infer<typeof CreateMasterClientSchema>) => {
     try {
+      const modifiedOutlets = values.outlet.map((outletItem) => {
+        if (selectedData) {
+          const existingOutlet = detailData?.data?.outlet?.find(
+            (existing) => existing.id_outlet === outletItem.id_outlet,
+          );
+
+          if (existingOutlet) {
+            return {
+              ...outletItem,
+              id_outlet: existingOutlet.id_outlet,
+              latitude: parseFloat(outletItem.latitude),
+              longitude: parseFloat(outletItem.longitude),
+            };
+          }
+        }
+
+        return {
+          ...outletItem,
+          latitude: parseFloat(outletItem.latitude),
+          longitude: parseFloat(outletItem.longitude),
+        };
+      });
+
       const payload: TPayloadMasterClient = {
         ...values,
         photo: "",
-        outlet: values.outlet.map((item) => ({
-          ...item,
-          latitude: parseFloat(item.latitude),
-          longitude: parseFloat(item.longitude),
-        })),
+        outlet: modifiedOutlets,
         basic_salary: values.basic_salary,
         agency_fee: values.agency_fee,
         bpjs: values.bpjs.map((item) => ({
@@ -139,6 +158,7 @@ export default function ModalTalent() {
         outlet:
           data?.outlet?.map((item) => ({
             ...item,
+            id_outlet: item.id_outlet ?? "",
             latitude: item.latitude.toString() ?? "",
             longitude: item.longitude.toString() ?? "",
           })) ?? [],
