@@ -5,6 +5,7 @@ import {
   updateMasterClient,
   deleteMasterClient,
   getDetailMasterClient,
+  getDetailInformationMasterClient,
   getOptionMasterClient,
   getOptionOutlet,
 } from "@/services/master-client";
@@ -52,6 +53,14 @@ export function useDetailMasterClient(id: string) {
   return useQuery({
     queryKey: ["masterClientDetail", id],
     queryFn: () => getDetailMasterClient(id),
+    enabled: false,
+  });
+}
+
+export function useDetailInformationMasterClient(id: string) {
+  return useQuery({
+    queryKey: ["masterClientDetailInformation", id],
+    queryFn: () => getDetailInformationMasterClient(id),
     enabled: false,
   });
 }

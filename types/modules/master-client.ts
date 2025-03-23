@@ -63,6 +63,24 @@ export interface IResponseDetailMasterClient {
   cs_email: string;
 }
 
+export interface IResponseDetailInformationMasterClient {
+  name: string;
+  address: string;
+  id_client: string;
+  outlet: IListOutlet[];
+  payroll: {
+    basic_salary: string;
+    agency_fee: string;
+    allowance: string;
+    total_deduction: string;
+    nett_payment: string;
+    due_date: string;
+  };
+  total_active: string;
+  manager_signature: string;
+  technical_signature: string;
+}
+
 export interface IResponseOptionMasterClient {
   id: number;
   id_client: string;
@@ -106,13 +124,12 @@ export type TPayloadMasterClient = {
 };
 
 export interface IListOutlet {
-  id: number;
+  id_outlet: string;
   name: string;
-  total_active: number;
-  cs_name: string;
-  cs_email: string;
-  cs_phone: string;
+  total_active: string;
   address: string;
+  latitude: string;
+  longitude: string;
 }
 
 export interface IOutletList {

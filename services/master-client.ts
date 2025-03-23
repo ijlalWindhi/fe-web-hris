@@ -1,6 +1,7 @@
 import axios from "@/lib/axios";
 import {
   IResponse,
+  IResponseDetailInformationMasterClient,
   IResponseDetailMasterClient,
   IResponseListMasterClient,
   IResponseOptionMasterClient,
@@ -76,6 +77,23 @@ export async function getDetailMasterClient(
     return response.data;
   } catch (error) {
     console.error("Error from service getDetailMasterClient: ", error);
+    throw error;
+  }
+}
+
+export async function getDetailInformationMasterClient(
+  id: string,
+): Promise<IResponse<IResponseDetailInformationMasterClient>> {
+  try {
+    const response = await axios.get<
+      IResponse<IResponseDetailInformationMasterClient>
+    >(`/client/detail/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error from service getDetailInformationMasterClient: ",
+      error,
+    );
     throw error;
   }
 }
