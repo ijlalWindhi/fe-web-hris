@@ -95,6 +95,7 @@ export default function ModalTalent() {
       } else {
         await createTalentMapping.mutateAsync(payload);
       }
+      toggleModalTalentMapping(false);
     } catch (error) {
       console.error("Error from onSubmit: ", error);
     }
