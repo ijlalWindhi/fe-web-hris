@@ -84,7 +84,7 @@ export default function ClientBilling() {
             className="w-full min-h-[160px] max-h-[160px]"
           >
             <RadialBarChart
-              data={[{ complete: 10, overdue: 1, pending: 1 }]}
+              data={[{ complete: 0, overdue: 0, pending: 0 }]}
               startAngle={250}
               endAngle={-70}
               innerRadius={70}
@@ -102,7 +102,7 @@ export default function ClientBilling() {
                             y={(viewBox.cy ?? 0) + 30}
                             className="fill-slate-900 text-xl md:text-3xl font-normal"
                           >
-                            {10}
+                            {0}
                           </tspan>
                           <tspan
                             x={viewBox.cx}

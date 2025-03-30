@@ -72,7 +72,7 @@ export default function Talent() {
             className="w-full min-h-[200px] max-h-[200px]"
           >
             <RadialBarChart
-              data={[{ mapped: 3, notMapped: 1 }]}
+              data={[{ mapped: 0, notMapped: 0 }]}
               endAngle={180}
               innerRadius="80%"
               outerRadius="160%"
@@ -95,7 +95,7 @@ export default function Talent() {
                             y={(viewBox.cy ?? 0) + 15}
                             className="fill-slate-900 text-3xl font-normal"
                           >
-                            {10}
+                            {0}
                           </tspan>
                           <tspan
                             x={viewBox.cx}
