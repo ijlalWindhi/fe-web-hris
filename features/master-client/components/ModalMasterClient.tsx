@@ -174,11 +174,13 @@ export default function ModalTalent() {
             ...item,
             amount: Number(item.amount ?? 0),
           })) ?? [],
-        payment_date: formatDate({
-          inputDate: data?.payment_date ?? "",
-          formatFrom: "dd-MM-yyyy",
-          formatTo: "dd MMMM yyyy",
-        }),
+        payment_date: data?.payment_date
+          ? formatDate({
+              inputDate: data?.payment_date ?? "",
+              formatFrom: "dd-MM-yyyy",
+              formatTo: "dd MMMM yyyy",
+            })
+          : "",
       };
       form.reset(formattedData);
     }
