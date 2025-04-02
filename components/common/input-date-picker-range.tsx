@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
-import * as React from "react";
+import React, { useCallback, useEffect } from "react";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import type { DateRange } from "react-day-picker";
-import { cn } from "@/utils/utils";
+import { useController, Control } from "react-hook-form";
+import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -13,8 +14,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useController, Control } from "react-hook-form";
-import { z } from "zod";
+
+import { cn } from "@/utils/utils";
 
 interface DatePickerWithRangeProps {
   className?: string;
@@ -39,8 +40,6 @@ export function DatePickerWithRange({
     name,
     control,
   });
-
-  // Gunakan state lokal untuk menampilkan UI
   const [date, setDate] = React.useState<DateRange | undefined>(
     fieldValue
       ? {
@@ -50,22 +49,11 @@ export function DatePickerWithRange({
       : undefined,
   );
 
-  // Effect untuk sinkronisasi nilai awal dari form, HANYA SEKALI
-  React.useEffect(() => {
-    if (value && !date) {
-      setDate({
-        from: value.start,
-        to: value.end,
-      });
-    }
-  }, []); // Dependensi kosong agar hanya berjalan sekali
-
-  // Handle date change
-  const handleDateChange = React.useCallback(
+  // functions
+  const handleDateChange = useCallback(
     (selectedDate: DateRange | undefined) => {
       setDate(selectedDate);
 
-      // Convert to { start, end } format for form integration
       const newValue = selectedDate
         ? {
             start: selectedDate.from,
@@ -73,16 +61,25 @@ export function DatePickerWithRange({
           }
         : { start: undefined, end: undefined };
 
-      // Update form value
       fieldOnChange(newValue);
 
-      // Call external onChange if provided
       if (onChange) {
         onChange(newValue);
       }
     },
     [fieldOnChange, onChange],
   );
+
+  // lifecycle
+  useEffect(() => {
+    if (value && !date) {
+      setDate({
+        from: value.start,
+        to: value.end,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={cn("grid gap-2", className)}>
