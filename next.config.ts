@@ -71,6 +71,16 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "api-storage.anaratech.com",
+        port: "",
+        pathname: "/hris-media/**",
+      },
+    ]
+  }
 };
 
 export default nextConfig;
