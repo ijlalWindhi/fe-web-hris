@@ -85,10 +85,7 @@ export default function DetailTalentMonitoring({
               ))}
             </div>
             <div className="!mt-6 gap-2 flex flex-col xl:flex-row items-center justify-between w-full">
-              <Link
-                href="/user-management/role-management"
-                className="w-full xl:w-auto"
-              >
+              <Link href="/talent-monitoring" className="w-full xl:w-auto">
                 <Button
                   variant={"outline"}
                   size={"sm"}
@@ -98,18 +95,13 @@ export default function DetailTalentMonitoring({
                   Back
                 </Button>
               </Link>
-              <Link
-                href="/user-management/role-management"
-                className="w-full xl:w-auto"
+              <Button
+                size={"sm"}
+                className="w-full xl:w-auto bg-blue-600 hover:bg-blue-700"
               >
-                <Button
-                  size={"sm"}
-                  className="w-full xl:w-auto bg-blue-600 hover:bg-blue-700"
-                >
-                  <Download size={16} className="mr-1" />
-                  Download
-                </Button>
-              </Link>
+                <Download size={16} className="mr-1" />
+                Download
+              </Button>
             </div>
           </div>
           <div className="hidden lg:block min-h-[75vh] w-0.5 bg-gray-200" />
