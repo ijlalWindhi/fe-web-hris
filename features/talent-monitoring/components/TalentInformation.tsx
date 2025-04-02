@@ -66,7 +66,9 @@ export default function TalentInformation({
               <div className="mt-1">
                 <div className="relative h-10 w-10 rounded-lg overflow-hidden">
                   <Image
-                    src={"/images/unavailable-profile.webp"}
+                    src={
+                      data?.data?.photo || "/images/unavailable-profile.webp"
+                    }
                     alt="avatar"
                     layout="fill"
                     objectFit="cover"

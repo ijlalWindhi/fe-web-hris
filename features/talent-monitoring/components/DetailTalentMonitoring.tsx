@@ -137,7 +137,7 @@ export default function DetailTalentMonitoring({
             <div className="my-3 md:my-4 w-full h-20 bg-gradient-to-tr from-gray-50 to-gray-200 rounded-2xl flex items-center justify-start px-4 py-6 gap-2 border">
               <Avatar className={"w-14 h-14"}>
                 <AvatarImage
-                  src={"/images/unavailable-profile.webp"}
+                  src={data?.data?.photo || "/images/unavailable-profile.webp"}
                   alt="avatar"
                   className="object-cover w-full h-full rounded-full"
                 />
