@@ -69,9 +69,11 @@ export default function ContractManagement({
                 onClick={() => handleDownload(data?.data?.contract?.file ?? "")}
               >
                 <p className="font-medium hover:text-primary hover:underline">
-                  {truncateText(data?.data?.contract?.file ?? "", 40) ?? "-"}
+                  {truncateText(data?.data?.contract?.file ?? "", 40) || "-"}
                 </p>
-                <Download className="text-primary" size={16} />
+                {data?.data?.contract?.file && (
+                  <Download className="text-primary" size={16} />
+                )}
               </div>
             </div>
           </div>
