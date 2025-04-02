@@ -5,6 +5,7 @@ import {
   getTalentMapping,
   getContract,
   getAttendance,
+  getTimesheet,
 } from "@/services/talent-monitoring";
 import { TSearchParams } from "@/types";
 
@@ -44,5 +45,16 @@ export function useAttendance(
   return useQuery({
     queryKey: ["attendance", id],
     queryFn: () => getAttendance(id, start_date, end_date),
+  });
+}
+
+export function useTimesheet(
+  id: string,
+  start_date?: string,
+  end_date?: string,
+) {
+  return useQuery({
+    queryKey: ["timesheet", id],
+    queryFn: () => getTimesheet(id, start_date, end_date),
   });
 }

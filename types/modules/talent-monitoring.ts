@@ -71,6 +71,13 @@ export interface IResponseAttendance {
   };
 }
 
+export interface IResponseTimesheet {
+  name: string;
+  role_name: string;
+  total_workdays: number;
+  timesheet: ITimesheetHistoryTalentMonitoring[];
+}
+
 export interface IHistoryContractTalentMonitoring {
   start_date: string;
   end_date: string;
@@ -100,10 +107,13 @@ export interface ITalentPerformanceTalentMonitoring {
 }
 
 export interface ITimesheetHistoryTalentMonitoring {
-  id: string;
   date: string;
   working_hours: string;
   notes: string;
+  outlet: {
+    id: number;
+    name: string;
+  };
 }
 
 export interface ILeaveSubmissionTalentMonitoring {

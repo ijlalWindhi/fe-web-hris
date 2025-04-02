@@ -6,6 +6,7 @@ import {
   IResponseTalentMapping,
   IResponseContract,
   IResponseAttendance,
+  IResponseTimesheet,
   TSearchParams,
 } from "@/types";
 
@@ -75,10 +76,38 @@ export async function getAttendance(
   try {
     const response = await axios.get<IResponse<IResponseAttendance>>(
       `/talent-monitor/attendance/${id}`,
+      {
+        params: {
+          start_date,
+          end_date,
+        },
+      },
     );
     return response.data;
   } catch (error) {
     console.error("Error from service getAttendance: ", error);
+    throw error;
+  }
+}
+
+export async function getTimesheet(
+  id: string,
+  start_date?: string,
+  end_date?: string,
+): Promise<IResponse<IResponseTimesheet>> {
+  try {
+    const response = await axios.get<IResponse<IResponseTimesheet>>(
+      `/talent-monitor/timesheet/${id}`,
+      {
+        params: {
+          start_date,
+          end_date,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getTimesheet: ", error);
     throw error;
   }
 }
