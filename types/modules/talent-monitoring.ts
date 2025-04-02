@@ -57,6 +57,20 @@ export interface IResponseContract {
   history: IHistoryContractTalentMonitoring[];
 }
 
+export interface IResponseAttendance {
+  name: string;
+  role: {
+    id: number;
+    name: string;
+  };
+  attendance: IAttendanceHistoryTalentMonitoring[];
+  leave_submission: ILeaveSubmissionTalentMonitoring[];
+  graph: {
+    type: string;
+    desktop: number;
+  };
+}
+
 export interface IHistoryContractTalentMonitoring {
   start_date: string;
   end_date: string;
@@ -93,17 +107,23 @@ export interface ITimesheetHistoryTalentMonitoring {
 }
 
 export interface ILeaveSubmissionTalentMonitoring {
-  id: string;
-  leave_type: string;
-  date_period: string;
-  total_days: number;
-  notes: string;
-  evidence: string | null;
-  status: string;
+  total_pending: number;
+  type: string;
+  date_period: number;
+  start_date: string;
+  end_date: string;
+  note: string;
+  evidence: string;
+  file_name: string | null;
+  status: {
+    id: number;
+    name: string;
+  };
 }
 
 export interface IAttendanceHistoryTalentMonitoring {
-  id: string;
+  total_workdays: number;
+  id: number;
   date: string;
   location: string;
   clock_in: string;

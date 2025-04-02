@@ -9,16 +9,7 @@ import {
 } from "@/components/ui/chart";
 import { DatePickerWithRange } from "@/components/common/input-date-picker-range";
 
-const chartData = [
-  { type: "Hadir", desktop: 20 },
-  { type: "Absen", desktop: 2 },
-  { type: "Sakit", desktop: 3 },
-  { type: "Cuti", desktop: 0 },
-  { type: "Lembur", desktop: 2 },
-  { type: "Early Leave", desktop: 1 },
-  { type: "Terlambat", desktop: 0 },
-  { type: "Izin", desktop: 1 },
-];
+import { useAttendance } from "../hooks/useTalentMonitoring";
 
 const chartConfig = {
   desktop: {
@@ -27,7 +18,14 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function AttendanceChart() {
+interface IAttendanceChartProps {
+  talentId: string;
+}
+
+export default function AttendanceChart({ talentId }: IAttendanceChartProps) {
+  // variables
+  const { data } = useAttendance(talentId);
+
   return (
     <div className="border rounded-xl p-4 space-y-2">
       <div className="flex flex-col md:flex-row justify-between md:items-center gap-2">
@@ -35,7 +33,9 @@ export default function AttendanceChart() {
         <DatePickerWithRange className="w-full md:w-auto" />
       </div>
       <ChartContainer config={chartConfig} className="mx-auto max-h-[250px]">
-        <RadarChart data={chartData}>
+        <RadarChart
+          data={Array.isArray(data?.data?.graph) ? data?.data?.graph : []}
+        >
           <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
           <PolarAngleAxis dataKey="type" />
           <PolarGrid />

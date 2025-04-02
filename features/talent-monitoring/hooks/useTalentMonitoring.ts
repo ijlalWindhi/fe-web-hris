@@ -4,6 +4,7 @@ import {
   getTalentInformation,
   getTalentMapping,
   getContract,
+  getAttendance,
 } from "@/services/talent-monitoring";
 import { TSearchParams } from "@/types";
 
@@ -32,5 +33,16 @@ export function useContract(id: string) {
   return useQuery({
     queryKey: ["contract", id],
     queryFn: () => getContract(id),
+  });
+}
+
+export function useAttendance(
+  id: string,
+  start_date?: string,
+  end_date?: string,
+) {
+  return useQuery({
+    queryKey: ["attendance", id],
+    queryFn: () => getAttendance(id, start_date, end_date),
   });
 }
