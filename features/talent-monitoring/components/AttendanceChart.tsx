@@ -1,5 +1,7 @@
 import React from "react";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
+import { UseFormReturn } from "react-hook-form";
+import { z } from "zod";
 
 import {
   ChartConfig,
@@ -8,8 +10,11 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { DatePickerWithRange } from "@/components/common/input-date-picker-range";
+import { InputField } from "@/components/common/input-field";
 
 import { useAttendance } from "../hooks/useTalentMonitoring";
+import { SearchSchema } from "../schemas/talent-monitoring.schema";
+import { IParamsSearch } from "@/types";
 
 const chartConfig = {
   desktop: {
@@ -19,18 +24,43 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 interface IAttendanceChartProps {
-  talentId: string;
+  form: UseFormReturn<z.infer<typeof SearchSchema>>;
+  params: IParamsSearch;
+  sharedDateRange: { start?: Date; end?: Date };
+  onDateRangeChange: (value: { start?: Date; end?: Date }) => void;
 }
 
-export default function AttendanceChart({ talentId }: IAttendanceChartProps) {
+export default function AttendanceChart({
+  form,
+  params,
+  sharedDateRange,
+  onDateRangeChange,
+}: IAttendanceChartProps) {
   // variables
-  const { data } = useAttendance(talentId);
+  const { data } = useAttendance(params);
+
+  // functions
+  const handleDateChange = (value: { start?: Date; end?: Date }) => {
+    onDateRangeChange(value);
+  };
 
   return (
     <div className="border rounded-xl p-4 space-y-2">
       <div className="flex flex-col md:flex-row justify-between md:items-center gap-2">
         <h2 className="md:text-lg font-semibold">Attendance Graph</h2>
-        <DatePickerWithRange className="w-full md:w-auto" />
+        <InputField
+          name="search"
+          control={form.control}
+          render={({ field }) => (
+            <DatePickerWithRange
+              name="search"
+              control={form.control}
+              value={sharedDateRange}
+              onChange={handleDateChange}
+              placeholder="Select date range"
+            />
+          )}
+        />
       </div>
       <ChartContainer config={chartConfig} className="mx-auto max-h-[250px]">
         <RadarChart

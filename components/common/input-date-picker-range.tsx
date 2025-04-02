@@ -40,7 +40,7 @@ export function DatePickerWithRange({
     control,
   });
 
-  // Convert value format for compatibility
+  // Gunakan state lokal untuk menampilkan UI
   const [date, setDate] = React.useState<DateRange | undefined>(
     fieldValue
       ? {
@@ -50,20 +50,15 @@ export function DatePickerWithRange({
       : undefined,
   );
 
-  // Effect to sync the initial value from form if provided
+  // Effect untuk sinkronisasi nilai awal dari form, HANYA SEKALI
   React.useEffect(() => {
-    if (value) {
+    if (value && !date) {
       setDate({
         from: value.start,
         to: value.end,
       });
-
-      fieldOnChange({
-        start: value.start,
-        end: value.end,
-      });
     }
-  }, [value, fieldOnChange]);
+  }, []); // Dependensi kosong agar hanya berjalan sekali
 
   // Handle date change
   const handleDateChange = React.useCallback(

@@ -1,12 +1,16 @@
 import React from "react";
+import { UseFormReturn } from "react-hook-form";
+import { z } from "zod";
 
 import { ITableHeader } from "@/components/ui/table";
 import { Table } from "@/components/common/table";
 import { Badge } from "@/components/ui/badge";
 import { DatePickerWithRange } from "@/components/common/input-date-picker-range";
+import { InputField } from "@/components/common/input-field";
 
-import { IAttendanceHistoryTalentMonitoring } from "@/types";
+import { IAttendanceHistoryTalentMonitoring, IParamsSearch } from "@/types";
 import { useAttendance } from "../hooks/useTalentMonitoring";
+import { SearchSchema } from "../schemas/talent-monitoring.schema";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -32,14 +36,26 @@ const TableHeader: ITableHeader[] = [
 ];
 
 interface IAttendanceHistoryProps {
-  talentId: string;
+  form: UseFormReturn<z.infer<typeof SearchSchema>>;
+  params: IParamsSearch;
+  sharedDateRange: { start?: Date; end?: Date };
+  onDateRangeChange: (value: { start?: Date; end?: Date }) => void;
 }
 
 export default function AttendanceHistory({
-  talentId,
+  form,
+  params,
+  sharedDateRange,
+  onDateRangeChange,
 }: IAttendanceHistoryProps) {
   // variables
-  const { data } = useAttendance(talentId);
+  const { data } = useAttendance(params);
+
+  // functions
+  const handleDateChange = (value: { start?: Date; end?: Date }) => {
+    onDateRangeChange(value);
+  };
+
   return (
     <div className="border rounded-xl p-4 space-y-2">
       <div className="flex flex-col md:flex-row justify-between md:items-center gap-2">
@@ -50,7 +66,19 @@ export default function AttendanceHistory({
             {data?.data?.attendance?.[0]?.total_workdays ?? 0} Working Days
           </Badge>
         </div>
-        <DatePickerWithRange className="w-full md:w-auto" />
+        <InputField
+          name="search"
+          control={form.control}
+          render={({ field }) => (
+            <DatePickerWithRange
+              name="search"
+              control={form.control}
+              value={sharedDateRange}
+              onChange={handleDateChange}
+              placeholder="Select date range"
+            />
+          )}
+        />
       </div>
       <Table<IAttendanceHistoryTalentMonitoring>
         header={TableHeader}

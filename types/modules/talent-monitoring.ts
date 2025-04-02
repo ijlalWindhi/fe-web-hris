@@ -139,3 +139,9 @@ export interface IAttendanceHistoryTalentMonitoring {
   clock_in: string;
   clock_out: string;
 }
+
+export interface IParamsSearch {
+  talent_id: string;
+  start_date?: string;
+  end_date?: string;
+}

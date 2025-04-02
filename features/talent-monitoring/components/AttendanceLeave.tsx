@@ -1,14 +1,18 @@
 import React from "react";
 import { Download } from "lucide-react";
+import { UseFormReturn } from "react-hook-form";
+import { z } from "zod";
 
 import { ITableHeader, TableCell } from "@/components/ui/table";
 import { Table } from "@/components/common/table";
 import { Badge } from "@/components/ui/badge";
 import { DatePickerWithRange } from "@/components/common/input-date-picker-range";
+import { InputField } from "@/components/common/input-field";
 
-import { ILeaveSubmissionTalentMonitoring } from "@/types";
+import { ILeaveSubmissionTalentMonitoring, IParamsSearch } from "@/types";
 import { useAttendance } from "../hooks/useTalentMonitoring";
 import { truncateText } from "@/utils/truncate";
+import { SearchSchema } from "../schemas/talent-monitoring.schema";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -39,12 +43,25 @@ const TableHeader: ITableHeader[] = [
 ];
 
 interface IAttendanceLeaveProps {
-  talentId: string;
+  form: UseFormReturn<z.infer<typeof SearchSchema>>;
+  params: IParamsSearch;
+  sharedDateRange: { start?: Date; end?: Date };
+  onDateRangeChange: (value: { start?: Date; end?: Date }) => void;
 }
 
-export default function AttendanceLeave({ talentId }: IAttendanceLeaveProps) {
+export default function AttendanceLeave({
+  form,
+  params,
+  sharedDateRange,
+  onDateRangeChange,
+}: IAttendanceLeaveProps) {
   // variables
-  const { data } = useAttendance(talentId);
+  const { data } = useAttendance(params);
+
+  // functions
+  const handleDateChange = (value: { start?: Date; end?: Date }) => {
+    onDateRangeChange(value);
+  };
 
   return (
     <div className="border rounded-xl p-4 space-y-2">
@@ -53,11 +70,23 @@ export default function AttendanceLeave({ talentId }: IAttendanceLeaveProps) {
           <h2 className="md:text-lg font-semibold">Leave Submission</h2>
           <Badge variant={"outline"}>
             <span className="text-primary mr-1">•</span> Total{" "}
-            {data?.data?.leave_submission?.[0]?.total_pending} pending leave
-            request
+            {data?.data?.leave_submission?.[0]?.total_pending ?? 0} pending
+            leave request
           </Badge>
         </div>
-        <DatePickerWithRange className="w-full md:w-auto" />
+        <InputField
+          name="search"
+          control={form.control}
+          render={({ field }) => (
+            <DatePickerWithRange
+              name="search"
+              control={form.control}
+              value={sharedDateRange}
+              onChange={handleDateChange}
+              placeholder="Select date range"
+            />
+          )}
+        />
       </div>
       <Table<ILeaveSubmissionTalentMonitoring>
         header={TableHeader}

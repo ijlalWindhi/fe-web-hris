@@ -8,6 +8,7 @@ import {
   IResponseAttendance,
   IResponseTimesheet,
   TSearchParams,
+  IParamsSearch,
 } from "@/types";
 
 export async function getListTalentMonitor(
@@ -68,14 +69,14 @@ export async function getContract(
   }
 }
 
-export async function getAttendance(
-  id: string,
-  start_date?: string,
-  end_date?: string,
-): Promise<IResponse<IResponseAttendance>> {
+export async function getAttendance({
+  talent_id,
+  start_date,
+  end_date,
+}: IParamsSearch): Promise<IResponse<IResponseAttendance>> {
   try {
     const response = await axios.get<IResponse<IResponseAttendance>>(
-      `/talent-monitor/attendance/${id}`,
+      `/talent-monitor/attendance/${talent_id}`,
       {
         params: {
           start_date,
@@ -90,14 +91,14 @@ export async function getAttendance(
   }
 }
 
-export async function getTimesheet(
-  id: string,
-  start_date?: string,
-  end_date?: string,
-): Promise<IResponse<IResponseTimesheet>> {
+export async function getTimesheet({
+  talent_id,
+  start_date,
+  end_date,
+}: IParamsSearch): Promise<IResponse<IResponseTimesheet>> {
   try {
     const response = await axios.get<IResponse<IResponseTimesheet>>(
-      `/talent-monitor/timesheet/${id}`,
+      `/talent-monitor/timesheet/${talent_id}`,
       {
         params: {
           start_date,
