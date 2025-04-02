@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 
 import { Form } from "@/components/ui/form";
 import AttendanceChart from "./AttendanceChart";
@@ -46,10 +47,10 @@ export default function TalentAttendance({ talentId }: ITalentAttendanceProps) {
       setParams({
         ...params,
         start_date: data?.search?.start
-          ? data?.search?.start?.toISOString()?.split("T")[0]
+          ? format(data?.search?.start, "yyyy-MM-dd")
           : undefined,
         end_date: data?.search?.end
-          ? data?.search?.end?.toISOString()?.split("T")[0]
+          ? format(data?.search?.end, "yyyy-MM-dd")
           : undefined,
       });
     } catch (error) {
@@ -63,8 +64,10 @@ export default function TalentAttendance({ talentId }: ITalentAttendanceProps) {
     if (value?.start || value?.end) {
       setParams({
         ...params,
-        start_date: value?.start?.toISOString()?.split("T")?.[0],
-        end_date: value?.end?.toISOString()?.split("T")?.[0],
+        start_date: value?.start
+          ? format(value.start, "yyyy-MM-dd")
+          : undefined,
+        end_date: value?.end ? format(value.end, "yyyy-MM-dd") : undefined,
       });
     }
   };
@@ -79,8 +82,12 @@ export default function TalentAttendance({ talentId }: ITalentAttendanceProps) {
 
       setParams({
         ...params,
-        start_date: searchValue?.start?.toISOString()?.split("T")?.[0],
-        end_date: searchValue?.end?.toISOString()?.split("T")?.[0],
+        start_date: searchValue?.start
+          ? format(searchValue.start, "yyyy-MM-dd")
+          : undefined,
+        end_date: searchValue?.end
+          ? format(searchValue.end, "yyyy-MM-dd")
+          : undefined,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
