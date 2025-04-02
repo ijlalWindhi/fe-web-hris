@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import * as React from "react";
@@ -12,28 +13,91 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useController, Control } from "react-hook-form";
+import { z } from "zod";
 
 interface DatePickerWithRangeProps {
   className?: string;
+  name: string;
+  control: Control<z.infer<any>> | undefined;
+  onChange?: (value: { start?: Date; end?: Date }) => void;
+  value?: { start?: Date; end?: Date };
+  placeholder?: string;
 }
 
 export function DatePickerWithRange({
   className,
+  name,
+  control,
+  onChange,
+  value,
+  placeholder = "Pick a date",
 }: Readonly<DatePickerWithRangeProps>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2024, 11, 27),
-    to: new Date(2025, 0, 1),
+  const {
+    field: { value: fieldValue, onChange: fieldOnChange },
+  } = useController({
+    name,
+    control,
   });
+
+  // Convert value format for compatibility
+  const [date, setDate] = React.useState<DateRange | undefined>(
+    fieldValue
+      ? {
+          from: fieldValue.start,
+          to: fieldValue.end,
+        }
+      : undefined,
+  );
+
+  // Effect to sync the initial value from form if provided
+  React.useEffect(() => {
+    if (value) {
+      setDate({
+        from: value.start,
+        to: value.end,
+      });
+
+      fieldOnChange({
+        start: value.start,
+        end: value.end,
+      });
+    }
+  }, [value, fieldOnChange]);
+
+  // Handle date change
+  const handleDateChange = React.useCallback(
+    (selectedDate: DateRange | undefined) => {
+      setDate(selectedDate);
+
+      // Convert to { start, end } format for form integration
+      const newValue = selectedDate
+        ? {
+            start: selectedDate.from,
+            end: selectedDate.to,
+          }
+        : { start: undefined, end: undefined };
+
+      // Update form value
+      fieldOnChange(newValue);
+
+      // Call external onChange if provided
+      if (onChange) {
+        onChange(newValue);
+      }
+    },
+    [fieldOnChange, onChange],
+  );
 
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            id="date"
+            id={name}
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-start text-left font-normal text-black",
+              "w-full justify-start text-left font-normal text-black",
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4 text-primary" />
@@ -47,7 +111,7 @@ export function DatePickerWithRange({
                 format(date.from, "dd MMMM yyyy")
               )
             ) : (
-              <span>Pick a date</span>
+              <span>{placeholder}</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -57,7 +121,7 @@ export function DatePickerWithRange({
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={handleDateChange}
             numberOfMonths={2}
           />
         </PopoverContent>
