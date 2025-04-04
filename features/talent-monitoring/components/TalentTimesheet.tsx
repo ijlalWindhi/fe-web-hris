@@ -76,7 +76,6 @@ export default function TalentTimesheet({ talentId }: ITalentTimesheetProps) {
   // lifecycle
   useEffect(() => {
     if (searchValue && (searchValue?.start || searchValue?.end)) {
-      console.log("searchValue", searchValue);
       setParams({
         ...params,
         start_date: searchValue?.start
