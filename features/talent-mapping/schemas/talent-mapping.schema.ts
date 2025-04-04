@@ -28,3 +28,15 @@ export const CreateTalentMappingSchema = z.object({
   outlet_lat: z.string().optional().nullable(),
   outlet_long: z.string().optional().nullable(),
 });
+
+export const WorkingArrangementSchema = z.object({
+  total_working_days: z.number().optional().nullable(),
+  working_arrangements: z.array(
+    z.object({
+      shift_id: z.string().optional().nullable(),
+      day: z.string().nonempty("Day is required"),
+      start_time: z.string().nonempty("Start Time is required"),
+      end_time: z.string().nonempty("End Time is required"),
+    }),
+  ),
+});
