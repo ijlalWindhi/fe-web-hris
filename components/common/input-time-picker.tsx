@@ -145,7 +145,7 @@ const TimeInput = forwardRef<HTMLInputElement, ITimeInputProps>(
               type="text"
               value={value}
               onChange={handleManualInput}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full px-3 py-2 border rounded-full focus:outline-none focus:ring-1 focus:ring-primary"
               ref={ref}
               {...props}
             />
