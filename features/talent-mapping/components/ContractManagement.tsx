@@ -121,6 +121,7 @@ function ContractManagement({
         <TableCell<IResponseHistoryTalentMapping> name="action">
           {({ row }) => (
             <Button
+              type="button"
               size={"icon"}
               variant="outline"
               onClick={() => handleDownload(row.file)}
