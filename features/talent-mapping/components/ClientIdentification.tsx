@@ -9,10 +9,6 @@ import { Input } from "@/components/ui/input";
 import InputCombobox from "@/components/common/input-combobox";
 
 import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
-import {
-  useOptionMasterClient,
-  useOptionOutlet,
-} from "@/features/master-client/hooks/useMasterClient";
 import useTalentMapping from "@/stores/talent-mapping";
 
 type TClientIdentificationProps = {
