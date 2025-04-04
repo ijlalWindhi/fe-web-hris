@@ -14,6 +14,7 @@ import ClientIdentification from "./ClientIdentification";
 import WorkingArrangement from "./WorkingArrangement";
 
 import useTalentMapping from "@/stores/talent-mapping";
+import useTheme from "@/stores/theme";
 import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
 import {
   useDetailTalentMapping,
@@ -23,10 +24,12 @@ import {
 import { formatDate } from "@/utils/format-date";
 import { uploadFile } from "@/services/file";
 import { TPayloadTalentMapping } from "@/types";
+import { fieldToTabMapping } from "@/constants/talent-mapping";
 
 export default function ModalTalent() {
   // variables
   const [file, setFile] = useState<File | null>(null);
+  const [activeTab, setActiveTab] = useState("personal_information");
   const {
     modalTalentMapping,
     selectedData,
@@ -35,6 +38,7 @@ export default function ModalTalent() {
     fetchOptionsClient,
     fetchOptionsOutlet,
   } = useTalentMapping();
+  const { setModalSuccess } = useTheme();
   const form = useForm<z.infer<typeof CreateTalentMappingSchema>>({
     resolver: zodResolver(CreateTalentMappingSchema),
     defaultValues: {
@@ -60,6 +64,19 @@ export default function ModalTalent() {
     toggleModalTalentMapping(false);
     form.reset();
     setFile(null);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const findTabWithError = (errors: any): string => {
+    const errorFields = Object.keys(errors);
+    for (const field of errorFields) {
+      const correspondingTab = fieldToTabMapping[field];
+      if (correspondingTab) {
+        return correspondingTab;
+      }
+    }
+
+    return "personal_information";
   };
 
   const onSubmit = async (
@@ -88,12 +105,39 @@ export default function ModalTalent() {
         payload.photo = selectedData?.photo ?? "";
       }
       if (selectedData) {
-        await updateTalentMapping.mutateAsync({
+        const res = await updateTalentMapping.mutateAsync({
           id: selectedData.talend_id,
           data: payload,
         });
+        if (res.status === "success") {
+          setModalSuccess({
+            open: true,
+            title: "TAD Successfully Updated",
+            message:
+              "The TAD's information has been updated and saved successfully.",
+            actionVariant: "default",
+            actionMessage: "Back",
+            action: () => {
+              handleClose();
+            },
+            animation: "success",
+          });
+        }
       } else {
-        await createTalentMapping.mutateAsync(payload);
+        const res = await createTalentMapping.mutateAsync(payload);
+        if (res.status === "success") {
+          setModalSuccess({
+            open: true,
+            title: "TAD Successfully Registered!",
+            message: "The TAD's information has been added to the system. ",
+            actionVariant: "default",
+            actionMessage: "Back",
+            action: () => {
+              handleClose();
+            },
+            animation: "success",
+          });
+        }
       }
       toggleModalTalentMapping(false);
     } catch (error) {
@@ -183,6 +227,20 @@ export default function ModalTalent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalTalentMapping]);
 
+  useEffect(() => {
+    const subscription = form.formState.isSubmitSuccessful
+      ? undefined
+      : form.watch(() => {
+          const errors = form.formState.errors;
+          if (Object.keys(errors).length > 0) {
+            const tabWithError = findTabWithError(errors);
+            setActiveTab(tabWithError);
+          }
+        });
+
+    return () => subscription?.unsubscribe();
+  }, [form, form.formState, form.watch]);
+
   return (
     <DialogAction
       isOpen={modalTalentMapping}
@@ -191,14 +249,24 @@ export default function ModalTalent() {
       className="max-w-full md:max-w-2xl"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="pt-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit, (errors) => {
+            const tabWithError = findTabWithError(errors);
+            setActiveTab(tabWithError);
+          })}
+          className="pt-6"
+        >
           <InputProfile
             width="w-16 md:w-20"
             height="h-16 md:h-20"
             onFileChange={(file) => setFile(file)}
             defaultImage={selectedData?.photo}
           />
-          <Tabs defaultValue="personal_information" className="min-w-full mt-2">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="min-w-full mt-2"
+          >
             <TabsList className="w-full">
               <TabsTrigger value="personal_information">
                 Personal Information

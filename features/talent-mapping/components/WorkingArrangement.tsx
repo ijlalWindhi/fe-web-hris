@@ -53,13 +53,16 @@ export default function WorkingArrangement() {
         <h2 className="font-medium text-sm">
           Workdays : {data?.data?.workdays ?? 0}
         </h2>
-        <Button
-          size="sm"
-          onClick={() => toggleModalDetailWorkingArrangement(true)}
-        >
-          <Info size={16} />
-          Detail
-        </Button>
+        {selectedData && (
+          <Button
+            size="sm"
+            onClick={() => toggleModalDetailWorkingArrangement(true)}
+            type="button"
+          >
+            <Info size={16} />
+            Detail
+          </Button>
+        )}
       </div>
       <Table<TShift>
         header={TableHeader}
