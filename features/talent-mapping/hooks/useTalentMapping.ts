@@ -4,11 +4,16 @@ import {
   getDetailTalentMapping,
   getViewTalentMapping,
   getHistoryTalentMapping,
+  getShiftCalender,
   createTalentMapping,
   updateTalentMapping,
   deleteTalentMapping,
 } from "@/services/talent-mapping";
-import { TSearchParams, TPayloadTalentMapping } from "@/types";
+import {
+  TSearchParams,
+  TPayloadTalentMapping,
+  TParamsShiftCalender,
+} from "@/types";
 
 export function useTalentMappingList(params: TSearchParams) {
   return useQuery({
@@ -68,6 +73,14 @@ export function useHistoryTalentMapping(id: string) {
   return useQuery({
     queryKey: ["historyTalentMapping", id],
     queryFn: () => getHistoryTalentMapping(id),
+    enabled: false,
+  });
+}
+
+export function useShiftCalender(params: TParamsShiftCalender) {
+  return useQuery({
+    queryKey: ["shiftCalender", params],
+    queryFn: () => getShiftCalender(params),
     enabled: false,
   });
 }

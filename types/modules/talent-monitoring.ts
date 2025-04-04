@@ -145,3 +145,23 @@ export interface IParamsSearch {
   start_date?: string;
   end_date?: string;
 }
+
+export interface IResponseShiftCalender {
+  id: number;
+  emp_id: string;
+  emp_name: string;
+  client_id: number;
+  outlet_id: number;
+  day: string;
+  time_start: string;
+  time_end: string;
+  workdays: number;
+  created_at: string;
+}
+
+export type TParamsShiftCalender = {
+  client_id: string;
+  outlet_id: string;
+  start_date: string;
+  end_date: string;
+};

@@ -6,6 +6,8 @@ import {
   IResponseDetailTalentMapping,
   IResponseViewTalentMapping,
   IResponseHistoryTalentMapping,
+  IResponseShiftCalender,
+  TParamsShiftCalender,
   TSearchParams,
 } from "@/types";
 
@@ -106,6 +108,23 @@ export async function getHistoryTalentMapping(
     return response.data;
   } catch (error) {
     console.error("Error from service getHistoryTalentMapping: ", error);
+    throw error;
+  }
+}
+
+export async function getShiftCalender(
+  params: TParamsShiftCalender,
+): Promise<IResponse<IResponseShiftCalender[]>> {
+  try {
+    const response = await axios.get<IResponse<IResponseShiftCalender[]>>(
+      "/talent-mapping/shift-calender",
+      {
+        params,
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getShiftCalender: ", error);
     throw error;
   }
 }

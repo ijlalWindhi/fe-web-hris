@@ -42,3 +42,10 @@ export const WorkingArrangementSchema = z.object({
     }),
   ),
 });
+
+export const SearchWorkingArrangementSchema = z.object({
+  client_id: z.string().nonempty(),
+  outlet_id: z.string().nonempty(),
+  start_date: z.string().nonempty(),
+  end_date: z.string().nonempty(),
+});
