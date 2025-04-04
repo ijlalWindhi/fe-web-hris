@@ -16,6 +16,7 @@ import ContractManagement from "./ContractManagement";
 
 import useTalentMapping from "@/stores/talent-mapping";
 import useTheme from "@/stores/theme";
+import useAuth from "@/stores/auth";
 import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
 import {
   useDetailTalentMapping,
@@ -42,6 +43,7 @@ export default function ModalTalent() {
     fetchOptionsOutlet,
   } = useTalentMapping();
   const { setModalSuccess } = useTheme();
+  const { profile } = useAuth();
   const form = useForm<z.infer<typeof CreateTalentMappingSchema>>({
     resolver: zodResolver(CreateTalentMappingSchema),
     defaultValues: {
@@ -72,6 +74,8 @@ export default function ModalTalent() {
     toggleModalTalentMapping(false);
     form.reset();
     setFile(null);
+    setFileContract(null);
+    setActiveTab("personal_information");
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -334,10 +338,16 @@ export default function ModalTalent() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="personal_information">
-              <PersonalInformation form={form} />
+              <PersonalInformation
+                form={form}
+                mode={profile?.role?.id === 2 ? "view" : "create"}
+              />
             </TabsContent>
             <TabsContent value="client_identification">
-              <ClientIdentification form={form} />
+              <ClientIdentification
+                form={form}
+                mode={profile?.role?.id === 2 ? "view" : "create"}
+              />
             </TabsContent>
             <TabsContent value="working_arrangement">
               <WorkingArrangement />

@@ -10,10 +10,12 @@ import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
 
 type TPersonalInformationProps = {
   form: UseFormReturn<z.infer<typeof CreateTalentMappingSchema>>;
+  mode: string;
 };
 
 export default function PersonalInformation({
   form,
+  mode,
 }: Readonly<TPersonalInformationProps>) {
   return (
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
@@ -31,7 +33,13 @@ export default function PersonalInformation({
         label="TAD Name"
         primary
         control={form.control}
-        render={({ field }) => <Input placeholder="e.g Dhisa" {...field} />}
+        render={({ field }) => (
+          <Input
+            placeholder="e.g Dhisa"
+            {...field}
+            disabled={mode === "view"}
+          />
+        )}
       />
       <InputField
         name="dob"
@@ -44,6 +52,7 @@ export default function PersonalInformation({
             value={field.value}
             onChange={field.onChange}
             onBlur={field.onBlur}
+            disabled={mode === "view"}
           />
         )}
       />
@@ -53,7 +62,11 @@ export default function PersonalInformation({
         primary
         control={form.control}
         render={({ field }) => (
-          <Input placeholder="e.g. 1234567890" {...field} />
+          <Input
+            placeholder="e.g. 1234567890"
+            {...field}
+            disabled={mode === "view"}
+          />
         )}
       />
       <InputField
@@ -66,6 +79,7 @@ export default function PersonalInformation({
             type="email"
             placeholder="e.g. dhisa@dhisapro.com"
             {...field}
+            disabled={mode === "view"}
           />
         )}
       />
@@ -75,7 +89,12 @@ export default function PersonalInformation({
         primary
         control={form.control}
         render={({ field }) => (
-          <Input type="tel" placeholder="e.g. 081234567890" {...field} />
+          <Input
+            type="tel"
+            placeholder="e.g. 081234567890"
+            {...field}
+            disabled={mode === "view"}
+          />
         )}
       />
       <InputField
@@ -84,7 +103,11 @@ export default function PersonalInformation({
         primary
         control={form.control}
         render={({ field }) => (
-          <Input placeholder="e.g. Jl. Raya Bogor" {...field} />
+          <Input
+            placeholder="e.g. Jl. Raya Bogor"
+            {...field}
+            disabled={mode === "view"}
+          />
         )}
       />
     </div>

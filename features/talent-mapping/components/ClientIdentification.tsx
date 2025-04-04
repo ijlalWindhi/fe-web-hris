@@ -13,10 +13,12 @@ import useTalentMapping from "@/stores/talent-mapping";
 
 type TClientIdentificationProps = {
   form: UseFormReturn<z.infer<typeof CreateTalentMappingSchema>>;
+  mode: string;
 };
 
 export default function ClientIdentification({
   form,
+  mode,
 }: Readonly<TClientIdentificationProps>) {
   // variables
   const { optionsClient, optionsOutlet, fetchOptionsOutlet } =
@@ -61,6 +63,7 @@ export default function ClientIdentification({
             }
             placeholder="Select client name"
             onChange={(value) => handleClientChange(value)}
+            disabled={mode === "view"}
           />
         )}
       />
@@ -98,7 +101,7 @@ export default function ClientIdentification({
             }
             placeholder="Select outlet"
             onChange={(value) => handleOutletChange(value)}
-            disabled={form.watch("client_id") === ""}
+            disabled={form.watch("client_id") === "" || mode === "view"}
           />
         )}
       />
