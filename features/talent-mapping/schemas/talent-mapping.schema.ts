@@ -27,6 +27,8 @@ export const CreateTalentMappingSchema = z.object({
   outlet_address: z.string().optional().nullable(),
   outlet_lat: z.string().optional().nullable(),
   outlet_long: z.string().optional().nullable(),
+  contract_start_date: z.string().nonempty("Contract Start Date is required"),
+  contract_end_date: z.string().nonempty("Contract End Date is required"),
 });
 
 export const WorkingArrangementSchema = z.object({

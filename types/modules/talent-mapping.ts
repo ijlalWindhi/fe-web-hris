@@ -50,6 +50,11 @@ export interface IResponseDetailTalentMapping {
   };
   workdays: string;
   shift: TShift[];
+  contract: {
+    start_date: string;
+    end_date: string;
+    file: string;
+  };
 }
 
 export interface IResponseViewTalentMapping {
@@ -119,4 +124,9 @@ export interface TPayloadTalentMapping {
     end_time: string;
   }[];
   workdays?: number;
+  contract?: {
+    start_date: string;
+    end_date: string;
+    file?: string;
+  };
 }
