@@ -41,7 +41,7 @@ export default function DetailTalent() {
     >
       <SheetContent className="!min-w-[100vw] md:!min-w-[60vw] lg:!min-w-[40vw] overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>View Talent</SheetTitle>
+          <SheetTitle>View TAD</SheetTitle>
           <HeaderDetailTalent />
         </SheetHeader>
         <Tabs defaultValue="personal_information" className="min-w-full mt-2">

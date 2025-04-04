@@ -245,7 +245,7 @@ export default function ModalTalent() {
     <DialogAction
       isOpen={modalTalentMapping}
       onClose={handleClose}
-      title={`${selectedData ? "Edit" : "Register"} Talent`}
+      title={`${selectedData ? "Edit" : "Register"} TAD`}
       className="max-w-full md:max-w-2xl"
     >
       <Form {...form}>

@@ -1,5 +1,5 @@
 import React from "react";
-import { EllipsisVertical, Download, Info, Pencil, Trash } from "lucide-react";
+import { EllipsisVertical, Info, Pencil, Trash } from "lucide-react";
 
 import { ITableHeader, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,7 @@ import {
 const TableHeader: ITableHeader[] = [
   {
     key: "talend_id",
-    title: "Talent ID",
+    title: "TAD ID",
     className: "min-w-[6rem]",
   },
   {
@@ -100,25 +100,6 @@ export default function List({ queryParams }: Readonly<IListProps>) {
     }
   };
 
-  const handleDownload = (id: string) => {
-    try {
-      setModalSuccess({
-        open: true,
-        title: "Download Successful!",
-        message:
-          "The talent data has been downloaded successfully. You can now review it on your device.",
-        actionMessage: "Close",
-        actionVariant: "outline",
-        animation: "success",
-        action: () => {
-          console.log("Download talent with ID: ", id);
-        },
-      });
-    } catch (error) {
-      console.error("Error from handleDownload: ", error);
-    }
-  };
-
   return (
     <Table<IResponseListTalentMapping>
       header={TableHeader}
@@ -176,10 +157,6 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                 <DropdownMenuItem onClick={() => handleDelete(row.talend_id)}>
                   <Trash className="h-5 w-5" />
                   Delete
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDownload(row.talend_id)}>
-                  <Download className="h-5 w-5" />
-                  Download
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

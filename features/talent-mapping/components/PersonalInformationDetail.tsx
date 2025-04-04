@@ -12,11 +12,8 @@ export default function PersonalInformationDetail() {
 
   return (
     <dl className="divide-y">
-      <DataRow
-        label="Talent ID"
-        value={data?.data?.personal?.talent_id ?? "-"}
-      />
-      <DataRow label="Talent Name" value={data?.data?.personal?.name ?? "-"} />
+      <DataRow label="TAD ID" value={data?.data?.personal?.talent_id ?? "-"} />
+      <DataRow label="TAD Name" value={data?.data?.personal?.name ?? "-"} />
       <DataRow label="Date of Birth" value={data?.data?.personal?.dob ?? "-"} />
       <DataRow label="ID Number" value={data?.data?.personal?.nik ?? "-"} />
       <DataRow

@@ -23,7 +23,7 @@ export default function HeaderDetailTalent() {
     try {
       setModalDelete({
         open: true,
-        type: "talent",
+        type: "TAD",
         action: () => {
           deleteTalentMapping.mutate(selectedData?.talend_id ?? "");
           toggleModalDetailTalentMapping(false);
@@ -40,7 +40,7 @@ export default function HeaderDetailTalent() {
         open: true,
         title: "Download Successful!",
         message:
-          "The talent data has been downloaded successfully. You can now review it on your device.",
+          "The TAD data has been downloaded successfully. You can now review it on your device.",
         actionMessage: "Close",
         actionVariant: "outline",
         animation: "success",

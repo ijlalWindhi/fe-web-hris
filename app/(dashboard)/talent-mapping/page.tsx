@@ -6,8 +6,8 @@ import TalentMapping from "@/features/talent-mapping";
 import { METADATA } from "@/constants/metadata";
 
 export const metadata: Metadata = {
-  title: `Talent Mapping ${METADATA.exTitle}`,
-  description: `Talent Mapping page to show all the data`,
+  title: `TAD Mapping ${METADATA.exTitle}`,
+  description: `TAD Mapping page to show all the data`,
   alternates: {
     canonical: `${process.env.DOMAIN}/talent-mapping`,
   },

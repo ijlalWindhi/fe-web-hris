@@ -19,16 +19,16 @@ export default function PersonalInformation({
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
       <InputField
         name="talent_id"
-        label="Talent ID"
+        label="TAD ID"
         primary
         control={form.control}
         render={({ field }) => (
-          <Input disabled placeholder="Talent ID" {...field} />
+          <Input disabled placeholder="TAD ID" {...field} />
         )}
       />
       <InputField
         name="name"
-        label="Talent Name"
+        label="TAD Name"
         primary
         control={form.control}
         render={({ field }) => <Input placeholder="e.g Dhisa" {...field} />}
