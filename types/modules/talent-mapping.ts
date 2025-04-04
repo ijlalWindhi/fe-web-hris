@@ -103,15 +103,15 @@ export interface TShift {
 }
 
 export interface TPayloadTalentMapping {
-  photo: string;
-  name: string;
-  dob: string;
-  nik: string;
-  email: string;
-  phone: string;
-  address: string;
-  client_id: number;
-  outlet_id: number;
+  photo?: string;
+  name?: string;
+  dob?: string;
+  nik?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  client_id?: number;
+  outlet_id?: number;
   shift?: {
     day: string;
     start_time: string;
