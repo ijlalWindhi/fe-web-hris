@@ -28,6 +28,7 @@ interface DatePickerProps {
   minDate?: Date;
   maxDate?: Date;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
@@ -40,6 +41,7 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
       minDate,
       maxDate,
       placeholder = "Pick a date",
+      disabled = false,
     },
     ref,
   ) => {
@@ -105,6 +107,7 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
                 "w-full text-xs md:text-sm justify-start text-left font-normal !rounded-full",
                 !isDateValid && "text-muted-foreground",
               )}
+              disabled={disabled}
             >
               {isDateValid ? (
                 format(date!, formatValue)
