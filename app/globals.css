@@ -110,3 +110,57 @@ body {
 .hide-scroll::-webkit-scrollbar {
   height: 4px !important;
 }
+
+/* Animations For Sheet Action Component */
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in-from-right {
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+.animate-slide-in-from-left {
+  animation: slideInFromLeft 0.3s ease-out;
+}
+
+.animate-slide-in-from-top {
+  animation: slideInFromTop 0.3s ease-out;
+}
+
+.animate-slide-in-from-bottom {
+  animation: slideInFromBottom 0.3s ease-out;
+}
+/* Animations For Sheet Action Component */
