@@ -79,9 +79,20 @@ export default function List({ queryParams }: Readonly<IListProps>) {
     try {
       setModalDelete({
         open: true,
-        type: "talent",
-        action: () => {
-          deleteTalentMapping.mutate(id);
+        type: "TAD",
+        action: async () => {
+          const res = await deleteTalentMapping.mutateAsync(id);
+          if (res.status === "success") {
+            setModalSuccess({
+              open: true,
+              title: "Data Deleted Successfully!",
+              message: "The TAD data has been removed from the system.",
+              actionMessage: "Back",
+              actionVariant: "outline",
+              animation: "success",
+              action: () => {},
+            });
+          }
         },
       });
     } catch (error) {
