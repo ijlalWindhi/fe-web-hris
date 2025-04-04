@@ -12,6 +12,7 @@ import DialogAction from "@/components/common/dialog-action";
 import PersonalInformation from "./PersonalInformation";
 import ClientIdentification from "./ClientIdentification";
 import WorkingArrangement from "./WorkingArrangement";
+import ContractManagement from "./ContractManagement";
 
 import useTalentMapping from "@/stores/talent-mapping";
 import useTheme from "@/stores/theme";
@@ -20,6 +21,7 @@ import {
   useDetailTalentMapping,
   useCreateTalentMapping,
   useUpdateTalentMapping,
+  useHistoryTalentMapping,
 } from "../hooks/useTalentMapping";
 import { formatDate } from "@/utils/format-date";
 import { uploadFile } from "@/services/file";
@@ -29,6 +31,7 @@ import { fieldToTabMapping } from "@/constants/talent-mapping";
 export default function ModalTalent() {
   // variables
   const [file, setFile] = useState<File | null>(null);
+  const [fileContract, setFileContract] = useState<File | null>(null);
   const [activeTab, setActiveTab] = useState("personal_information");
   const {
     modalTalentMapping,
@@ -50,9 +53,14 @@ export default function ModalTalent() {
       address: "",
       client_id: "",
       outlet_id: "",
+      contract_start_date: "",
+      contract_end_date: "",
     },
   });
   const { data, refetch } = useDetailTalentMapping(
+    selectedData?.talend_id ?? "",
+  );
+  const { refetch: refetchHistory } = useHistoryTalentMapping(
     selectedData?.talend_id ?? "",
   );
   const createTalentMapping = useCreateTalentMapping();
@@ -97,12 +105,37 @@ export default function ModalTalent() {
         address: values.address,
         client_id: Number(values.client_name),
         outlet_id: Number(values.outlet_mapping),
+        contract: {
+          start_date: formatDate({
+            inputDate: values.contract_start_date,
+            formatFrom: "dd MMMM yyyy",
+            formatTo: "dd-MM-yyyy",
+          }),
+          end_date: formatDate({
+            inputDate: values.contract_end_date,
+            formatFrom: "dd MMMM yyyy",
+            formatTo: "dd-MM-yyyy",
+          }),
+          file: "",
+        },
       };
       if (file) {
         const response = await uploadFile(file);
         payload.photo = response;
       } else {
         payload.photo = selectedData?.photo ?? "";
+      }
+      if (fileContract) {
+        const response = await uploadFile(fileContract);
+        if (payload.contract) {
+          payload.contract.file = response;
+        }
+      } else {
+        if (payload.contract) {
+          if (payload.contract) {
+            payload.contract.file = data?.data?.contract?.file ?? "";
+          }
+        }
       }
       if (selectedData) {
         const res = await updateTalentMapping.mutateAsync({
@@ -151,17 +184,33 @@ export default function ModalTalent() {
       form.reset({
         talent_id: initialValue?.talent_id,
         name: initialValue?.name,
-        dob: formatDate({
-          inputDate: initialValue?.dob ?? "",
-          formatFrom: "dd-MM-yyyy",
-          formatTo: "dd MMMM yyyy",
-        }),
+        dob: initialValue?.dob
+          ? formatDate({
+              inputDate: initialValue?.dob ?? "",
+              formatFrom: "dd-MM-yyyy",
+              formatTo: "dd MMMM yyyy",
+            })
+          : undefined,
         nik: initialValue?.nik,
         email: initialValue?.email,
         phone: initialValue?.phone,
         address: initialValue?.address,
         client_id: initialValue?.client?.id,
         outlet_mapping: initialValue?.outlet?.id,
+        contract_start_date: initialValue?.contract?.start_date
+          ? formatDate({
+              inputDate: initialValue?.contract?.start_date ?? "",
+              formatFrom: "dd-MM-yyyy",
+              formatTo: "dd MMMM yyyy",
+            })
+          : undefined,
+        contract_end_date: initialValue?.contract?.end_date
+          ? formatDate({
+              inputDate: initialValue?.contract?.end_date ?? "",
+              formatFrom: "dd-MM-yyyy",
+              formatTo: "dd MMMM yyyy",
+            })
+          : undefined,
       });
       const resClientOptions = await fetchOptionsClient();
       const resOutletOptions = await fetchOptionsOutlet(
@@ -194,6 +243,7 @@ export default function ModalTalent() {
   useEffect(() => {
     if (selectedData?.talend_id) {
       refetch();
+      refetchHistory();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedData, refetch]);
@@ -223,6 +273,8 @@ export default function ModalTalent() {
       form.setValue("outlet_address", "");
       form.setValue("outlet_lat", "");
       form.setValue("outlet_long", "");
+      form.setValue("contract_start_date", "");
+      form.setValue("contract_end_date", "");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalTalentMapping]);
@@ -277,6 +329,9 @@ export default function ModalTalent() {
               <TabsTrigger value="working_arrangement">
                 Working Arrangement
               </TabsTrigger>
+              <TabsTrigger value="contract_management">
+                Contract Management
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="personal_information">
               <PersonalInformation form={form} />
@@ -286,6 +341,12 @@ export default function ModalTalent() {
             </TabsContent>
             <TabsContent value="working_arrangement">
               <WorkingArrangement />
+            </TabsContent>
+            <TabsContent value="contract_management">
+              <ContractManagement
+                form={form}
+                setFileContract={setFileContract}
+              />
             </TabsContent>
           </Tabs>
           <Button type="submit" className="mt-4 w-full">

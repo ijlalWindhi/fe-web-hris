@@ -17,4 +17,8 @@ export const fieldToTabMapping: any = {
   outlet_address: "client_identification",
   outlet_lat: "client_identification",
   outlet_long: "client_identification",
+
+  // Contract Management tab fields
+  contract_start_date: "contract_management",
+  contract_end_date: "contract_management",
 };

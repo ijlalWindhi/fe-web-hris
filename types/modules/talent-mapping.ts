@@ -127,6 +127,6 @@ export interface TPayloadTalentMapping {
   contract?: {
     start_date: string;
     end_date: string;
-    file?: string;
+    file: string;
   };
 }
