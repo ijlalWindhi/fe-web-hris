@@ -7,7 +7,12 @@ import {
   RadialBarChart,
   TooltipProps,
 } from "recharts";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+import { Form } from "@/components/ui/form";
+import { InputField } from "@/components/common/input-field";
 import {
   Card,
   CardContent,
@@ -21,6 +26,8 @@ import {
   ChartContainer,
   ChartTooltip,
 } from "@/components/ui/chart";
+
+import { SearchSchema } from "@/utils/global.schema";
 
 const chartConfig = {
   mapped: {
@@ -57,12 +64,37 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
 };
 
 export default function Talent() {
+  // variables
+  const form = useForm<z.infer<typeof SearchSchema>>({
+    resolver: zodResolver(SearchSchema),
+    defaultValues: {
+      search: {
+        start: undefined,
+        end: undefined,
+      },
+    },
+  });
+
   return (
     <Card>
       <CardHeader className="pb-2 pt-0 md:pb-3">
         <CardTitle>Talent</CardTitle>
         <CardDescription>
-          <DatePickerWithRange />
+          <Form {...form}>
+            <InputField
+              name="search"
+              control={form.control}
+              render={({ field }) => (
+                <DatePickerWithRange
+                  name="search"
+                  control={form.control}
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Select date range"
+                />
+              )}
+            />
+          </Form>
         </CardDescription>
       </CardHeader>
       <CardContent className="pb-0">
