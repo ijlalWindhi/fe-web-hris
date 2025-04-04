@@ -93,7 +93,7 @@ export default function InputFile({
         <div className="flex gap-1 items-center">
           <Link size={18} className="text-primary" />
           <span className="ml-2 text-sm text-gray-500">
-            {selectedFile?.name ?? defaultValue ?? placeholder}
+            {selectedFile?.name || defaultValue || placeholder}
           </span>
         </div>
         <Button
