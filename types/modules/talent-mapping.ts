@@ -113,6 +113,7 @@ export interface TPayloadTalentMapping {
   client_id?: number;
   outlet_id?: number;
   shift?: {
+    shift_id: string;
     day: string;
     start_time: string;
     end_time: string;
