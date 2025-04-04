@@ -14,9 +14,12 @@ import { Button } from "@/components/ui/button";
 import HeaderDetailTalent from "./HeaderDetail";
 import PersonalInformationDetail from "./PersonalInformationDetail";
 import MappingInformationDetail from "./MappingInformationDetail";
+import WorkingArrangementDetail from "./WorkingArrangementDetail";
 
 import useTalentMapping from "@/stores/talent-mapping";
+import useAuth from "@/stores/auth";
 import { useViewTalentMapping } from "../hooks/useTalentMapping";
+import { hasPermission } from "@/utils/get-permission";
 
 export default function DetailTalent() {
   // variables
@@ -26,6 +29,7 @@ export default function DetailTalent() {
     toggleModalDetailTalentMapping,
     toggleModalTalentMapping,
   } = useTalentMapping();
+  const { profile } = useAuth();
   const { refetch } = useViewTalentMapping(selectedData?.talend_id ?? "");
 
   useEffect(() => {
@@ -52,6 +56,11 @@ export default function DetailTalent() {
             <TabsTrigger value="mapping_information">
               Mapping Information
             </TabsTrigger>
+            {profile?.role?.id === 2 && (
+              <TabsTrigger value="working_arrangement">
+                Working Arrangement
+              </TabsTrigger>
+            )}
           </TabsList>
           <TabsContent value="personal_information">
             <PersonalInformationDetail />
@@ -59,18 +68,23 @@ export default function DetailTalent() {
           <TabsContent value="mapping_information">
             <MappingInformationDetail />
           </TabsContent>
+          <TabsContent value="working_arrangement">
+            <WorkingArrangementDetail />
+          </TabsContent>
         </Tabs>
         <SheetFooter>
-          <Button
-            className="w-full"
-            type="submit"
-            onClick={() => {
-              toggleModalTalentMapping(true);
-              toggleModalDetailTalentMapping(false);
-            }}
-          >
-            <Pencil size={16} className="mr-2" /> Edit Data
-          </Button>
+          {hasPermission("Talent Mapping", "edit") && (
+            <Button
+              className="w-full"
+              type="submit"
+              onClick={() => {
+                toggleModalTalentMapping(true);
+                toggleModalDetailTalentMapping(false);
+              }}
+            >
+              <Pencil size={16} className="mr-2" /> Edit Data
+            </Button>
+          )}
         </SheetFooter>
       </SheetContent>
     </Sheet>

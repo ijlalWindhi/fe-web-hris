@@ -19,6 +19,7 @@ import {
   useTalentMappingList,
   useDeleteTalentMapping,
 } from "../hooks/useTalentMapping";
+import { hasPermission } from "@/utils/get-permission";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -145,19 +146,23 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                   <Info className="h-5 w-5" />
                   Detail
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setSelectedData(row);
-                    toggleModalTalentMapping(true);
-                  }}
-                >
-                  <Pencil className="h-5 w-5" />
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDelete(row.talend_id)}>
-                  <Trash className="h-5 w-5" />
-                  Delete
-                </DropdownMenuItem>
+                {hasPermission("Talent Mapping", "edit") && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setSelectedData(row);
+                      toggleModalTalentMapping(true);
+                    }}
+                  >
+                    <Pencil className="h-5 w-5" />
+                    Edit
+                  </DropdownMenuItem>
+                )}
+                {hasPermission("Talent Mapping", "delete") && (
+                  <DropdownMenuItem onClick={() => handleDelete(row.talend_id)}>
+                    <Trash className="h-5 w-5" />
+                    Delete
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
