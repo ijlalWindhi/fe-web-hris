@@ -63,6 +63,7 @@ export interface IResponseViewTalentMapping {
     phone: string;
     address: string;
     face_id: string;
+    photo: string;
   };
   mapping: {
     client_id: string;

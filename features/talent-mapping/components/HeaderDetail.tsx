@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { Download, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -24,9 +24,23 @@ export default function HeaderDetailTalent() {
       setModalDelete({
         open: true,
         type: "TAD",
-        action: () => {
-          deleteTalentMapping.mutate(selectedData?.talend_id ?? "");
-          toggleModalDetailTalentMapping(false);
+        action: async () => {
+          const res = await deleteTalentMapping.mutateAsync(
+            selectedData?.talend_id ?? "",
+          );
+          if (res.status === "success") {
+            setModalSuccess({
+              open: true,
+              title: "Data Deleted Successfully!",
+              message: "The TAD data has been removed from the system.",
+              actionMessage: "Back",
+              actionVariant: "outline",
+              animation: "success",
+              action: () => {
+                toggleModalDetailTalentMapping(false);
+              },
+            });
+          }
         },
       });
     } catch (error) {
@@ -34,33 +48,13 @@ export default function HeaderDetailTalent() {
     }
   };
 
-  const handleDownload = () => {
-    try {
-      setModalSuccess({
-        open: true,
-        title: "Download Successful!",
-        message:
-          "The TAD data has been downloaded successfully. You can now review it on your device.",
-        actionMessage: "Close",
-        actionVariant: "outline",
-        animation: "success",
-        action: () => {
-          console.log("Download talent with ID: ", selectedData);
-          toggleModalDetailTalentMapping(false);
-        },
-      });
-    } catch (error) {
-      console.error("Error from handleDownload: ", error);
-    }
-  };
   return (
     <div className="w-full h-full relative">
       <div className="flex flex-col gap-2 items-center justify-center">
         <div className="relative h-16 w-16 rounded-full overflow-hidden">
           <Image
             src={
-              data?.data?.personal?.face_id ||
-              "/images/unavailable-profile.webp"
+              data?.data?.personal?.photo || "/images/unavailable-profile.webp"
             }
             alt="avatar"
             layout="fill"
@@ -77,13 +71,6 @@ export default function HeaderDetailTalent() {
         </div>
       </div>
       <div className="flex gap-1 absolute top-0 right-0">
-        <Button
-          variant="outline"
-          className="h-8 w-8 p-0"
-          onClick={handleDownload}
-        >
-          <Download className="h-5 w-5" />
-        </Button>
         <Button
           variant="outline"
           className="h-8 w-8 p-0"
