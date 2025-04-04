@@ -60,8 +60,8 @@ export function ClientLayoutWrapper({
   const getModuleNameFromTitle = (title: string): string => {
     const moduleMapping: { [key: string]: string } = {
       Dashboard: "Dashboard",
-      "Talent Mapping": "Talent Mapping",
-      "Talent Monitoring": "Talent Monitoring",
+      "TAD Mapping": "Talent Mapping",
+      "TAD Monitoring": "Talent Monitoring",
       "Detail Talent Monitoring": "Talent Monitoring",
       "Client Billing": "Client Billing",
       "Master Client": "Master Client",
