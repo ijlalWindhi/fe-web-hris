@@ -40,7 +40,7 @@ export default function DataRow({ label, value }: Readonly<IDataRowProps>) {
       );
     } else {
       return (
-        <dd className="text-sm text-left md:text-right">
+        <dd className="text-sm text-left">
           {(!Array.isArray(value) && value) || "-"}
         </dd>
       );
@@ -49,7 +49,7 @@ export default function DataRow({ label, value }: Readonly<IDataRowProps>) {
 
   return (
     <div className="flex flex-col md:flex-row justify-start py-3 border-b first:border-b-0 last:border-b-0">
-      <dt className="text-sm font-medium text-muted-foreground w-48">
+      <dt className="text-sm font-medium text-muted-foreground min-w-48">
         {label}
       </dt>
       <span className="pr-2 hidden md:block w-2">:</span>
