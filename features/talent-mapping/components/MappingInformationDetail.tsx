@@ -1,7 +1,8 @@
 import React from "react";
-import { CircleAlert } from "lucide-react";
+import { CircleAlert, Info } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import DataRow from "./DataRowDetail";
 
 import useTalentMapping from "@/stores/talent-mapping";
@@ -14,6 +15,7 @@ export default function MappingInformationDetail() {
     selectedData,
     toggleModalHistoryContract,
     toggleModalDetailTalentMapping,
+    toggleModalDetailWorkingArrangement,
   } = useTalentMapping();
   const { data } = useViewTalentMapping(selectedData?.talend_id ?? "");
 
@@ -51,9 +53,19 @@ export default function MappingInformationDetail() {
         value={data?.data?.mapping?.outlet_longitude?.toString() ?? "-"}
       />
 
-      <h2 className="font-medium text-sm md:text-base mt-4">
-        Working Arrangement
-      </h2>
+      <div className="flex w-full justify-between items-center flex-col md:flex-row gap-2 mt-6">
+        <h2 className="font-medium text-sm md:text-base">
+          Working Arrangement
+        </h2>
+        <Button
+          size="sm"
+          onClick={() => toggleModalDetailWorkingArrangement(true)}
+          type="button"
+        >
+          <Info size={16} />
+          Detail
+        </Button>
+      </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
