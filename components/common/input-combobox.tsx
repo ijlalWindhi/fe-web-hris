@@ -26,6 +26,7 @@ interface InputComboboxProps<TFieldValues extends FieldValues> {
   field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>;
   onChange?: (value: string) => void;
   disabled?: boolean;
+  className?: string;
 }
 
 const InputCombobox = <TFieldValues extends FieldValues>({
@@ -34,6 +35,7 @@ const InputCombobox = <TFieldValues extends FieldValues>({
   field,
   onChange,
   disabled = false,
+  className,
 }: InputComboboxProps<TFieldValues>) => {
   return (
     <Popover>
@@ -45,6 +47,7 @@ const InputCombobox = <TFieldValues extends FieldValues>({
             className={cn(
               "w-full justify-between",
               !field.value && "text-muted-foreground",
+              className,
             )}
             disabled={disabled}
           >
