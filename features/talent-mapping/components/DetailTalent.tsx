@@ -2,15 +2,9 @@
 import React, { useEffect } from "react";
 import { Pencil } from "lucide-react";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import SheetAction from "@/components/common/sheet-action";
 import HeaderDetailTalent from "./HeaderDetail";
 import PersonalInformationDetail from "./PersonalInformationDetail";
 import MappingInformationDetail from "./MappingInformationDetail";
@@ -38,55 +32,54 @@ export default function DetailTalent() {
     }
   }, [selectedData, refetch]);
 
-  return (
-    <Sheet
-      open={modalDetailTalentMapping}
-      onOpenChange={() => toggleModalDetailTalentMapping(false)}
+  const footerButtons = hasPermission("Talent Mapping", "edit") ? (
+    <Button
+      className="w-full"
+      type="submit"
+      onClick={() => {
+        toggleModalTalentMapping(true);
+        toggleModalDetailTalentMapping(false);
+      }}
     >
-      <SheetContent className="!min-w-[100vw] md:!min-w-[60vw] lg:!min-w-[40vw] overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle>View TAD</SheetTitle>
-          <HeaderDetailTalent />
-        </SheetHeader>
-        <Tabs defaultValue="personal_information" className="min-w-full mt-2">
-          <TabsList className="w-full">
-            <TabsTrigger value="personal_information">
-              Personal Information
+      <Pencil size={16} className="mr-2" /> Edit Data
+    </Button>
+  ) : null;
+
+  return (
+    <SheetAction
+      isOpen={modalDetailTalentMapping}
+      onClose={() => toggleModalDetailTalentMapping(false)}
+      title="View TAD"
+      position="right"
+      className="!min-w-[100vw] md:!min-w-[60vw] lg:!min-w-[40vw] !overflow-y-auto"
+      showFooter={true}
+      footerContent={footerButtons}
+    >
+      <HeaderDetailTalent />
+      <Tabs defaultValue="personal_information" className="min-w-full mt-2">
+        <TabsList className="w-full">
+          <TabsTrigger value="personal_information">
+            Personal Information
+          </TabsTrigger>
+          <TabsTrigger value="mapping_information">
+            Mapping Information
+          </TabsTrigger>
+          {profile?.role?.id === 2 && (
+            <TabsTrigger value="working_arrangement">
+              Working Arrangement
             </TabsTrigger>
-            <TabsTrigger value="mapping_information">
-              Mapping Information
-            </TabsTrigger>
-            {profile?.role?.id === 2 && (
-              <TabsTrigger value="working_arrangement">
-                Working Arrangement
-              </TabsTrigger>
-            )}
-          </TabsList>
-          <TabsContent value="personal_information">
-            <PersonalInformationDetail />
-          </TabsContent>
-          <TabsContent value="mapping_information">
-            <MappingInformationDetail />
-          </TabsContent>
-          <TabsContent value="working_arrangement">
-            <WorkingArrangementDetail />
-          </TabsContent>
-        </Tabs>
-        <SheetFooter>
-          {hasPermission("Talent Mapping", "edit") && (
-            <Button
-              className="w-full"
-              type="submit"
-              onClick={() => {
-                toggleModalTalentMapping(true);
-                toggleModalDetailTalentMapping(false);
-              }}
-            >
-              <Pencil size={16} className="mr-2" /> Edit Data
-            </Button>
           )}
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        </TabsList>
+        <TabsContent value="personal_information">
+          <PersonalInformationDetail />
+        </TabsContent>
+        <TabsContent value="mapping_information">
+          <MappingInformationDetail />
+        </TabsContent>
+        <TabsContent value="working_arrangement">
+          <WorkingArrangementDetail />
+        </TabsContent>
+      </Tabs>
+    </SheetAction>
   );
 }

@@ -49,7 +49,7 @@ export default function HeaderDetailTalent() {
   };
 
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-fit relative">
       <div className="flex flex-col gap-2 items-center justify-center">
         <div className="relative h-16 w-16 rounded-full overflow-hidden">
           <Image
