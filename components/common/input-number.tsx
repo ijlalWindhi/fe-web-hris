@@ -8,15 +8,21 @@ import { Button } from "@/components/ui/button";
 interface IInputNumberProps {
   value?: number;
   onChange?: (value: number) => void;
+  onChangeIncrement?: (value: number) => void;
+  onChangeDecrement?: (value: number) => void;
   min?: number;
   max?: number;
+  readonly?: boolean;
 }
 
 export default function InputNumber({
   value = 0,
   onChange,
+  onChangeIncrement,
+  onChangeDecrement,
   min = 0,
   max = 99,
+  readonly = false,
 }: Readonly<IInputNumberProps>) {
   const [number, setNumber] = React.useState(value);
   const [displayValue, setDisplayValue] = React.useState(
@@ -28,6 +34,7 @@ export default function InputNumber({
     setNumber(newValue);
     setDisplayValue(newValue.toString());
     onChange?.(newValue);
+    onChangeIncrement?.(newValue);
   };
 
   const decrement = () => {
@@ -35,6 +42,7 @@ export default function InputNumber({
     setNumber(newValue);
     setDisplayValue(newValue.toString());
     onChange?.(newValue);
+    onChangeDecrement?.(newValue);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +62,11 @@ export default function InputNumber({
     }
   };
 
+  React.useEffect(() => {
+    setNumber(value);
+    setDisplayValue(value === 0 ? "0" : value.toString());
+  }, [value]);
+
   return (
     <div className="w-full flex gap-0 items-center justify-between border rounded-full">
       <Button variant="ghost" size="icon" type="button" onClick={decrement}>
@@ -66,6 +79,7 @@ export default function InputNumber({
         min={min}
         max={max}
         className="text-center w-full border-0"
+        readOnly={readonly}
       />
       <Button variant="ghost" size="icon" type="button" onClick={increment}>
         <PlusCircle className="h-4 w-4 text-primary" />
