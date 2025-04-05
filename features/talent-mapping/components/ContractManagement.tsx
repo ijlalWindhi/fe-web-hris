@@ -20,6 +20,7 @@ import useTalentMapping from "@/stores/talent-mapping";
 
 type TContractManagementProps = {
   form: UseFormReturn<z.infer<typeof CreateTalentMappingSchema>>;
+  mode: string;
   setFileContract?: (file: File | null) => void;
 };
 
@@ -39,6 +40,7 @@ const TableHeader: ITableHeader[] = [
 
 function ContractManagement({
   form,
+  mode,
   setFileContract,
 }: Readonly<TContractManagementProps>) {
   // variables
@@ -59,6 +61,7 @@ function ContractManagement({
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
       <div className="flex items-end justify-between gap-2">
         <div className="w-full">
+          {mode}
           <InputField
             name="contract_start_date"
             label="Contract Date"
@@ -70,6 +73,7 @@ function ContractManagement({
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
+                disabled={mode === "view"}
               />
             )}
           />
@@ -86,6 +90,7 @@ function ContractManagement({
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
+                disabled={mode === "view"}
               />
             )}
           />
@@ -101,6 +106,7 @@ function ContractManagement({
         onFileChange={(file) => {
           setFileContract?.(file);
         }}
+        disabled={mode === "view"}
       />
 
       <Table<IResponseHistoryTalentMapping>
