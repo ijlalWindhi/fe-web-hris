@@ -25,7 +25,9 @@ function WorkingArrangementDetail() {
   // variables
   const { selectedData, toggleModalDetailTalentMapping } = useTalentMapping();
   const { setModalSuccess } = useTheme();
-  const { data } = useDetailTalentMapping(selectedData?.talend_id ?? "");
+  const { data, refetch } = useDetailTalentMapping(
+    selectedData?.talend_id ?? "",
+  );
   const updateWorkingArrangement = useUpdateTalentMapping();
   const form = useForm<z.infer<typeof WorkingArrangementSchema>>({
     resolver: zodResolver(WorkingArrangementSchema),
@@ -70,6 +72,7 @@ function WorkingArrangementDetail() {
           actionMessage: "Back",
           action: () => {
             form.reset();
+            refetch();
             toggleModalDetailTalentMapping(false);
           },
           animation: "success",
