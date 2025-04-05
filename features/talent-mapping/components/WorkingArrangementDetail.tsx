@@ -34,8 +34,8 @@ function WorkingArrangementDetail() {
       working_arrangements: [
         {
           day: "",
-          start_time: "",
-          end_time: "",
+          start_time: "00:00",
+          end_time: "00:00",
         },
       ],
     },
@@ -109,8 +109,8 @@ function WorkingArrangementDetail() {
                 onChangeIncrement={() => {
                   append({
                     day: "",
-                    start_time: "",
-                    end_time: "",
+                    start_time: "00:00",
+                    end_time: "00:00",
                   });
                 }}
                 onChangeDecrement={() => {
