@@ -24,6 +24,7 @@ import useTalentMapping from "@/stores/talent-mapping";
 import { TSearchParams } from "@/types";
 import { useSetParams } from "@/utils/set-params";
 import { useTalentMappingList } from "../hooks/useTalentMapping";
+import { hasPermission } from "@/utils/get-permission";
 
 export default function TalentMapping() {
   // variables
@@ -95,14 +96,16 @@ export default function TalentMapping() {
               defaultValue={queryParams.src}
             />
           </div>
-          <Button
-            size="sm"
-            className="w-full md:w-auto"
-            onClick={() => toggleModalTalentMapping(true)}
-          >
-            <Plus size={16} />
-            Register TAD
-          </Button>
+          {hasPermission("Talent Mapping", "create") && (
+            <Button
+              size="sm"
+              className="w-full md:w-auto"
+              onClick={() => toggleModalTalentMapping(true)}
+            >
+              <Plus size={16} />
+              Register TAD
+            </Button>
+          )}
         </div>
       </CardHeader>
       <CardContent>
