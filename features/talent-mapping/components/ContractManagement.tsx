@@ -61,7 +61,6 @@ function ContractManagement({
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
       <div className="flex items-end justify-between gap-2">
         <div className="w-full">
-          {mode}
           <InputField
             name="contract_start_date"
             label="Contract Date"
