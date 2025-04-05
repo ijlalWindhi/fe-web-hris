@@ -17,7 +17,7 @@ import ContractManagement from "./ContractManagement";
 import useTalentMapping from "@/stores/talent-mapping";
 import useTheme from "@/stores/theme";
 import useAuth from "@/stores/auth";
-import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
+import { createTalentMappingSchema } from "../schemas/talent-mapping.schema";
 import {
   useDetailTalentMapping,
   useCreateTalentMapping,
@@ -44,6 +44,8 @@ export default function ModalTalent() {
   } = useTalentMapping();
   const { setModalSuccess } = useTheme();
   const { profile } = useAuth();
+  const roleId = profile?.role?.id || 0;
+  const CreateTalentMappingSchema = createTalentMappingSchema(roleId);
   const form = useForm<z.infer<typeof CreateTalentMappingSchema>>({
     resolver: zodResolver(CreateTalentMappingSchema),
     defaultValues: {
@@ -110,16 +112,20 @@ export default function ModalTalent() {
         client_id: Number(values.client_name),
         outlet_id: Number(values.outlet_mapping),
         contract: {
-          start_date: formatDate({
-            inputDate: values.contract_start_date,
-            formatFrom: "dd MMMM yyyy",
-            formatTo: "dd-MM-yyyy",
-          }),
-          end_date: formatDate({
-            inputDate: values.contract_end_date,
-            formatFrom: "dd MMMM yyyy",
-            formatTo: "dd-MM-yyyy",
-          }),
+          start_date: values.contract_start_date
+            ? formatDate({
+                inputDate: values.contract_start_date,
+                formatFrom: "dd MMMM yyyy",
+                formatTo: "dd-MM-yyyy",
+              })
+            : "",
+          end_date: values.contract_end_date
+            ? formatDate({
+                inputDate: values.contract_end_date,
+                formatFrom: "dd MMMM yyyy",
+                formatTo: "dd-MM-yyyy",
+              })
+            : "",
           file: "",
         },
       };
@@ -333,9 +339,11 @@ export default function ModalTalent() {
               <TabsTrigger value="working_arrangement">
                 Working Arrangement
               </TabsTrigger>
-              <TabsTrigger value="contract_management">
-                Contract Management
-              </TabsTrigger>
+              {selectedData?.talend_id && (
+                <TabsTrigger value="contract_management">
+                  Contract Management
+                </TabsTrigger>
+              )}
             </TabsList>
             <TabsContent value="personal_information">
               <PersonalInformation
@@ -355,6 +363,7 @@ export default function ModalTalent() {
             <TabsContent value="contract_management">
               <ContractManagement
                 form={form}
+                mode={profile?.role?.id === 3 ? "view" : "create"}
                 setFileContract={setFileContract}
               />
             </TabsContent>

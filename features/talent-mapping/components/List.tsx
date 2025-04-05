@@ -149,8 +149,10 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                 {hasPermission("Talent Mapping", "edit") && (
                   <DropdownMenuItem
                     onClick={() => {
-                      setSelectedData(row);
-                      toggleModalTalentMapping(true);
+                      setTimeout(() => {
+                        setSelectedData(row);
+                        toggleModalTalentMapping(true);
+                      }, 100);
                     }}
                   >
                     <Pencil className="h-5 w-5" />
@@ -158,7 +160,13 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                   </DropdownMenuItem>
                 )}
                 {hasPermission("Talent Mapping", "delete") && (
-                  <DropdownMenuItem onClick={() => handleDelete(row.talend_id)}>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setTimeout(() => {
+                        handleDelete(row.talend_id);
+                      }, 100);
+                    }}
+                  >
                     <Trash className="h-5 w-5" />
                     Delete
                   </DropdownMenuItem>

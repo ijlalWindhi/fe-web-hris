@@ -10,7 +10,7 @@ import { DatePicker } from "@/components/common/input-date-picket";
 import { Button } from "@/components/ui/button";
 import InputFile from "@/components/common/input-file-attachment";
 
-import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
+import { createTalentMappingSchema } from "../schemas/talent-mapping.schema";
 import { IResponseHistoryTalentMapping } from "@/types";
 import {
   useDetailTalentMapping,
@@ -18,8 +18,9 @@ import {
 } from "../hooks/useTalentMapping";
 import useTalentMapping from "@/stores/talent-mapping";
 
+type FormValues = z.infer<ReturnType<typeof createTalentMappingSchema>>;
 type TContractManagementProps = {
-  form: UseFormReturn<z.infer<typeof CreateTalentMappingSchema>>;
+  form: UseFormReturn<FormValues>;
   mode: string;
   setFileContract?: (file: File | null) => void;
 };

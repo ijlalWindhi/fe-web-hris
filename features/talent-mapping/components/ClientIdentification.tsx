@@ -8,11 +8,12 @@ import { InputField } from "@/components/common/input-field";
 import { Input } from "@/components/ui/input";
 import InputCombobox from "@/components/common/input-combobox";
 
-import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
+import { createTalentMappingSchema } from "../schemas/talent-mapping.schema";
 import useTalentMapping from "@/stores/talent-mapping";
 
+type FormValues = z.infer<ReturnType<typeof createTalentMappingSchema>>;
 type TClientIdentificationProps = {
-  form: UseFormReturn<z.infer<typeof CreateTalentMappingSchema>>;
+  form: UseFormReturn<FormValues>;
   mode: string;
 };
 
