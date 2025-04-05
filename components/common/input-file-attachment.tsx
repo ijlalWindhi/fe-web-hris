@@ -6,6 +6,7 @@ import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 
 import { toast } from "@/hooks/use-toast";
+import { truncateText } from "@/utils/truncate";
 
 interface InputFileProps {
   onFileChange?: (file: File) => void;
@@ -93,7 +94,10 @@ export default function InputFile({
         <div className="flex gap-1 items-center">
           <Link size={18} className="text-primary" />
           <span className="ml-2 text-sm text-gray-500">
-            {selectedFile?.name || defaultValue || placeholder}
+            {truncateText(
+              selectedFile?.name || defaultValue || placeholder,
+              50,
+            )}
           </span>
         </div>
         <Button
