@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Info } from "lucide-react";
 
 import { ITableHeader, TableCell } from "@/components/ui/table";
@@ -36,16 +36,9 @@ export default function WorkingArrangement() {
   // variables
   const { selectedData, toggleModalDetailWorkingArrangement } =
     useTalentMapping();
-  const { data, isLoading, refetch } = useDetailTalentMapping(
+  const { data, isLoading } = useDetailTalentMapping(
     selectedData?.talend_id ?? "",
   );
-
-  // lifecycle
-  useEffect(() => {
-    if (selectedData?.talend_id) {
-      refetch();
-    }
-  }, [selectedData, refetch]);
 
   return (
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
