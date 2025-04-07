@@ -40,7 +40,7 @@ export default function ModalTalent() {
   const createMasterClient = useCreateMasterClient();
   const updateMasterClient = useUpdateMasterClient();
   const { data: detailData, refetch } = useDetailMasterClient(
-    selectedData?.id ?? ""
+    selectedData?.id ?? "",
   );
   const form = useForm<z.infer<typeof CreateMasterClientSchema>>({
     resolver: zodResolver(CreateMasterClientSchema),
@@ -116,7 +116,7 @@ export default function ModalTalent() {
       const modifiedOutlets = values.outlet.map((outletItem) => {
         if (selectedData) {
           const existingOutlet = detailData?.data?.outlet?.find(
-            (existing) => existing.id_outlet === outletItem.id_outlet
+            (existing) => existing.id_outlet === outletItem.id_outlet,
           );
 
           if (existingOutlet) {
@@ -312,7 +312,7 @@ export default function ModalTalent() {
               createMasterClient.isPending || updateMasterClient.isPending
             }
           >
-            Save
+            Save Data
           </Button>
         </form>
       </Form>
