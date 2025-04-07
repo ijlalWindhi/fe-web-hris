@@ -53,7 +53,27 @@ export default function ModalTalent() {
       agency_fee: 0,
       bpjs: [
         {
-          name: "",
+          name: "Jaminan Hari Tua(JHT)",
+          amount: 0,
+        },
+        {
+          name: "Jaminan Kecelakaan Kerja(JKK)",
+          amount: 0,
+        },
+        {
+          name: "Jaminan Kematian(JKM)",
+          amount: 0,
+        },
+        {
+          name: "Jaminan Pensiun(JP)",
+          amount: 0,
+        },
+        {
+          name: "Jaminan Kehilangan Pekerjaan(JKP)",
+          amount: 0,
+        },
+        {
+          name: "Jaminan Kesehatan(BPJS)",
           amount: 0,
         },
       ],
