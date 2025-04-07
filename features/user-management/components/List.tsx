@@ -68,7 +68,7 @@ interface IListProps {
 
 export default function List({ queryParams }: Readonly<IListProps>) {
   // variables
-  const { setModalDelete } = useTheme();
+  const { setModalDelete, setModalSuccess } = useTheme();
   const { setSelectedData, toggleModalUserManagement } = useUserManagement();
   const { data, isLoading } = useUserList(queryParams);
   const deleteUser = useDeleteUserManagement();
@@ -89,11 +89,23 @@ export default function List({ queryParams }: Readonly<IListProps>) {
     }
   };
 
-  const handleChangeStatus = (id: string) => {
+  const handleChangeStatus = async (id: string) => {
     try {
-      updateUserStatus.mutate({
+      const res = await updateUserStatus.mutateAsync({
         id: id,
       });
+      if (res.status === "success") {
+        setModalSuccess({
+          open: true,
+          title: "User Updated",
+          message:
+            "The User's information has been updated and saved successfully.",
+          actionVariant: "default",
+          actionMessage: "Back",
+          action: () => {},
+          animation: "success",
+        });
+      }
     } catch (error) {
       console.error("Error from handleChangeStatus: ", error);
     }
