@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 
 import useUserManagement from "@/stores/user-management";
+import useTheme from "@/stores/theme";
 import { CreateUserManagementSchema } from "../schemas/user-management.schema";
 import {
   useCreateUserManagement,
@@ -38,6 +39,7 @@ export default function ModalTalent() {
     toggleModalUserManagement,
     setSelectedData,
   } = useUserManagement();
+  const { setModalSuccess } = useTheme();
   const createUserManagement = useCreateUserManagement();
   const updateUserManagement = useUpdateUserManagement();
   const form = useForm<z.infer<typeof CreateUserManagementSchema>>({
@@ -76,12 +78,40 @@ export default function ModalTalent() {
         payload.photo = selectedData?.photo ?? "";
       }
       if (selectedData) {
-        await updateUserManagement.mutateAsync({
+        const res = await updateUserManagement.mutateAsync({
           id: selectedData?.id_user,
           data: payload,
         });
+        if (res.status === "success") {
+          setModalSuccess({
+            open: true,
+            title: "User Updated",
+            message:
+              "The User's information has been updated and saved successfully.",
+            actionVariant: "default",
+            actionMessage: "Back",
+            action: () => {
+              handleClose();
+            },
+            animation: "success",
+          });
+        }
       } else {
-        await createUserManagement.mutateAsync(payload);
+        const res = await createUserManagement.mutateAsync(payload);
+        if (res.status === "success") {
+          setModalSuccess({
+            open: true,
+            title: "User Created",
+            message:
+              "The User's information has been created and saved successfully.",
+            actionVariant: "default",
+            actionMessage: "Back",
+            action: () => {
+              handleClose();
+            },
+            animation: "success",
+          });
+        }
       }
     } catch (error) {
       console.error("Error from onSubmit: ", error);
@@ -177,7 +207,13 @@ export default function ModalTalent() {
               <Input {...field} placeholder="e.g. Jakarta" />
             )}
           />
-          <Button type="submit" className="mt-4 w-full">
+          <Button
+            type="submit"
+            className="mt-4 w-full"
+            loading={
+              createUserManagement.isPending || updateUserManagement.isPending
+            }
+          >
             Save
           </Button>
         </form>
