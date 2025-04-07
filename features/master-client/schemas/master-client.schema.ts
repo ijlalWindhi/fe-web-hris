@@ -41,7 +41,7 @@ export const CreateMasterClientSchema = z.object({
     .array(
       z.object({
         name: z.string().nonempty("BPJS Deduction Name is required"),
-        amount: z.number().min(1, "BPJS Deduction Amount is required"),
+        amount: z.number().min(0, "BPJS Deduction Amount is required"),
       }),
     )
     .min(1, "At least one BPJS Deduction is required"),
@@ -49,7 +49,7 @@ export const CreateMasterClientSchema = z.object({
     .array(
       z.object({
         name: z.string().nonempty("Allowence Name is required"),
-        amount: z.number().min(1, "Allowence Amount is required"),
+        amount: z.number().min(0, "Allowence Amount is required"),
       }),
     )
     .min(1, "At least one Allowence is required"),
