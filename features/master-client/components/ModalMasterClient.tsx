@@ -312,7 +312,7 @@ export default function ModalTalent() {
               createMasterClient.isPending || updateMasterClient.isPending
             }
           >
-            Save Data
+            Save
           </Button>
         </form>
       </Form>
