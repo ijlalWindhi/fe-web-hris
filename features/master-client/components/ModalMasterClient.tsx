@@ -163,19 +163,17 @@ export default function ModalTalent() {
       }
 
       if (selectedData) {
-        await updateMasterClient.mutateAsync({
+        const res = await updateMasterClient.mutateAsync({
           id: selectedData.id,
           data: payload,
         });
+        if (res) handleClose();
       } else {
-        await createMasterClient.mutateAsync(payload);
+        const res = await createMasterClient.mutateAsync(payload);
+        if (res) handleClose();
       }
-
-      handleClose();
     } catch (error) {
       console.error("Error from onSubmit: ", error);
-    } finally {
-      handleClose();
     }
   };
 
