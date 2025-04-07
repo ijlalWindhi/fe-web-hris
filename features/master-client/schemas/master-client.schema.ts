@@ -37,22 +37,20 @@ export const CreateMasterClientSchema = z.object({
     .min(1, "At least one outlet is required"),
   basic_salary: z.number().min(1, "Basic Salary is required"),
   agency_fee: z.number().min(1, "Agency Fee is required"),
-  bpjs: z
-    .array(
-      z.object({
-        name: z.string().nonempty("BPJS Deduction Name is required"),
-        amount: z.number().min(0, "BPJS Deduction Amount is required"),
-      }),
-    )
-    .min(1, "At least one BPJS Deduction is required"),
-  allowences: z
-    .array(
-      z.object({
-        name: z.string().nonempty("Allowence Name is required"),
-        amount: z.number().min(0, "Allowence Amount is required"),
-      }),
-    )
-    .min(1, "At least one Allowence is required"),
+  bpjs: z.array(
+    z.object({
+      name: z.string().nonempty("BPJS Deduction Name is required"),
+      amount: z.number().min(0, "BPJS Deduction Amount is required"),
+    }),
+  ),
+  // .min(1, "At least one BPJS Deduction is required"),
+  allowences: z.array(
+    z.object({
+      name: z.string().nonempty("Allowence Name is required"),
+      amount: z.number().min(0, "Allowence Amount is required"),
+    }),
+  ),
+  // .min(1, "At least one Allowence is required"),
   payment_date: z.string().nonempty("Payment Due Date is required"),
 });
 
