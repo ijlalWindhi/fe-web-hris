@@ -23,10 +23,12 @@ import {
 import { uploadFile } from "@/services/file";
 import { TPayloadMasterClient } from "@/types";
 import { formatDate } from "@/utils/format-date";
+import { fieldToTabMapping } from "@/constants/master-client";
 
 export default function ModalTalent() {
   // variables
   const [file, setFile] = useState<File | null>(null);
+  const [activeTab, setActiveTab] = useState<string>("client_information");
   const {
     modalMasterClient,
     selectedData,
@@ -71,6 +73,20 @@ export default function ModalTalent() {
     toggleModalMasterClient(false);
     form.reset();
     setFile(null);
+    setActiveTab("client_information");
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const findTabWithError = (errors: any): string => {
+    const errorFields = Object.keys(errors);
+    for (const field of errorFields) {
+      const correspondingTab = fieldToTabMapping[field];
+      if (correspondingTab) {
+        return correspondingTab;
+      }
+    }
+
+    return "client_information";
   };
 
   const onSubmit = async (values: z.infer<typeof CreateMasterClientSchema>) => {
@@ -186,6 +202,20 @@ export default function ModalTalent() {
     }
   }, [detailData, form]);
 
+  useEffect(() => {
+    const subscription = form.formState.isSubmitSuccessful
+      ? undefined
+      : form.watch(() => {
+          const errors = form.formState.errors;
+          if (Object.keys(errors).length > 0) {
+            const tabWithError = findTabWithError(errors);
+            setActiveTab(tabWithError);
+          }
+        });
+
+    return () => subscription?.unsubscribe();
+  }, [form, form.formState, form.watch]);
+
   return (
     <DialogAction
       isOpen={modalMasterClient}
@@ -194,14 +224,24 @@ export default function ModalTalent() {
       className="max-w-full md:max-w-2xl"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="pt-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit, (errors) => {
+            const tabWithError = findTabWithError(errors);
+            setActiveTab(tabWithError);
+          })}
+          className="pt-6"
+        >
           <InputProfile
             width="w-16 md:w-20"
             height="h-16 md:h-20"
             onFileChange={(file) => setFile(file)}
             defaultImage={selectedData?.photo}
           />
-          <Tabs defaultValue="client_information" className="min-w-full mt-2">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="min-w-full mt-2"
+          >
             <TabsList className="w-full">
               <TabsTrigger value="client_information">
                 Client Information
