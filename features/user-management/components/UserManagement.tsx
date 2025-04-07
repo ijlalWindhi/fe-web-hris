@@ -92,14 +92,14 @@ export default function UserManagement() {
               defaultValue={queryParams.src}
             />
           </div>
-          <Button
+          {/* <Button
             size="sm"
             className="w-full md:w-auto"
             onClick={() => toggleModalUserManagement(true)}
           >
             <Plus size={16} />
             Register User
-          </Button>
+          </Button> */}
         </div>
       </CardHeader>
       <CardContent>
