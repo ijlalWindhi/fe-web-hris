@@ -14,6 +14,7 @@ import OutletList from "./OutletList";
 import Payroll from "./Payroll";
 
 import useMasterClient from "@/stores/master-client";
+import useTheme from "@/stores/theme";
 import { CreateMasterClientSchema } from "../schemas/master-client.schema";
 import {
   useCreateMasterClient,
@@ -35,10 +36,11 @@ export default function ModalTalent() {
     toggleModalMasterClient,
     setSelectedData,
   } = useMasterClient();
+  const { setModalSuccess } = useTheme();
   const createMasterClient = useCreateMasterClient();
   const updateMasterClient = useUpdateMasterClient();
   const { data: detailData, refetch } = useDetailMasterClient(
-    selectedData?.id ?? "",
+    selectedData?.id ?? ""
   );
   const form = useForm<z.infer<typeof CreateMasterClientSchema>>({
     resolver: zodResolver(CreateMasterClientSchema),
@@ -114,7 +116,7 @@ export default function ModalTalent() {
       const modifiedOutlets = values.outlet.map((outletItem) => {
         if (selectedData) {
           const existingOutlet = detailData?.data?.outlet?.find(
-            (existing) => existing.id_outlet === outletItem.id_outlet,
+            (existing) => existing.id_outlet === outletItem.id_outlet
           );
 
           if (existingOutlet) {
@@ -167,10 +169,36 @@ export default function ModalTalent() {
           id: selectedData.id,
           data: payload,
         });
-        if (res) handleClose();
+        if (res.status === "success") {
+          setModalSuccess({
+            open: true,
+            title: "Master Client Updated",
+            message:
+              "The Master Client's information has been updated and saved successfully.",
+            actionVariant: "default",
+            actionMessage: "Back",
+            action: () => {
+              handleClose();
+            },
+            animation: "success",
+          });
+        }
       } else {
         const res = await createMasterClient.mutateAsync(payload);
-        if (res) handleClose();
+        if (res.status === "success") {
+          setModalSuccess({
+            open: true,
+            title: "Master Client Created",
+            message:
+              "The Master Client's information has been created and saved successfully.",
+            actionVariant: "default",
+            actionMessage: "Back",
+            action: () => {
+              handleClose();
+            },
+            animation: "success",
+          });
+        }
       }
     } catch (error) {
       console.error("Error from onSubmit: ", error);
@@ -277,7 +305,13 @@ export default function ModalTalent() {
               <Payroll form={form} />
             </TabsContent>
           </Tabs>
-          <Button type="submit" className="mt-4 w-full">
+          <Button
+            type="submit"
+            className="mt-4 w-full"
+            loading={
+              createMasterClient.isPending || updateMasterClient.isPending
+            }
+          >
             Save
           </Button>
         </form>
