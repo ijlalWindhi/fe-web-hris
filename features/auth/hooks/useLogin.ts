@@ -19,7 +19,7 @@ export function useLogin() {
     mutationFn: (data: TPayloadLogin) => login(data),
     onSuccess: async (response) => {
       const data = response.data;
-      if (response.status === "success" && data) {
+      if (response.status === "success" && data && !data?.change_password) {
         setCookies("token", data.token);
 
         await Promise.all([
