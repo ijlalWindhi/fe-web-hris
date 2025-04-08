@@ -18,9 +18,15 @@ export type TPayloadLogin = {
 export type TResponseLogin = {
   id: string;
   email: string;
-  username: string;
-  is_active: boolean;
+  name: string;
+  isact: boolean;
+  role: {
+    nama: string;
+    id: number;
+  };
   token: string;
+  token_face_id: string | null;
+  change_password: boolean;
 };
 
 // Reset Password
@@ -32,6 +38,13 @@ export type TPayloadResetPassword = {
 export type TPayloadNewPassword = {
   token: string;
   password: string;
+};
+
+// First Login
+export type TPayloadFirstLogin = {
+  email: string;
+  password: string;
+  confirm_password: string;
 };
 
 // Profile

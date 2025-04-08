@@ -8,6 +8,7 @@ import {
   TResponseProfile,
   TResponsePermission,
   TResponseMenu,
+  TPayloadFirstLogin,
 } from "@/types";
 
 export async function login(
@@ -81,6 +82,16 @@ export async function newPassword(
     return response.data;
   } catch (error) {
     console.error("Error from service newPassword: ", error);
+    throw error;
+  }
+}
+
+export async function firstLogin(data: TPayloadFirstLogin): Promise<IResponse> {
+  try {
+    const response = await axios.post("/auth/first-login", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error from service firstLogin: ", error);
     throw error;
   }
 }
