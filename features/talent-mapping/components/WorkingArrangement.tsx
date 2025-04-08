@@ -34,8 +34,12 @@ const TableHeader: ITableHeader[] = [
 
 export default function WorkingArrangement() {
   // variables
-  const { selectedData, toggleModalDetailWorkingArrangement } =
-    useTalentMapping();
+  const {
+    selectedData,
+    toggleModalDetailWorkingArrangement,
+    setClientId,
+    setOutletId,
+  } = useTalentMapping();
   const { data, isLoading } = useDetailTalentMapping(
     selectedData?.talend_id ?? "",
   );
@@ -49,7 +53,11 @@ export default function WorkingArrangement() {
         {selectedData && (
           <Button
             size="sm"
-            onClick={() => toggleModalDetailWorkingArrangement(true)}
+            onClick={() => {
+              toggleModalDetailWorkingArrangement(true);
+              setClientId(data?.data?.client?.id ?? "");
+              setOutletId(data?.data?.outlet?.id ?? "");
+            }}
             type="button"
           >
             <Info size={16} />
