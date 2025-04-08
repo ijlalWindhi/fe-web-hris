@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { ArrowRight, Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -17,6 +18,7 @@ import { ResetPasswordSchema } from "../schemas/reset-password.schema";
 
 export default function FormResetPassword() {
   // variables
+  const router = useRouter();
   const resetPassword = useResetPassword();
   const loading = resetPassword.isPending;
   const { setModalSuccess } = useTheme();
@@ -41,6 +43,7 @@ export default function FormResetPassword() {
           actionMessage: "Open Email",
           action: () => {
             window.open("https://mail.google.com/mail/u/0/#inbox");
+            router.push("/auth/new-password");
           },
           animation: "email",
         });
