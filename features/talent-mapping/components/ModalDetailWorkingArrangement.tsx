@@ -32,6 +32,8 @@ export default function ModalDetailWorkingArrangement() {
     modalDetailWorkingArrangement,
     optionsClient,
     optionsOutlet,
+    outletId,
+    clientId,
     toggleModalDetailWorkingArrangement,
     fetchOptionsOutlet,
     fetchOptionsClient,
@@ -100,6 +102,11 @@ export default function ModalDetailWorkingArrangement() {
   useEffect(() => {
     if (modalDetailWorkingArrangement) {
       fetchOptionsClient();
+      form.setValue("client_id", clientId?.toString());
+      form.setValue("outlet_id", outletId?.toString());
+      if (clientId) {
+        fetchOptionsOutlet(clientId);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalDetailWorkingArrangement]);

@@ -15,6 +15,8 @@ const useTalentMapping = create<ITalentMappingStore>((set) => ({
   selectedData: null,
   optionsClient: [],
   optionsOutlet: [],
+  outletId: "",
+  clientId: "",
 
   // actions
   toggleModalDetailTalentMapping: (isOpen) =>
@@ -37,6 +39,8 @@ const useTalentMapping = create<ITalentMappingStore>((set) => ({
     set({ optionsOutlet: response.data || [] });
     return response.data || [];
   },
+  setOutletId: (outletId) => set({ outletId }),
+  setClientId: (clientId) => set({ clientId }),
 }));
 
 export default useTalentMapping;

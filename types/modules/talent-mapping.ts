@@ -11,6 +11,8 @@ export interface ITalentMappingStore {
   selectedData: IResponseListTalentMapping | null;
   optionsClient: IResponseOptionMasterClient[];
   optionsOutlet: IResponseOptionOutlet[];
+  outletId: string;
+  clientId: string;
   toggleModalDetailTalentMapping: (isOpen: boolean) => void;
   toggleModalTalentMapping: (isOpen: boolean) => void;
   toggleModalHistoryContract: (isOpen: boolean) => void;
@@ -18,6 +20,8 @@ export interface ITalentMappingStore {
   setSelectedData: (id: IResponseListTalentMapping | null) => void;
   fetchOptionsClient: () => Promise<IResponseOptionMasterClient[]>;
   fetchOptionsOutlet: (clientId: string) => Promise<IResponseOptionOutlet[]>;
+  setOutletId: (outletId: string) => void;
+  setClientId: (clientId: string) => void;
 }
 
 export interface IResponseListTalentMapping {

@@ -6,7 +6,10 @@ import { Button } from "@/components/ui/button";
 import DataRow from "./DataRowDetail";
 
 import useTalentMapping from "@/stores/talent-mapping";
-import { useViewTalentMapping } from "../hooks/useTalentMapping";
+import {
+  useViewTalentMapping,
+  useDetailTalentMapping,
+} from "../hooks/useTalentMapping";
 import { truncateText } from "@/utils/truncate";
 
 export default function MappingInformationDetail() {
@@ -16,8 +19,13 @@ export default function MappingInformationDetail() {
     toggleModalHistoryContract,
     toggleModalDetailTalentMapping,
     toggleModalDetailWorkingArrangement,
+    setClientId,
+    setOutletId,
   } = useTalentMapping();
   const { data } = useViewTalentMapping(selectedData?.talend_id ?? "");
+  const { data: detailData } = useDetailTalentMapping(
+    selectedData?.talend_id ?? "",
+  );
 
   return (
     <dl className="">
@@ -59,7 +67,11 @@ export default function MappingInformationDetail() {
         </h2>
         <Button
           size="sm"
-          onClick={() => toggleModalDetailWorkingArrangement(true)}
+          onClick={() => {
+            toggleModalDetailWorkingArrangement(true);
+            setClientId(detailData?.data?.client?.id ?? "");
+            setOutletId(detailData?.data?.outlet?.id ?? "");
+          }}
           type="button"
         >
           <Info size={16} />
