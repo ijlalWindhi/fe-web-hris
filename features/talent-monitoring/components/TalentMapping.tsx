@@ -3,14 +3,6 @@ import React from "react";
 
 import { useTalentMapping } from "../hooks/useTalentMonitoring";
 
-const shifts = [
-  { shiftId: "S001", day: "Monday", time: "08:00 - 15:00" },
-  { shiftId: "S002", day: "Tuesday", time: "08:00 - 15:00" },
-  { shiftId: "S003", day: "Wednesday", time: "08:00 - 15:00" },
-  { shiftId: "S004", day: "Thursday", time: "08:00 - 15:00" },
-  { shiftId: "S005", day: "Friday", time: "08:00 - 15:00" },
-];
-
 interface ITalentMappingProps {
   talentId: string;
 }

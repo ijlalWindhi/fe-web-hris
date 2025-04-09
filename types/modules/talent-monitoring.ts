@@ -89,16 +89,7 @@ export interface IResponsePayroll {
   emp_name: string | null;
   emp_code: string | null;
   emp_role: string | null;
-  payroll: {
-    month: string;
-    gaji_pokok: number;
-    tunjangan_makan: number;
-    bpjs_kesehatan: number;
-    pajak_pph21: number;
-    bonus: number;
-    agency_fee: number;
-    total: number;
-  }[];
+  payroll: IPayrollDetailsTaletMonitoring[];
 }
 
 export interface IHistoryContractTalentMonitoring {
@@ -109,15 +100,14 @@ export interface IHistoryContractTalentMonitoring {
 }
 
 export interface IPayrollDetailsTaletMonitoring {
-  id: string;
   month: string;
-  gaji_pokok: string;
-  tunjangan_makan: string;
-  tunjangan_bensin: string;
-  bonus_performance: string;
-  potongan_pajak: string;
-  agency_fee: string;
-  total: string;
+  gaji_pokok: number;
+  tunjangan_makan: number;
+  bpjs_kesehatan: number;
+  pajak_pph21: number;
+  bonus: number;
+  agency_fee: number;
+  total: number;
 }
 
 export interface ITalentPerformanceTalentMonitoring {

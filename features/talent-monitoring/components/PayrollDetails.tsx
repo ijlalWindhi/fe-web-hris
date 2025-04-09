@@ -4,6 +4,7 @@ import { ITableHeader } from "@/components/ui/table";
 import { Table } from "@/components/common/table";
 
 import { IPayrollDetailsTaletMonitoring } from "@/types";
+import { usePayroll } from "../hooks/useTalentMonitoring";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -22,17 +23,17 @@ const TableHeader: ITableHeader[] = [
     className: "min-w-[11rem]",
   },
   {
-    key: "tunjangan_bensin",
-    title: "Tunjangan Bensin",
+    key: "bpjs_kesehatan",
+    title: "BPJS Kesehatan",
     className: "min-w-[11rem]",
   },
   {
-    key: "bonus_performance",
+    key: "bonus",
     title: "Bonus Performance",
     className: "min-w-[11rem]",
   },
   {
-    key: "potongan_pajak",
+    key: "pajak_pph21",
     title: "Potongan Pajak",
     className: "min-w-[11rem]",
   },
@@ -55,36 +56,16 @@ interface IPayrollDetailsProps {
 export default function PayrollDetails({
   talentId,
 }: Readonly<IPayrollDetailsProps>) {
+  // variables
+  const { data, isLoading } = usePayroll(talentId);
+
   return (
     <div className="border rounded-xl p-4 space-y-2">
       <h2 className="md:text-lg font-semibold">Payroll Details</h2>
       <Table<IPayrollDetailsTaletMonitoring>
         header={TableHeader}
-        data={[
-          {
-            id: "1",
-            month: "January 2021",
-            gaji_pokok: "Rp 1.000.000",
-            tunjangan_makan: "Rp 500.000",
-            tunjangan_bensin: "Rp 0",
-            bonus_performance: "Rp 0",
-            potongan_pajak: "Rp 0",
-            agency_fee: "5%",
-            total: "Rp 1.500.000",
-          },
-          {
-            id: "2",
-            month: "February 2021",
-            gaji_pokok: "Rp 1.000.000",
-            tunjangan_makan: "Rp 500.000",
-            tunjangan_bensin: "Rp 0",
-            bonus_performance: "Rp 0",
-            potongan_pajak: "Rp 0",
-            agency_fee: "5%",
-            total: "Rp 1.500.000",
-          },
-        ]}
-        loading={false}
+        data={data?.data?.payroll ?? []}
+        loading={isLoading}
       ></Table>
     </div>
   );
