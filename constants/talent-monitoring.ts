@@ -1,10 +1,10 @@
 export const DATA_SIDEBAR = [
   {
-    label: "Talent Information",
+    label: "TAD Information",
     path: "talent-information",
   },
   {
-    label: "Talent Mapping",
+    label: "TAD Mapping",
     path: "talent-mapping",
   },
   {
@@ -12,15 +12,15 @@ export const DATA_SIDEBAR = [
     path: "contract-management",
   },
   {
-    label: "Talent Attendance",
+    label: "TAD Attendance",
     path: "talent-attendance",
   },
   {
-    label: "Talent Timesheet",
+    label: "TAD Timesheet",
     path: "talent-timesheet",
   },
   {
-    label: "Talent Performance",
+    label: "TAD Performance",
     path: "talent-performance",
   },
   {
