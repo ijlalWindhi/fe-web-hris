@@ -92,21 +92,21 @@ export default function TalentPerformance({
         <TableCell<ITalentPerformanceTalentMonitoring> name="action">
           {({ row }) => (
             <div className="flex items-center gap-2">
-              {/* {profile?.role?.id === 2 &&
+              {profile?.role?.id === 2 &&
                 row?.hardskill === 0 &&
                 row?.softskill === 0 &&
-                !row?.notes && ( */}
-              <Button
-                size={"sm"}
-                onClick={() => {
-                  setSelectedPerformance(row);
-                  toggleModalRatingPerformance(true);
-                }}
-              >
-                <Pencil className="w-4 h-4" />
-                Rate Performance
-              </Button>
-              {/* )} */}
+                !row?.notes && (
+                  <Button
+                    size={"sm"}
+                    onClick={() => {
+                      setSelectedPerformance(row);
+                      toggleModalRatingPerformance(true);
+                    }}
+                  >
+                    <Pencil className="w-4 h-4" />
+                    Rate Performance
+                  </Button>
+                )}
             </div>
           )}
         </TableCell>
