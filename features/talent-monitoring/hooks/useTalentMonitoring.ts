@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import {
   getListTalentMonitor,
   getTalentInformation,
@@ -8,8 +8,13 @@ import {
   getTimesheet,
   getPerformance,
   getPayroll,
+  updatePerformance,
 } from "@/services/talent-monitoring";
-import { IParamsSearch, TSearchParams } from "@/types";
+import {
+  IParamsSearch,
+  TPayloadUpdatePerformance,
+  TSearchParams,
+} from "@/types";
 
 export function useTalentMonitoringList(params: TSearchParams) {
   return useQuery({
@@ -77,5 +82,17 @@ export function usePayroll(id: string) {
   return useQuery({
     queryKey: ["payroll", id],
     queryFn: () => getPayroll(id),
+  });
+}
+
+export function useUpdatePerformance() {
+  return useMutation({
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: number;
+      data: TPayloadUpdatePerformance;
+    }) => updatePerformance(id, data),
   });
 }

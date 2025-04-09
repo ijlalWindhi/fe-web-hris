@@ -8,3 +8,7 @@ export const SearchSchema = z.object({
     })
     .optional(),
 });
+
+export const UpdatePerformanceSchema = z.object({
+  note: z.string().nonempty("Notes is required"),
+});

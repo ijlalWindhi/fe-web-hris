@@ -1,3 +1,12 @@
+export interface ITalentMonitoringStore {
+  modalRatingPerformance: boolean;
+  selectedPerformance: ITalentPerformanceTalentMonitoring | null;
+  toggleModalRatingPerformance: (isOpen: boolean) => void;
+  setSelectedPerformance: (
+    performance: ITalentPerformanceTalentMonitoring | null,
+  ) => void;
+}
+
 export interface IResponseListTalentMonitoring {
   talend_id: string;
   name: string;
@@ -177,4 +186,10 @@ export type TParamsShiftCalender = {
   outlet_id: string;
   start_date: string;
   end_date: string;
+};
+
+export type TPayloadUpdatePerformance = {
+  softskill: number;
+  hardskill: number;
+  note: string;
 };

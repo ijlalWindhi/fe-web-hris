@@ -9,6 +9,7 @@ import {
   IResponseTimesheet,
   IResponsePerformance,
   IResponsePayroll,
+  TPayloadUpdatePerformance,
   TSearchParams,
   IParamsSearch,
 } from "@/types";
@@ -139,6 +140,22 @@ export async function getPayroll(
     return response.data;
   } catch (error) {
     console.error("Error from service getPayroll: ", error);
+    throw error;
+  }
+}
+
+export async function updatePerformance(
+  id: number,
+  payload: TPayloadUpdatePerformance,
+): Promise<IResponse<null>> {
+  try {
+    const response = await axios.put<IResponse<null>>(
+      `/talent-monitor/performance/${id}`,
+      payload,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service updatePerformance: ", error);
     throw error;
   }
 }

@@ -1,13 +1,17 @@
 import React from "react";
-import { Star } from "lucide-react";
+import { Star, Pencil } from "lucide-react";
 
 import { ITableHeader, TableCell } from "@/components/ui/table";
 import { Table } from "@/components/common/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { StarRating } from "./StarRating";
+import ModalRatingPerformance from "./ModalRatingPerformance";
 
 import { usePerformance } from "../hooks/useTalentMonitoring";
 import { ITalentPerformanceTalentMonitoring } from "@/types";
+import useAuth from "@/stores/auth";
+import useTalentMonitoring from "@/stores/talent-monitoring";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -50,6 +54,9 @@ export default function TalentPerformance({
 }: Readonly<ITalentPerformanceProps>) {
   // variables
   const { data, isLoading } = usePerformance(talentId);
+  const { profile } = useAuth();
+  const { toggleModalRatingPerformance, setSelectedPerformance } =
+    useTalentMonitoring();
 
   return (
     <div className="border rounded-xl p-4 space-y-2">
@@ -82,7 +89,29 @@ export default function TalentPerformance({
             </div>
           )}
         </TableCell>
+        <TableCell<ITalentPerformanceTalentMonitoring> name="action">
+          {({ row }) => (
+            <div className="flex items-center gap-2">
+              {/* {profile?.role?.id === 2 &&
+                row?.hardskill === 0 &&
+                row?.softskill === 0 &&
+                !row?.notes && ( */}
+              <Button
+                size={"sm"}
+                onClick={() => {
+                  setSelectedPerformance(row);
+                  toggleModalRatingPerformance(true);
+                }}
+              >
+                <Pencil className="w-4 h-4" />
+                Rate Performance
+              </Button>
+              {/* )} */}
+            </div>
+          )}
+        </TableCell>
       </Table>
+      <ModalRatingPerformance id={talentId} />
     </div>
   );
 }
