@@ -147,7 +147,9 @@ export default function DetailTalentMonitoring({
             {activePath === "talent-information" && (
               <TalentInformation talentId={id} />
             )}
-            {activePath === "talent-performance" && <TalentPerformance />}
+            {activePath === "talent-performance" && (
+              <TalentPerformance talentId={id} />
+            )}
             {activePath === "talent-attendance" && (
               <TalentAttendance talentId={id} />
             )}
@@ -158,7 +160,9 @@ export default function DetailTalentMonitoring({
             {activePath === "contract-management" && (
               <ContractManagement talentId={id} />
             )}
-            {activePath === "payroll-details" && <PayrollDetails />}
+            {activePath === "payroll-details" && (
+              <PayrollDetails talentId={id} />
+            )}
           </div>
         </div>
       </CardContent>

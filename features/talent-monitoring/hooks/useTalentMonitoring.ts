@@ -6,6 +6,8 @@ import {
   getContract,
   getAttendance,
   getTimesheet,
+  getPerformance,
+  getPayroll,
 } from "@/services/talent-monitoring";
 import { IParamsSearch, TSearchParams } from "@/types";
 
@@ -61,5 +63,19 @@ export function useTimesheet({
   return useQuery({
     queryKey: ["timesheet", talent_id, start_date, end_date],
     queryFn: () => getTimesheet({ talent_id, start_date, end_date }),
+  });
+}
+
+export function usePerformance(id: string) {
+  return useQuery({
+    queryKey: ["performance", id],
+    queryFn: () => getPerformance(id),
+  });
+}
+
+export function usePayroll(id: string) {
+  return useQuery({
+    queryKey: ["payroll", id],
+    queryFn: () => getPayroll(id),
   });
 }

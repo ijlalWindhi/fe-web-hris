@@ -7,6 +7,8 @@ import {
   IResponseContract,
   IResponseAttendance,
   IResponseTimesheet,
+  IResponsePerformance,
+  IResponsePayroll,
   TSearchParams,
   IParamsSearch,
 } from "@/types";
@@ -109,6 +111,34 @@ export async function getTimesheet({
     return response.data;
   } catch (error) {
     console.error("Error from service getTimesheet: ", error);
+    throw error;
+  }
+}
+
+export async function getPerformance(
+  id: string,
+): Promise<IResponse<IResponsePerformance>> {
+  try {
+    const response = await axios.get<IResponse<IResponsePerformance>>(
+      `/talent-monitor/performance/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getPerformance: ", error);
+    throw error;
+  }
+}
+
+export async function getPayroll(
+  id: string,
+): Promise<IResponse<IResponsePayroll>> {
+  try {
+    const response = await axios.get<IResponse<IResponsePayroll>>(
+      `/talent-monitor/payroll/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getPayroll: ", error);
     throw error;
   }
 }

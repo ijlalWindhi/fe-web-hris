@@ -48,7 +48,13 @@ const TableHeader: ITableHeader[] = [
   },
 ];
 
-export default function PayrollDetails() {
+interface IPayrollDetailsProps {
+  talentId: string;
+}
+
+export default function PayrollDetails({
+  talentId,
+}: Readonly<IPayrollDetailsProps>) {
   return (
     <div className="border rounded-xl p-4 space-y-2">
       <h2 className="md:text-lg font-semibold">Payroll Details</h2>

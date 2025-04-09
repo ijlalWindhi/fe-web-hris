@@ -78,6 +78,29 @@ export interface IResponseTimesheet {
   timesheet: ITimesheetHistoryTalentMonitoring[];
 }
 
+export interface IResponsePerformance {
+  name: string;
+  role_name: string;
+  performance: string;
+  history: ITalentPerformanceTalentMonitoring[];
+}
+
+export interface IResponsePayroll {
+  emp_name: string | null;
+  emp_code: string | null;
+  emp_role: string | null;
+  payroll: {
+    month: string;
+    gaji_pokok: number;
+    tunjangan_makan: number;
+    bpjs_kesehatan: number;
+    pajak_pph21: number;
+    bonus: number;
+    agency_fee: number;
+    total: number;
+  }[];
+}
+
 export interface IHistoryContractTalentMonitoring {
   start_date: string;
   end_date: string;
@@ -98,11 +121,11 @@ export interface IPayrollDetailsTaletMonitoring {
 }
 
 export interface ITalentPerformanceTalentMonitoring {
-  id: string;
-  month: string;
-  soft_skill: number;
-  hard_skill: number;
-  total_point: number;
+  id: number;
+  date: string;
+  softskill: number;
+  hardskill: number;
+  total_point: string;
   notes: string;
 }
 
