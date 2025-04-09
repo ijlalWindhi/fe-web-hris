@@ -1,5 +1,5 @@
 import React from "react";
-import { Download } from "lucide-react";
+import { Download, CheckCircle2, XCircle } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
@@ -8,11 +8,16 @@ import { Table } from "@/components/common/table";
 import { Badge } from "@/components/ui/badge";
 import { DatePickerWithRange } from "@/components/common/input-date-picker-range";
 import { InputField } from "@/components/common/input-field";
+import { Button } from "@/components/ui/button";
+import ModalApproveLeave from "./ApproveLeave";
+import ModalRejectLeave from "./RejectLeave";
 
 import { ILeaveSubmissionTalentMonitoring, IParamsSearch } from "@/types";
 import { useAttendance } from "../hooks/useTalentMonitoring";
 import { truncateText } from "@/utils/truncate";
 import { SearchSchema } from "../schemas/talent-monitoring.schema";
+import useAuth from "@/stores/auth";
+import useTalentMonitoring from "@/stores/talent-monitoring";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -40,6 +45,10 @@ const TableHeader: ITableHeader[] = [
     title: "Status",
     className: "min-w-[11rem]",
   },
+  {
+    key: "action",
+    title: "Action",
+  },
 ];
 
 interface IAttendanceLeaveProps {
@@ -57,6 +66,9 @@ export default function AttendanceLeave({
 }: IAttendanceLeaveProps) {
   // variables
   const { data } = useAttendance(params);
+  const { profile } = useAuth();
+  const { setSelectedLeave, toggleModalApproveLeave, toggleModalRejectLeave } =
+    useTalentMonitoring();
 
   // functions
   const handleDateChange = (value: { start?: Date; end?: Date }) => {
@@ -132,7 +144,42 @@ export default function AttendanceLeave({
             </Badge>
           )}
         </TableCell>
+        <TableCell<ILeaveSubmissionTalentMonitoring> name="action">
+          {({ row }) => (
+            <>
+              {profile?.role?.id === 2 ? (
+                <div className="flex items-center gap-1">
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setSelectedLeave(row);
+                      toggleModalApproveLeave(true);
+                    }}
+                  >
+                    <CheckCircle2 size={16} />
+                    Approve
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => {
+                      setSelectedLeave(row);
+                      toggleModalRejectLeave(true);
+                    }}
+                  >
+                    <XCircle size={16} />
+                    Reject
+                  </Button>
+                </div>
+              ) : (
+                <span>-</span>
+              )}
+            </>
+          )}
+        </TableCell>
       </Table>
+      <ModalApproveLeave params={params} />
+      <ModalRejectLeave params={params} />
     </div>
   );
 }

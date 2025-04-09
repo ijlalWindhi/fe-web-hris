@@ -1,10 +1,16 @@
 export interface ITalentMonitoringStore {
   modalRatingPerformance: boolean;
+  modalApproveLeave: boolean;
+  modalRejectLeave: boolean;
   selectedPerformance: ITalentPerformanceTalentMonitoring | null;
+  selectedLeave: ILeaveSubmissionTalentMonitoring | null;
   toggleModalRatingPerformance: (isOpen: boolean) => void;
+  toggleModalApproveLeave: (isOpen: boolean) => void;
+  toggleModalRejectLeave: (isOpen: boolean) => void;
   setSelectedPerformance: (
     performance: ITalentPerformanceTalentMonitoring | null,
   ) => void;
+  setSelectedLeave: (leave: ILeaveSubmissionTalentMonitoring | null) => void;
 }
 
 export interface IResponseListTalentMonitoring {

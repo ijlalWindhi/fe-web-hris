@@ -5,6 +5,8 @@ import {
   getTalentMapping,
   getContract,
   getAttendance,
+  approveLeave,
+  rejectLeave,
   getTimesheet,
   getPerformance,
   getPayroll,
@@ -57,6 +59,18 @@ export function useAttendance({
         start_date,
         end_date,
       }),
+  });
+}
+
+export function useApproveLeave() {
+  return useMutation({
+    mutationFn: (id: string) => approveLeave(id),
+  });
+}
+
+export function useRejectLeave() {
+  return useMutation({
+    mutationFn: (id: string) => rejectLeave(id),
   });
 }
 

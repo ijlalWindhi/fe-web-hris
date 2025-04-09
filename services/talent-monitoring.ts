@@ -94,6 +94,30 @@ export async function getAttendance({
   }
 }
 
+export async function approveLeave(id: string): Promise<IResponse<null>> {
+  try {
+    const response = await axios.post<IResponse<null>>(
+      `/talent-monitor/attendance/approve/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service approveLeave: ", error);
+    throw error;
+  }
+}
+
+export async function rejectLeave(id: string): Promise<IResponse<null>> {
+  try {
+    const response = await axios.post<IResponse<null>>(
+      `/talent-monitor/attendance/reject/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service rejectLeave: ", error);
+    throw error;
+  }
+}
+
 export async function getTimesheet({
   talent_id,
   start_date,
