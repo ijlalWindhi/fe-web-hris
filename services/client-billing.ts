@@ -51,3 +51,15 @@ export async function getDetailBilling(
     throw error;
   }
 }
+
+export async function verifyBilling(id: string): Promise<IResponse<null>> {
+  try {
+    const response = await axios.put<IResponse<null>>(
+      `/client-billing/verify-billing/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service verifyBilling: ", error);
+    throw error;
+  }
+}

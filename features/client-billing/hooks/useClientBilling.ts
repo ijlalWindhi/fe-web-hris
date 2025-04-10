@@ -1,8 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import {
   getListClientBilling,
   getDetailClientBilling,
   getDetailBilling,
+  verifyBilling,
 } from "@/services/client-billing";
 import { TSearchParams } from "@/types";
 
@@ -26,5 +27,11 @@ export function useDetailBilling(id: string) {
     queryKey: ["masterClientList", id],
     queryFn: () => getDetailBilling(id),
     enabled: false,
+  });
+}
+
+export function useVerifyBilling() {
+  return useMutation({
+    mutationFn: (id: string) => verifyBilling(id),
   });
 }

@@ -11,12 +11,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { type ITableHeader, TableCell } from "@/components/ui/table";
 import { Table } from "@/components/common/table";
+import { Button } from "@/components/ui/button";
 
 import type { IResponseDetailClientBilling } from "@/types";
 import useClientBilling from "@/stores/client-billing";
-import { useDetailClientBilling } from "../hooks/useClientBilling";
+import useTheme from "@/stores/theme";
+import {
+  useDetailClientBilling,
+  useVerifyBilling,
+} from "../hooks/useClientBilling";
 import { formatCurrency } from "@/utils/format-currency";
-import { Button } from "@/components/ui/button";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -60,9 +64,11 @@ export default function DetailClientBilling() {
     toggleModalDetailBilling,
     setSelectedIdBilling,
   } = useClientBilling();
+  const { setModalSuccess } = useTheme();
   const { data, refetch, isLoading } = useDetailClientBilling(
     selectedData?.id ?? "",
   );
+  const verifyBilling = useVerifyBilling();
 
   // functions
   const handleOpenDetailBilling = (id: string) => {
@@ -72,6 +78,28 @@ export default function DetailClientBilling() {
       toggleModalDetailClientBilling(false);
     } catch (error) {
       console.error("Error from handleOpenDetailBilling: ", error);
+    }
+  };
+
+  const handleVerifyBilling = async (id: string) => {
+    try {
+      const res = await verifyBilling.mutateAsync(id);
+      if (res.status === "success") {
+        setModalSuccess({
+          open: true,
+          title: "Payment Successfully Verified",
+          message:
+            "The payment has been successfully verified. Please check the client billing list.",
+          actionVariant: "default",
+          actionMessage: "Back",
+          action: () => {
+            refetch();
+          },
+          animation: "success",
+        });
+      }
+    } catch (error) {
+      console.error("Error from handleVerifyBilling: ", error);
     }
   };
 
@@ -147,8 +175,13 @@ export default function DetailClientBilling() {
           <TableCell<IResponseDetailClientBilling> name="action">
             {({ row }) => (
               <div className="flex items-center justify-between gap-1">
-                {detailType === "edit" && (
-                  <Button variant={"outline"} size="sm">
+                {detailType === "edit" && !row?.verify && (
+                  <Button
+                    variant={"outline"}
+                    size="sm"
+                    onClick={() => handleVerifyBilling(row.id)}
+                    loading={verifyBilling.isPending}
+                  >
                     <BadgeCheck size={16} className="text-green-500" />
                     Verify
                   </Button>

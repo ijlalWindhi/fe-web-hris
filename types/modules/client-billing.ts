@@ -31,9 +31,11 @@ export interface IResponseDetailClientBilling {
     name: string;
   };
   evidence_payment: string;
+  verify: boolean;
 }
 
 export interface IResponseDetailBilling {
+  title: string;
   client_id: number;
   client_name: string;
   start_period: string;

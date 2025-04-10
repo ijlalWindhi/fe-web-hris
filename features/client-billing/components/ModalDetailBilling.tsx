@@ -6,6 +6,7 @@ import DialogAction from "@/components/common/dialog-action";
 import useClientBilling from "@/stores/client-billing";
 import { useDetailBilling } from "../hooks/useClientBilling";
 import { cn } from "@/utils/utils";
+import { Loader2 } from "lucide-react";
 
 const formatRupiah = (angka: number) => {
   if (angka === null || angka === undefined) return "";
@@ -40,7 +41,9 @@ export default function ModalDetailBilling() {
     toggleModalDetailClientBilling,
     setSelectedData,
   } = useClientBilling();
-  const { data, refetch } = useDetailBilling(selectedIdBilling ?? "");
+  const { data, refetch, isLoading } = useDetailBilling(
+    selectedIdBilling ?? "",
+  );
 
   // functions
   const handleClose = () => {
@@ -69,9 +72,7 @@ export default function ModalDetailBilling() {
     >
       <div className="space-y-2 mt-6">
         <div className="space-y-1 text-center">
-          <h2 className="text-xs md:text-sm">
-            Laporan Pengeluaran Biaya Program Gea RSA Cabang Bandung
-          </h2>
+          <h2 className="text-xs md:text-sm">{data?.data?.title ?? "-"}</h2>
           <h3 className="text-sm md:text-base font-semibold">
             {data?.data?.client_name ?? "-"}
           </h3>
@@ -88,24 +89,27 @@ export default function ModalDetailBilling() {
             <div className="text-right">Nominal</div>
             <div className="text-right">Jumlah</div>
           </div>
-
-          {data?.data?.detail.map((item, index) => (
-            <div
-              key={index}
-              className={cn("grid grid-cols-4 text-sm px-3 py-3 border-b", {
-                "bg-blue-50": item?.jumlah > 0,
-              })}
-            >
-              <div>{item.keterangan}</div>
-              <div className="text-right">Rp.</div>
-              <div className="text-right">
-                {item?.nominal !== null ? formatRupiah(item.nominal) : ""}
+          {isLoading ? (
+            <Loader2 className="h-8 w-8 animate-spin" />
+          ) : (
+            data?.data?.detail.map((item, index) => (
+              <div
+                key={index}
+                className={cn("grid grid-cols-4 text-sm px-3 py-3 border-b", {
+                  "bg-blue-50": item?.jumlah > 0,
+                })}
+              >
+                <div>{item.keterangan}</div>
+                <div className="text-right">Rp.</div>
+                <div className="text-right">
+                  {item?.nominal !== null ? formatRupiah(item.nominal) : ""}
+                </div>
+                <div className="text-right">
+                  {item?.jumlah !== null ? formatRupiah(item.jumlah) : ""}
+                </div>
               </div>
-              <div className="text-right">
-                {item?.jumlah !== null ? formatRupiah(item.jumlah) : ""}
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </DialogAction>
