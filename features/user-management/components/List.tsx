@@ -80,8 +80,19 @@ export default function List({ queryParams }: Readonly<IListProps>) {
       setModalDelete({
         open: true,
         type: "user",
-        action: () => {
-          deleteUser.mutate(id);
+        action: async () => {
+          const res = await deleteUser.mutateAsync(id);
+          if (res.status === "success") {
+            setModalSuccess({
+              open: true,
+              title: "User Successfully Deleted",
+              message: "The user information has been deleted successfully.",
+              actionVariant: "default",
+              actionMessage: "Back",
+              action: () => {},
+              animation: "success",
+            });
+          }
         },
       });
     } catch (error) {

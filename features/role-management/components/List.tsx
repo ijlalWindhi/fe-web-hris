@@ -69,7 +69,7 @@ interface IListProps {
 
 export default function List({ queryParams, id }: Readonly<IListProps>) {
   // variables
-  const { setModalDelete } = useTheme();
+  const { setModalDelete, setModalSuccess } = useTheme();
   const { setSelectedData, toggleModalUserManagement } = useUserManagement();
   const { data, isLoading } = useUserRole(id, queryParams);
   const deleteUser = useDeleteUserManagement();
@@ -81,8 +81,19 @@ export default function List({ queryParams, id }: Readonly<IListProps>) {
       setModalDelete({
         open: true,
         type: "user",
-        action: () => {
-          deleteUser.mutate(id);
+        action: async () => {
+          const res = await deleteUser.mutateAsync(id);
+          if (res.status === "success") {
+            setModalSuccess({
+              open: true,
+              title: "User Successfully Deleted",
+              message: "The user information has been deleted successfully.",
+              actionVariant: "default",
+              actionMessage: "Back",
+              action: () => {},
+              animation: "success",
+            });
+          }
         },
       });
     } catch (error) {

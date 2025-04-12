@@ -51,7 +51,7 @@ interface IListProps {
 
 export default function List({ queryParams }: Readonly<IListProps>) {
   // variables
-  const { setModalDelete } = useTheme();
+  const { setModalDelete, setModalSuccess } = useTheme();
   const {
     setSelectedData,
     toggleModalDetailMasterClient,
@@ -66,8 +66,19 @@ export default function List({ queryParams }: Readonly<IListProps>) {
       setModalDelete({
         open: true,
         type: "client",
-        action: () => {
-          deleteUser.mutate(id);
+        action: async () => {
+          const res = await deleteUser.mutateAsync(id);
+          if (res.status === "success") {
+            setModalSuccess({
+              open: true,
+              title: "TAD Successfully Deleted",
+              message: "The TAD information has been deleted successfully.",
+              actionVariant: "default",
+              actionMessage: "Back",
+              action: () => {},
+              animation: "success",
+            });
+          }
         },
       });
     } catch (error) {
