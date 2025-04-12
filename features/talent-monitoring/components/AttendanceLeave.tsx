@@ -16,7 +16,6 @@ import { ILeaveSubmissionTalentMonitoring, IParamsSearch } from "@/types";
 import { useAttendance } from "../hooks/useTalentMonitoring";
 import { truncateText } from "@/utils/truncate";
 import { SearchSchema } from "../schemas/talent-monitoring.schema";
-import useAuth from "@/stores/auth";
 import useTalentMonitoring from "@/stores/talent-monitoring";
 
 const TableHeader: ITableHeader[] = [
@@ -66,7 +65,6 @@ export default function AttendanceLeave({
 }: IAttendanceLeaveProps) {
   // variables
   const { data } = useAttendance(params);
-  const { profile } = useAuth();
   const { setSelectedLeave, toggleModalApproveLeave, toggleModalRejectLeave } =
     useTalentMonitoring();
 
@@ -138,7 +136,13 @@ export default function AttendanceLeave({
         <TableCell<ILeaveSubmissionTalentMonitoring> name="status">
           {({ row }) => (
             <Badge
-              variant={row.status?.name === "Approved" ? "success" : "gray"}
+              variant={
+                row.status?.name === "Approved"
+                  ? "success"
+                  : row.status?.name === "Reject"
+                    ? "error"
+                    : "gray"
+              }
             >
               {row.status?.name ?? "-"}
             </Badge>
@@ -147,7 +151,7 @@ export default function AttendanceLeave({
         <TableCell<ILeaveSubmissionTalentMonitoring> name="action">
           {({ row }) => (
             <>
-              {profile?.role?.id === 2 ? (
+              {row?.isedit ? (
                 <div className="flex items-center gap-1">
                   <Button
                     size="sm"

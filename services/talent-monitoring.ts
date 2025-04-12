@@ -96,8 +96,8 @@ export async function getAttendance({
 
 export async function approveLeave(id: string): Promise<IResponse<null>> {
   try {
-    const response = await axios.post<IResponse<null>>(
-      `/talent-monitor/attendance/approve/${id}`,
+    const response = await axios.put<IResponse<null>>(
+      `/talent-monitor/leave/approve/${id}`,
     );
     return response.data;
   } catch (error) {
@@ -108,8 +108,8 @@ export async function approveLeave(id: string): Promise<IResponse<null>> {
 
 export async function rejectLeave(id: string): Promise<IResponse<null>> {
   try {
-    const response = await axios.post<IResponse<null>>(
-      `/talent-monitor/attendance/reject/${id}`,
+    const response = await axios.put<IResponse<null>>(
+      `/talent-monitor/leave/reject/${id}`,
     );
     return response.data;
   } catch (error) {

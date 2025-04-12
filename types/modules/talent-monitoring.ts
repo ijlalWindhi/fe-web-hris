@@ -145,6 +145,7 @@ export interface ITimesheetHistoryTalentMonitoring {
 }
 
 export interface ILeaveSubmissionTalentMonitoring {
+  leave_id: number;
   total_pending: number;
   type: string;
   date_period: number;
@@ -157,6 +158,7 @@ export interface ILeaveSubmissionTalentMonitoring {
     id: number;
     name: string;
   };
+  isedit: boolean;
 }
 
 export interface IAttendanceHistoryTalentMonitoring {

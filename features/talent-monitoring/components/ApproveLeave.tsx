@@ -35,7 +35,9 @@ export default function ModalApproveLeave({
 
   const handleAction = async () => {
     try {
-      const res = await approveLeave.mutateAsync("1");
+      const res = await approveLeave.mutateAsync(
+        selectedLeave?.leave_id?.toString() || "",
+      );
       if (res.status === "success") {
         setModalSuccess({
           open: true,
