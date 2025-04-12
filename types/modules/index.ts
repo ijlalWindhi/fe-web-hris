@@ -6,3 +6,4 @@ export * from "./user-management";
 export * from "./master-client";
 export * from "./talent-monitoring";
 export * from "./role-management";
+export * from "./master-data";
