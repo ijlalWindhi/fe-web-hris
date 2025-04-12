@@ -68,6 +68,8 @@ export function ClientLayoutWrapper({
       "User Management": "User Management",
       "Role Management": "Role Management",
       "Detail Role Management": "Role Management",
+      "Master Data": "Master Data",
+      "History Payment": "History Payment",
     };
 
     return moduleMapping[title] || title;
