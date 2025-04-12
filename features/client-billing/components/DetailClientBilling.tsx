@@ -163,7 +163,12 @@ export default function DetailClientBilling() {
           <TableCell<IResponseDetailClientBilling> name="evidence_payment">
             {({ row }) =>
               row.evidence_payment ? (
-                <div className="flex items-center gap-1 cursor-pointer">
+                <div
+                  className="flex items-center gap-1 cursor-pointer hover:underline hover:text-blue-500"
+                  onClick={() => {
+                    window.open(row.evidence_payment, "_blank");
+                  }}
+                >
                   {row.evidence_payment}{" "}
                   <Download size={16} className="text-primary ml-2" />
                 </div>
