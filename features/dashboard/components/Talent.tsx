@@ -78,7 +78,7 @@ export default function Talent() {
   return (
     <Card>
       <CardHeader className="pb-2 pt-0 md:pb-3">
-        <CardTitle>Talent</CardTitle>
+        <CardTitle>TAD</CardTitle>
         <CardDescription>
           <Form {...form}>
             <InputField
