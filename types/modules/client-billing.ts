@@ -18,6 +18,7 @@ export interface IResponseListClientBilling {
   created_at: string;
   isact: boolean;
   payment_status: boolean;
+  photo: string;
 }
 
 export interface IResponseDetailClientBilling {

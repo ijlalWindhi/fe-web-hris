@@ -21,6 +21,7 @@ export interface IResponseListTalentMonitoring {
   email: string;
   phone: string;
   address: string;
+  photo: string;
 }
 
 export interface IResponseTalentInformation {

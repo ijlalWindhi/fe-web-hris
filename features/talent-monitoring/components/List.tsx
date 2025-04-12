@@ -75,7 +75,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
           <div className="flex items-center gap-1">
             <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage
-                src={"/images/unavailable-profile.webp"}
+                src={row?.photo || "/images/unavailable-profile.webp"}
                 alt="avatar"
                 className="object-cover w-full h-full"
               />

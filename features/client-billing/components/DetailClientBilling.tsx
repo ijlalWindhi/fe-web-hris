@@ -123,7 +123,7 @@ export default function DetailClientBilling() {
         </SheetHeader>
         <div className="flex items-center gap-2 bg-blue-50 p-2 md:p-3 rounded-lg my-4">
           <Image
-            src={"/images/unavailable-profile.webp"}
+            src={selectedData?.photo || "/images/unavailable-profile.webp"}
             alt="logo client"
             width={50}
             height={50}
