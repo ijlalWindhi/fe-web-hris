@@ -110,11 +110,11 @@ export default function DetailTalentMonitoring({
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <BreadcrumbLink href="/talent-monitoring">
-                    Talent Monitoring
+                    TAD Monitoring
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
-                <BreadcrumbItem>Detail Talent</BreadcrumbItem>
+                <BreadcrumbItem>Detail TAD</BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbPage>

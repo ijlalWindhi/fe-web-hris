@@ -19,7 +19,7 @@ import { useTalentMonitoringList } from "../hooks/useTalentMonitoring";
 const TableHeader: ITableHeader[] = [
   {
     key: "talend_id",
-    title: "Talent ID",
+    title: "TAD ID",
     className: "min-w-[6rem]",
   },
   {

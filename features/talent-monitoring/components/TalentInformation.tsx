@@ -16,7 +16,7 @@ export default function TalentInformation({
 
   return (
     <div className="border rounded-xl p-4 space-y-2">
-      <h2 className="md:text-lg font-semibold">Talent Information</h2>
+      <h2 className="md:text-lg font-semibold">TAD Information</h2>
       {isLoading ? (
         <div className="flex justify-center">
           <Loader2 className="h-4 w-4 animate-spin text-primary" />
@@ -25,7 +25,7 @@ export default function TalentInformation({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-4">
             <div>
-              <p className="text-sm text-muted-foreground">Talent ID</p>
+              <p className="text-sm text-muted-foreground">TAD ID</p>
               <p className="font-medium">{data?.data?.talent_id ?? "-"}</p>
             </div>
 
@@ -47,7 +47,7 @@ export default function TalentInformation({
 
           <div className="space-y-4">
             <div>
-              <p className="text-sm text-muted-foreground">Talent Name</p>
+              <p className="text-sm text-muted-foreground">TAD Name</p>
               <p className="font-medium">{data?.data?.name ?? "-"}</p>
             </div>
 

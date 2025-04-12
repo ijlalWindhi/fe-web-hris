@@ -35,7 +35,7 @@ const TableHeader: ITableHeader[] = [
   },
   {
     key: "total_talent",
-    title: "Talent Resource",
+    title: "TAD Resource",
     className: "min-w-[10rem]",
   },
   {

@@ -134,7 +134,7 @@ export default function Talent() {
                             y={(viewBox.cy ?? 0) - 20}
                             className="fill-muted-foreground text-sm"
                           >
-                            Total Talent
+                            Total TAD
                           </tspan>
                         </text>
                       );
