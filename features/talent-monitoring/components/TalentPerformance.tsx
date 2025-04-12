@@ -10,7 +10,6 @@ import ModalRatingPerformance from "./ModalRatingPerformance";
 
 import { usePerformance } from "../hooks/useTalentMonitoring";
 import { ITalentPerformanceTalentMonitoring } from "@/types";
-import useAuth from "@/stores/auth";
 import useTalentMonitoring from "@/stores/talent-monitoring";
 
 const TableHeader: ITableHeader[] = [
@@ -54,7 +53,6 @@ export default function TalentPerformance({
 }: Readonly<ITalentPerformanceProps>) {
   // variables
   const { data, isLoading } = usePerformance(talentId);
-  const { profile } = useAuth();
   const { toggleModalRatingPerformance, setSelectedPerformance } =
     useTalentMonitoring();
 
@@ -92,21 +90,20 @@ export default function TalentPerformance({
         <TableCell<ITalentPerformanceTalentMonitoring> name="action">
           {({ row }) => (
             <div className="flex items-center gap-2">
-              {profile?.role?.id === 2 &&
-                row?.hardskill === 0 &&
-                row?.softskill === 0 &&
-                !row?.notes && (
-                  <Button
-                    size={"sm"}
-                    onClick={() => {
-                      setSelectedPerformance(row);
-                      toggleModalRatingPerformance(true);
-                    }}
-                  >
-                    <Pencil className="w-4 h-4" />
-                    Rate Performance
-                  </Button>
-                )}
+              {row?.isedit ? (
+                <Button
+                  size={"sm"}
+                  onClick={() => {
+                    setSelectedPerformance(row);
+                    toggleModalRatingPerformance(true);
+                  }}
+                >
+                  <Pencil className="w-4 h-4" />
+                  Rate Performance
+                </Button>
+              ) : (
+                <span>-</span>
+              )}
             </div>
           )}
         </TableCell>

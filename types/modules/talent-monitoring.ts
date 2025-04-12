@@ -132,6 +132,7 @@ export interface ITalentPerformanceTalentMonitoring {
   hardskill: number;
   total_point: string;
   notes: string;
+  isedit: boolean;
 }
 
 export interface ITimesheetHistoryTalentMonitoring {
