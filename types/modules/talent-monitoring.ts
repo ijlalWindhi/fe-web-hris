@@ -115,14 +115,9 @@ export interface IHistoryContractTalentMonitoring {
 }
 
 export interface IPayrollDetailsTaletMonitoring {
-  month: string;
-  gaji_pokok: number;
-  tunjangan_makan: number;
-  bpjs_kesehatan: number;
-  pajak_pph21: number;
-  bonus: number;
-  agency_fee: number;
-  total: number;
+  bulan: string;
+  header_table: string[];
+  value: string[];
 }
 
 export interface ITalentPerformanceTalentMonitoring {
