@@ -8,8 +8,13 @@ import {
   getDetailInformationMasterClient,
   getOptionMasterClient,
   getOptionOutlet,
+  uploadSignature,
 } from "@/services/master-client";
-import { TSearchParams, TPayloadMasterClient } from "@/types";
+import {
+  TSearchParams,
+  TPayloadMasterClient,
+  TPayloadSignature,
+} from "@/types";
 
 export function useMasterClientList(params: TSearchParams) {
   return useQuery({
@@ -77,5 +82,21 @@ export function useOptionOutlet(client_id?: string) {
     queryKey: ["outletOption", client_id],
     queryFn: () => getOptionOutlet(client_id),
     enabled: !!client_id,
+  });
+}
+
+export function useUploadSignature() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: TPayloadSignature[]) => uploadSignature(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["masterClientList"] });
+      queryClient.invalidateQueries({
+        queryKey: ["masterClientDetailInformation"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["masterClientDetail"],
+      });
+    },
   });
 }

@@ -19,11 +19,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DataRow from "@/components/common/data-row";
 import { InputField } from "@/components/common/input-field";
 import { FileUpload } from "@/components/common/input-file";
+import { Button } from "@/components/ui/button";
 
 import useMasterClient from "@/stores/master-client";
-import type { IListOutlet } from "@/types";
+import useTheme from "@/stores/theme";
+import type { IListOutlet, TPayloadSignature } from "@/types";
 import { UploadSignatureSchema } from "../schemas/master-client.schema";
-import { useDetailInformationMasterClient } from "../hooks/useMasterClient";
+import {
+  useDetailInformationMasterClient,
+  useUploadSignature,
+} from "../hooks/useMasterClient";
+import { uploadFile } from "@/services/file";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -55,19 +61,70 @@ export default function DetailMasterClient() {
     selectedData,
     toggleModalDetailMasterClient,
   } = useMasterClient();
+  const { setModalSuccess } = useTheme();
   const { data, refetch } = useDetailInformationMasterClient(
     selectedData?.id ?? "",
   );
+  const uploadSignature = useUploadSignature();
   const form = useForm<z.infer<typeof UploadSignatureSchema>>({
     resolver: zodResolver(UploadSignatureSchema),
     defaultValues: {
       manager: null,
+      technical: null,
+      role1: null,
+      role2: null,
+      role3: null,
     },
   });
 
   // functions
+  const handleClose = () => {
+    toggleModalDetailMasterClient(false);
+    form.reset();
+  };
+
   const onSubmit = async (values: z.infer<typeof UploadSignatureSchema>) => {
-    console.log(values);
+    try {
+      const clientId = data?.data?.id_client ?? "";
+      const roleTypes = [
+        "manager",
+        "technical",
+        "role1",
+        "role2",
+        "role3",
+      ] as const;
+
+      const payload: TPayloadSignature[] = roleTypes.map((type) => ({
+        id: clientId,
+        type,
+        file: "",
+      }));
+
+      const uploadPromises = roleTypes.map(async (type, index) => {
+        const file = values[type];
+        if (file) {
+          payload[index].file = await uploadFile(file);
+        }
+      });
+
+      await Promise.all(uploadPromises);
+
+      const res = await uploadSignature.mutateAsync(payload);
+
+      if (res.status === "success") {
+        setModalSuccess({
+          open: true,
+          title: "Signature Uploaded",
+          message: "The digital signature has been uploaded successfully.",
+          actionVariant: "default",
+          actionMessage: "Back",
+          action: () => {},
+          animation: "success",
+        });
+      }
+    } catch (error) {
+      console.error("Error uploading signatures:", error);
+    }
   };
 
   // lifecycle
@@ -78,10 +135,7 @@ export default function DetailMasterClient() {
   }, [selectedData, refetch]);
 
   return (
-    <Sheet
-      open={modalDetailMasterClient}
-      onOpenChange={() => toggleModalDetailMasterClient(false)}
-    >
+    <Sheet open={modalDetailMasterClient} onOpenChange={() => handleClose()}>
       <SheetContent className="!min-w-[100vw] md:!min-w-[60vw] lg:!min-w-[40vw] overflow-y-auto">
         <SheetHeader>
           <SheetTitle>View Master Client</SheetTitle>
@@ -152,9 +206,65 @@ export default function DetailMasterClient() {
                       {...field}
                       maxSize={5}
                       supportedFormats={["image/jpeg", "image/png"]}
+                      defaultImage={data?.data?.manager_signature}
                     />
                   )}
                 />
+                <InputField
+                  name="technical"
+                  label="Upload Digital Signature as Technical"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FileUpload
+                      {...field}
+                      maxSize={5}
+                      supportedFormats={["image/jpeg", "image/png"]}
+                      defaultImage={data?.data?.technical_signature}
+                    />
+                  )}
+                />
+                <InputField
+                  name="role1"
+                  label="Upload Digital Signature as Role 1"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FileUpload
+                      {...field}
+                      maxSize={5}
+                      supportedFormats={["image/jpeg", "image/png"]}
+                      defaultImage={data?.data?.role1_signature}
+                    />
+                  )}
+                />
+                <InputField
+                  name="role2"
+                  label="Upload Digital Signature as Role 2"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FileUpload
+                      {...field}
+                      maxSize={5}
+                      supportedFormats={["image/jpeg", "image/png"]}
+                      defaultImage={data?.data?.role2_signature}
+                    />
+                  )}
+                />
+                <InputField
+                  name="role3"
+                  label="Upload Digital Signature as Role 3"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FileUpload
+                      {...field}
+                      maxSize={5}
+                      supportedFormats={["image/jpeg", "image/png"]}
+                      defaultImage={data?.data?.role3_signature}
+                    />
+                  )}
+                />
+                <Button type="submit" className="w-full">
+                  Submit
+                </Button>
               </form>
             </Form>
           </TabsContent>

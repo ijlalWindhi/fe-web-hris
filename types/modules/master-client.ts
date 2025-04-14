@@ -83,6 +83,9 @@ export interface IResponseDetailInformationMasterClient {
   total_active: string;
   manager_signature: string;
   technical_signature: string;
+  role1_signature: string;
+  role2_signature: string;
+  role3_signature: string;
   cs_person: string;
   cs_number: string;
   cs_email: string;
@@ -152,3 +155,9 @@ export interface IOutletList {
   longitude: number;
   index: number;
 }
+
+export type TPayloadSignature = {
+  id: string;
+  type: string;
+  file: string;
+};

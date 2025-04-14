@@ -7,6 +7,7 @@ import {
   IResponseOptionMasterClient,
   IResponseOptionOutlet,
   TPayloadMasterClient,
+  TPayloadSignature,
   TSearchParams,
 } from "@/types";
 
@@ -132,6 +133,21 @@ export async function getOptionOutlet(
     return response.data;
   } catch (error) {
     console.error("Error from service getOptionOutlet: ", error);
+    throw error;
+  }
+}
+
+export async function uploadSignature(
+  data: TPayloadSignature[],
+): Promise<IResponse<null>> {
+  try {
+    const response = await axios.post<IResponse<null>>(
+      `/client/add-signature`,
+      data,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service uploadSignature: ", error);
     throw error;
   }
 }

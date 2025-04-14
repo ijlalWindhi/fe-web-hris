@@ -71,4 +71,32 @@ export const UploadSignatureSchema = z.object({
     .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
       message: "Ukuran file maksimal 5MB",
     }),
+  technical: z
+    .instanceof(File)
+    .optional()
+    .nullable()
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+      message: "Ukuran file maksimal 5MB",
+    }),
+  role1: z
+    .instanceof(File)
+    .optional()
+    .nullable()
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+      message: "Ukuran file maksimal 5MB",
+    }),
+  role2: z
+    .instanceof(File)
+    .optional()
+    .nullable()
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+      message: "Ukuran file maksimal 5MB",
+    }),
+  role3: z
+    .instanceof(File)
+    .optional()
+    .nullable()
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+      message: "Ukuran file maksimal 5MB",
+    }),
 });
