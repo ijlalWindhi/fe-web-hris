@@ -22,13 +22,14 @@ import {
   useDetailMasterClient,
 } from "../hooks/useMasterClient";
 import { uploadFile } from "@/services/file";
-import { TPayloadMasterClient } from "@/types";
+import { IResponseDetailMasterClient, TPayloadMasterClient } from "@/types";
 import { formatDate } from "@/utils/format-date";
 import { fieldToTabMapping } from "@/constants/master-client";
 
 export default function ModalTalent() {
   // variables
   const [file, setFile] = useState<File | null>(null);
+  const [fileContract, setFileContract] = useState<File | null>(null);
   const [activeTab, setActiveTab] = useState<string>("client_information");
   const {
     modalMasterClient,
@@ -50,6 +51,8 @@ export default function ModalTalent() {
       cs_person: "",
       cs_number: "",
       cs_email: "",
+      start_contract: "",
+      end_contract: "",
       outlet: [],
       basic_salary: 0,
       agency_fee: 0,
@@ -139,6 +142,7 @@ export default function ModalTalent() {
       const payload: TPayloadMasterClient = {
         ...values,
         photo: "",
+        file_contract: "",
         outlet: modifiedOutlets,
         basic_salary: values.basic_salary,
         agency_fee: values.agency_fee,
@@ -155,6 +159,16 @@ export default function ModalTalent() {
           formatFrom: "dd MMMM yyyy",
           formatTo: "dd-MM-yyyy",
         }),
+        start_contract: formatDate({
+          inputDate: values.start_contract,
+          formatFrom: "dd MMMM yyyy",
+          formatTo: "dd-MM-yyyy",
+        }),
+        end_contract: formatDate({
+          inputDate: values.end_contract,
+          formatFrom: "dd MMMM yyyy",
+          formatTo: "dd-MM-yyyy",
+        }),
       };
 
       if (file) {
@@ -162,6 +176,13 @@ export default function ModalTalent() {
         payload.photo = response;
       } else {
         payload.photo = selectedData?.photo ?? "";
+      }
+
+      if (fileContract) {
+        const response = await uploadFile(fileContract);
+        payload.file_contract = response;
+      } else {
+        payload.file_contract = detailData?.data?.file_contract ?? "";
       }
 
       if (selectedData) {
@@ -243,6 +264,20 @@ export default function ModalTalent() {
               formatTo: "dd MMMM yyyy",
             })
           : "",
+        start_contract: data?.start_contract
+          ? formatDate({
+              inputDate: data?.start_contract ?? "",
+              formatFrom: "dd-MM-yyyy",
+              formatTo: "dd MMMM yyyy",
+            })
+          : "",
+        end_contract: data?.end_contract
+          ? formatDate({
+              inputDate: data?.end_contract ?? "",
+              formatFrom: "dd-MM-yyyy",
+              formatTo: "dd MMMM yyyy",
+            })
+          : "",
       };
       form.reset(formattedData);
     }
@@ -281,7 +316,7 @@ export default function ModalTalent() {
             width="w-16 md:w-20"
             height="h-16 md:h-20"
             onFileChange={(file) => setFile(file)}
-            defaultImage={selectedData?.photo}
+            defaultImage={detailData?.data?.photo}
           />
           <Tabs
             value={activeTab}
@@ -296,7 +331,11 @@ export default function ModalTalent() {
               <TabsTrigger value="payroll">Payroll</TabsTrigger>
             </TabsList>
             <TabsContent value="client_information">
-              <ClientInformation form={form} />
+              <ClientInformation
+                form={form}
+                setFileContract={setFileContract}
+                detailData={detailData?.data as IResponseDetailMasterClient}
+              />
             </TabsContent>
             <TabsContent value="outlet_list">
               <OutletList form={form} />

@@ -24,6 +24,8 @@ export const CreateMasterClientSchema = z.object({
     .string()
     .nonempty("CS Email is required")
     .email("Invalid CS Email"),
+  start_contract: z.string().nonempty("Start Contract Date is required"),
+  end_contract: z.string().nonempty("End Contract Date is required"),
   outlet: z
     .array(
       z.object({

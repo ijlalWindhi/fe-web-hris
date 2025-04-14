@@ -37,6 +37,7 @@ export interface IResponseDetailMasterClient {
   id: string;
   name: string;
   address: string;
+  photo: string;
   outlet: {
     id_outlet: string;
     name: string;
@@ -61,6 +62,9 @@ export interface IResponseDetailMasterClient {
   cs_person: string;
   cs_number: string;
   cs_email: string;
+  start_contract: string;
+  end_contract: string;
+  file_contract: string;
 }
 
 export interface IResponseDetailInformationMasterClient {
@@ -126,6 +130,9 @@ export type TPayloadMasterClient = {
   cs_person: string;
   cs_number: string;
   cs_email: string;
+  start_contract: string;
+  end_contract: string;
+  file_contract: string;
 };
 
 export interface IListOutlet {
