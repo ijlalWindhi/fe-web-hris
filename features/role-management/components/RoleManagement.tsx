@@ -14,10 +14,12 @@ import { Badge } from "@/components/ui/badge";
 import InputSearch from "@/components/common/input-search";
 import { PaginationCompo } from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
+import ModalPermission from "./ModalPermission";
 
 import { useRoleList } from "../hooks/useRoleManagement";
-import { TSearchParams } from "@/types";
+import { IResponseRoleManagement, TSearchParams } from "@/types";
 import { useSetParams } from "@/utils/set-params";
+import useRoleManagement from "@/stores/role-management";
 
 export default function RoleManagement() {
   // variables
@@ -29,6 +31,7 @@ export default function RoleManagement() {
     src: searchParams.get("src") ?? undefined,
   });
   const { data } = useRoleList(queryParams);
+  const { setSelectedData, toggleModalRole } = useRoleManagement();
 
   // functions
   const handleSearch = useCallback(
@@ -68,6 +71,11 @@ export default function RoleManagement() {
     } catch (error) {
       console.error("Error from handlePageChange:", error);
     }
+  };
+
+  const handleClick = (data: IResponseRoleManagement) => {
+    setSelectedData(data);
+    toggleModalRole(true);
   };
 
   return (
@@ -119,15 +127,28 @@ export default function RoleManagement() {
                     </li>
                   )}
                 </ul>
-                <Link href={`/user-management/role-management/${role.id}`}>
+                <div className="flex justify-between gap-4">
+                  <Link
+                    href={`/user-management/role-management/${role.id}`}
+                    className="w-full"
+                  >
+                    <Button
+                      variant={"outline"}
+                      size={"sm"}
+                      className="!mt-4 w-full"
+                    >
+                      View More
+                    </Button>
+                  </Link>
                   <Button
                     variant={"outline"}
                     size={"sm"}
-                    className="!mt-4 w-1/2"
+                    className="!mt-4 w-full"
+                    onClick={() => handleClick(role)}
                   >
-                    View More
+                    Edit
                   </Button>
-                </Link>
+                </div>
               </div>
             );
           })}
@@ -146,6 +167,7 @@ export default function RoleManagement() {
           onPageChange={(data) => handlePageChange(data)}
         />
       </CardFooter>
+      <ModalPermission />
     </Card>
   );
 }
