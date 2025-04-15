@@ -20,7 +20,7 @@ function AuthLayout({
               alt="Logo"
               width={200}
               height={200}
-              className="absolute w-16 top-4 left-1/2 transform -translate-x-1/2 sm:left-10 sm:translate-x-0 lg:top-4 lg:left-10 lg:w-20 xl:left-6 xl:top-6 xl:w-48"
+              className="absolute w-44 top-6 left-1/2 transform -translate-x-1/2 sm:left-10 sm:translate-x-0 lg:top-4 lg:left-10 lg:w-20 xl:left-6 xl:top-6 xl:w-48"
             />
           </Link>
         </div>
