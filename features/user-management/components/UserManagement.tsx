@@ -21,6 +21,7 @@ import useUserManagement from "@/stores/user-management";
 import { TSearchParams } from "@/types";
 import { useSetParams } from "@/utils/set-params";
 import { useUserList } from "../hooks/useUserManagement";
+import { hasPermission } from "@/utils/get-permission";
 
 export default function UserManagement() {
   // variables
@@ -92,14 +93,17 @@ export default function UserManagement() {
               defaultValue={queryParams.src}
             />
           </div>
-          {/* <Button
-            size="sm"
-            className="w-full md:w-auto"
-            onClick={() => toggleModalUserManagement(true)}
-          >
-            <Plus size={16} />
-            Register User
-          </Button> */}
+          {hasPermission("User Management", "create") && (
+            <Button
+              size="sm"
+              className="w-full md:w-auto"
+              variant="outline"
+              onClick={() => toggleModalUserManagement(true)}
+            >
+              <Plus size={16} />
+              Register User
+            </Button>
+          )}
         </div>
       </CardHeader>
       <CardContent>
