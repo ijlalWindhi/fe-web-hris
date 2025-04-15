@@ -97,7 +97,6 @@ export default function UserManagement() {
             <Button
               size="sm"
               className="w-full md:w-auto"
-              variant="outline"
               onClick={() => toggleModalUserManagement(true)}
             >
               <Plus size={16} />
