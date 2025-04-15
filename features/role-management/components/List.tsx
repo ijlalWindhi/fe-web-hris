@@ -22,6 +22,7 @@ import {
 } from "@/features/user-management/hooks/useUserManagement";
 import { useUserRole } from "../hooks/useRoleManagement";
 import useUserManagement from "@/stores/user-management";
+import { hasPermission } from "@/utils/get-permission";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -150,6 +151,7 @@ export default function List({ queryParams, id }: Readonly<IListProps>) {
             <Switch
               checked={row.status}
               onClick={() => handleChangeStatus(row?.id_user)}
+              disabled={!hasPermission("Role Management", "edit")}
             />
             <span>{row.status ? "Active" : "Inactive"}</span>
           </div>
@@ -166,27 +168,32 @@ export default function List({ queryParams, id }: Readonly<IListProps>) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => {
-                    setTimeout(() => {
-                      setSelectedData(row);
-                      toggleModalUserManagement(true);
-                    }, 100);
-                  }}
-                >
-                  <Pencil className="h-5 w-5" />
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setTimeout(() => {
-                      handleDelete(row.id_user);
-                    }, 100);
-                  }}
-                >
-                  <Trash className="h-5 w-5" />
-                  Delete
-                </DropdownMenuItem>
+                {hasPermission("Role Management", "edit") && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setTimeout(() => {
+                        setSelectedData(row);
+                        toggleModalUserManagement(true);
+                      }, 100);
+                    }}
+                  >
+                    <Pencil className="h-5 w-5" />
+                    Edit
+                  </DropdownMenuItem>
+                )}
+                {hasPermission("Role Management", "delete") && (
+                  <DropdownMenuItem
+                    className="text-red-500"
+                    onClick={() => {
+                      setTimeout(() => {
+                        handleDelete(row.id_user);
+                      }, 100);
+                    }}
+                  >
+                    <Trash className="h-5 w-5" />
+                    Delete
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
