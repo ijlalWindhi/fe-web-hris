@@ -30,6 +30,7 @@ import {
   useUploadSignature,
 } from "../hooks/useMasterClient";
 import { uploadFile } from "@/services/file";
+import { hasPermission } from "@/utils/get-permission";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -262,9 +263,11 @@ export default function DetailMasterClient() {
                     />
                   )}
                 />
-                <Button type="submit" className="w-full">
-                  Submit
-                </Button>
+                {hasPermission("Master Client", "edit") && (
+                  <Button type="submit" className="w-full">
+                    Submit
+                  </Button>
+                )}
               </form>
             </Form>
           </TabsContent>
