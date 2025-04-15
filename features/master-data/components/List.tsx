@@ -20,6 +20,7 @@ import {
   useDeleteMasterHoliday,
   useMasterHolidayList,
 } from "../hooks/useMasterData";
+import { hasPermission } from "@/utils/get-permission";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -116,27 +117,32 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => {
-                    setTimeout(() => {
-                      setSelectedData(row);
-                      toggleModalMasterHoliday(true);
-                    }, 100);
-                  }}
-                >
-                  <Pencil className="h-5 w-5" />
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setTimeout(() => {
-                      handleDelete(row.id);
-                    }, 100);
-                  }}
-                >
-                  <Trash className="h-5 w-5" />
-                  Delete
-                </DropdownMenuItem>
+                {hasPermission("Master Data", "edit") && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setTimeout(() => {
+                        setSelectedData(row);
+                        toggleModalMasterHoliday(true);
+                      }, 100);
+                    }}
+                  >
+                    <Pencil className="h-5 w-5" />
+                    Edit
+                  </DropdownMenuItem>
+                )}
+                {hasPermission("Master Data", "delete") && (
+                  <DropdownMenuItem
+                    className="text-red-500"
+                    onClick={() => {
+                      setTimeout(() => {
+                        handleDelete(row.id);
+                      }, 100);
+                    }}
+                  >
+                    <Trash className="h-5 w-5" />
+                    Delete
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
