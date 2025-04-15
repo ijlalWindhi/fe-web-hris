@@ -17,6 +17,7 @@ import { useAttendance } from "../hooks/useTalentMonitoring";
 import { truncateText } from "@/utils/truncate";
 import { SearchSchema } from "../schemas/talent-monitoring.schema";
 import useTalentMonitoring from "@/stores/talent-monitoring";
+import { hasPermission } from "@/utils/get-permission";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -151,7 +152,7 @@ export default function AttendanceLeave({
         <TableCell<ILeaveSubmissionTalentMonitoring> name="action">
           {({ row }) => (
             <>
-              {row?.isedit ? (
+              {row?.isedit && hasPermission("Talent Monitoring", "edit") ? (
                 <div className="flex items-center gap-1">
                   <Button
                     size="sm"

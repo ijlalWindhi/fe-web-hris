@@ -33,7 +33,9 @@ export default function PayrollDetails({
                 rowSpan={monthData.header_table.length}
                 className="border px-4 py-2 text-left align-top"
               >
-                {month}
+                <div className="flex justify-center items-center h-full">
+                  {month}
+                </div>
               </td>
             ) : null}
             <td className="border px-4 py-2">{type}</td>
@@ -72,7 +74,7 @@ export default function PayrollDetails({
       <table className="w-full">
         <thead>
           <tr className="text-muted-foreground text-sm font-medium">
-            <th className="h-10 px-4">Month</th>
+            <th className="h-10 px-4 w-40">Month</th>
             <th className="h-10 px-4">Type</th>
             <th className="h-10 px-4">Amount</th>
             <th className="h-10 px-4 w-32">Action</th>
