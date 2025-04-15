@@ -20,28 +20,41 @@ export const createTalentMappingSchema = (roleId: number) => {
       .min(10, "Phone number must be at least 10 characters")
       .max(15, "Phone number must be at most 15 characters"),
     address: z.string().nonempty("Address is required"),
-    client_name: z.string().nonempty("Client Name is required"),
+    client_name: z.string().optional().nullable(),
     client_id: z.string().optional().nullable(),
     client_address: z.string().optional().nullable(),
-    outlet_mapping: z.string().nonempty("Outlet Mapping is required"),
+    outlet_mapping: z.string().optional().nullable(),
     outlet_id: z.string().optional().nullable(),
     outlet_address: z.string().optional().nullable(),
     outlet_lat: z.string().optional().nullable(),
     outlet_long: z.string().optional().nullable(),
   });
 
-  if (roleId === 2) {
-    return baseSchema.extend({
-      contract_start_date: z
-        .string()
-        .nonempty("Contract Start Date is required"),
-      contract_end_date: z.string().nonempty("Contract End Date is required"),
-    });
-  }
+  const schemaWithContract =
+    roleId === 2
+      ? baseSchema.extend({
+          contract_start_date: z
+            .string()
+            .nonempty("Contract Start Date is required"),
+          contract_end_date: z
+            .string()
+            .nonempty("Contract End Date is required"),
+        })
+      : baseSchema.extend({
+          contract_start_date: z.string().optional(),
+          contract_end_date: z.string().optional(),
+        });
 
-  return baseSchema.extend({
-    contract_start_date: z.string().optional(),
-    contract_end_date: z.string().optional(),
+  return schemaWithContract.superRefine((data, ctx) => {
+    if (data.client_name && data.client_name.trim() !== "") {
+      if (!data.outlet_mapping || data.outlet_mapping.trim() === "") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Outlet Mapping is required when Client Name is provided",
+          path: ["outlet_mapping"],
+        });
+      }
+    }
   });
 };
 
