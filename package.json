@@ -1,7 +1,10 @@
 {
-  "name": "nextjs-boilerplate",
+  "name": "outsourcing-management-information-system",
+  "description": "A web application for managing outsourcing information.",
+  "author": "PT Progress Citra Sempurna",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
