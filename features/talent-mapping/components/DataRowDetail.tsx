@@ -4,13 +4,18 @@ import { Download } from "lucide-react";
 interface IDataRowProps {
   label: string;
   value: string | null;
+  url?: string;
 }
 
-export default function DataRow({ label, value }: Readonly<IDataRowProps>) {
+export default function DataRow({
+  label,
+  value,
+  url,
+}: Readonly<IDataRowProps>) {
   // functions
   const handleDownload = () => {
     try {
-      window.open(value ?? "-", "_blank");
+      window.open(url ?? value ?? "-", "_blank");
     } catch (error) {
       console.error("Error from handleDownload: ", error);
     }

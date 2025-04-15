@@ -122,6 +122,7 @@ export default function MappingInformationDetail() {
         value={
           truncateText(data?.data?.mapping?.contract?.file ?? "-", 20) ?? "-"
         }
+        url={data?.data?.mapping?.contract?.file ?? "-"}
       />
       <Badge
         variant={"outline"}
