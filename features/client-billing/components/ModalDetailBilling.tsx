@@ -82,7 +82,7 @@ export default function ModalDetailBilling() {
           </p>
         </div>
 
-        <div className="pt-6">
+        <div className="pt-6 max-h-[50vh] overflow-y-auto">
           <div className="grid grid-cols-4 text-sm px-3 font-medium border-b pb-2">
             <div>Keterangan</div>
             <div className="text-right">Rp.</div>
