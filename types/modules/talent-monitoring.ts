@@ -119,6 +119,8 @@ export interface IPayrollDetailsTaletMonitoring {
   bulan: string;
   header_table: string[];
   value: string[];
+  file: string;
+  file_name: string;
 }
 
 export interface ITalentPerformanceTalentMonitoring {
