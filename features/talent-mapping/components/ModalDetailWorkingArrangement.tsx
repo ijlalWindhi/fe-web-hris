@@ -13,17 +13,20 @@ import "@schedule-x/theme-default/dist/index.css";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { endOfMonth, format, startOfMonth } from "date-fns";
+import { id } from "date-fns/locale";
 
 import { Form } from "@/components/ui/form";
 import { InputField } from "@/components/common/input-field";
 import InputCombobox from "@/components/common/input-combobox";
 import DialogAction from "@/components/common/dialog-action";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/common/input-date-picket";
 
 import useTalentMapping from "@/stores/talent-mapping";
+import useAuth from "@/stores/auth";
 import { useShiftCalender } from "../hooks/useTalentMapping";
 import { SearchWorkingArrangementSchema } from "../schemas/talent-mapping.schema";
-import { DatePicker } from "@/components/common/input-date-picket";
 import { formatDate } from "@/utils/format-date";
 
 export default function ModalDetailWorkingArrangement() {
@@ -38,6 +41,7 @@ export default function ModalDetailWorkingArrangement() {
     fetchOptionsOutlet,
     fetchOptionsClient,
   } = useTalentMapping();
+  const { profile } = useAuth();
   const form = useForm<z.infer<typeof SearchWorkingArrangementSchema>>({
     resolver: zodResolver(SearchWorkingArrangementSchema),
     defaultValues: {
@@ -104,6 +108,16 @@ export default function ModalDetailWorkingArrangement() {
       fetchOptionsClient();
       form.setValue("client_id", clientId?.toString());
       form.setValue("outlet_id", outletId?.toString());
+      form.setValue(
+        "start_date",
+        format(startOfMonth(new Date()), "dd MMMM yyyy", {
+          locale: id,
+        }),
+      );
+      form.setValue(
+        "end_date",
+        format(endOfMonth(new Date()), "dd MMMM yyyy", { locale: id }),
+      );
       if (clientId) {
         fetchOptionsOutlet(clientId);
       }
@@ -185,6 +199,7 @@ export default function ModalDetailWorkingArrangement() {
                   }
                   placeholder="Select client name"
                   onChange={(value) => handleClientChange(value)}
+                  disabled={profile?.role?.id === 2}
                 />
               )}
             />
