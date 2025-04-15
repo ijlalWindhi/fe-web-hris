@@ -75,7 +75,7 @@ export default function PayrollDetails({
             <th className="h-10 px-4">Month</th>
             <th className="h-10 px-4">Type</th>
             <th className="h-10 px-4">Amount</th>
-            <th className="h-10 px-4">Action</th>
+            <th className="h-10 px-4 w-32">Action</th>
           </tr>
         </thead>
         <tbody>{renderTableRows()}</tbody>
