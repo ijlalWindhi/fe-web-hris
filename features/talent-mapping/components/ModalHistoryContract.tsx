@@ -58,33 +58,35 @@ export default function ModalHistoryContract() {
       title={"History Contract"}
       className="max-w-full md:max-w-xl"
     >
-      <Table<IResponseHistoryTalentMapping>
-        header={TableHeader}
-        data={data?.data ?? []}
-        loading={isLoading}
-        className="!p-0"
-      >
-        <TableCell<IResponseHistoryTalentMapping> name="contract_date">
-          {({ row }) => (
-            <div className="flex items-center gap-1">
-              <span>{row.start_date}</span>
-              <span>-</span>
-              <span>{row.end_date}</span>
-            </div>
-          )}
-        </TableCell>
-        <TableCell<IResponseHistoryTalentMapping> name="action">
-          {({ row }) => (
-            <Button
-              size={"icon"}
-              variant="outline"
-              onClick={() => handleDownload(row.file)}
-            >
-              <Download size={20} />
-            </Button>
-          )}
-        </TableCell>
-      </Table>
+      <div className="max-h-[50vh] overflow-y-auto">
+        <Table<IResponseHistoryTalentMapping>
+          header={TableHeader}
+          data={data?.data ?? []}
+          loading={isLoading}
+          className="!p-0"
+        >
+          <TableCell<IResponseHistoryTalentMapping> name="contract_date">
+            {({ row }) => (
+              <div className="flex items-center gap-1">
+                <span>{row.start_date}</span>
+                <span>-</span>
+                <span>{row.end_date}</span>
+              </div>
+            )}
+          </TableCell>
+          <TableCell<IResponseHistoryTalentMapping> name="action">
+            {({ row }) => (
+              <Button
+                size={"icon"}
+                variant="outline"
+                onClick={() => handleDownload(row.file)}
+              >
+                <Download size={20} />
+              </Button>
+            )}
+          </TableCell>
+        </Table>
+      </div>
     </DialogAction>
   );
 }
