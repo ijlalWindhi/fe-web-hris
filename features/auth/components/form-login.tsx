@@ -36,7 +36,7 @@ export default function FormLogin() {
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     try {
       const res = await login.mutateAsync(values);
-      if (res) {
+      if (!res?.data?.change_password) {
         setModalSuccess({
           open: true,
           title: "Login Success",
@@ -45,6 +45,19 @@ export default function FormLogin() {
           actionMessage: "Go to Dashboard",
           action: () => {
             router.push("/");
+          },
+          animation: "success",
+        });
+      } else if (res?.data?.change_password) {
+        setModalSuccess({
+          open: true,
+          title: "Change Password Required",
+          message:
+            "This is your first time logging in. Please change your password to continue.",
+          actionVariant: "default",
+          actionMessage: "Change Password",
+          action: () => {
+            router.push("/auth/first-login");
           },
           animation: "success",
         });

@@ -1,19 +1,24 @@
 import axios from "@/lib/axios";
 import {
-  IResponseMessage,
-  IResponsePagination,
-  INavItem,
+  IResponse,
   TPayloadLogin,
   TResponseLogin,
   TPayloadResetPassword,
   TPayloadNewPassword,
   TResponseProfile,
   TResponsePermission,
+  TResponseMenu,
+  TPayloadFirstLogin,
 } from "@/types";
 
-export async function login(data: TPayloadLogin): Promise<TResponseLogin> {
+export async function login(
+  data: TPayloadLogin,
+): Promise<IResponse<TResponseLogin>> {
   try {
-    const response = await axios.post<TResponseLogin>("/auth/login", data);
+    const response = await axios.post<IResponse<TResponseLogin>>(
+      "/auth/login",
+      data,
+    );
     return response.data;
   } catch (error) {
     console.error("Error from service login: ", error);
@@ -21,9 +26,9 @@ export async function login(data: TPayloadLogin): Promise<TResponseLogin> {
   }
 }
 
-export async function getProfile(): Promise<TResponseProfile> {
+export async function getProfile(): Promise<IResponse<TResponseProfile>> {
   try {
-    const response = await axios.get<TResponseProfile>("/auth/me");
+    const response = await axios.get<IResponse<TResponseProfile>>("/auth/me");
     return response.data;
   } catch (error) {
     console.error("Error from service getProfile: ", error);
@@ -32,13 +37,11 @@ export async function getProfile(): Promise<TResponseProfile> {
 }
 
 export async function getPermissions(): Promise<
-  IResponsePagination<TResponsePermission[]>
+  IResponse<TResponsePermission>
 > {
   try {
     const response =
-      await axios.get<IResponsePagination<TResponsePermission[]>>(
-        "/auth/permissions",
-      );
+      await axios.get<IResponse<TResponsePermission>>("/auth/permissions");
     return response.data;
   } catch (error) {
     console.error("Error from service getPermissions: ", error);
@@ -46,10 +49,9 @@ export async function getPermissions(): Promise<
   }
 }
 
-export async function getMenu(): Promise<IResponsePagination<INavItem[]>> {
+export async function getMenu(): Promise<IResponse<TResponseMenu>> {
   try {
-    const response =
-      await axios.get<IResponsePagination<INavItem[]>>("/auth/menu");
+    const response = await axios.get<IResponse<TResponseMenu>>("/auth/menu");
     return response.data;
   } catch (error) {
     console.error("Error from service getMenu: ", error);
@@ -59,7 +61,7 @@ export async function getMenu(): Promise<IResponsePagination<INavItem[]>> {
 
 export async function resetPassword(
   data: TPayloadResetPassword,
-): Promise<IResponseMessage> {
+): Promise<IResponse> {
   try {
     const response = await axios.post("/auth/forgot-password/send-email", data);
     return response.data;
@@ -71,7 +73,7 @@ export async function resetPassword(
 
 export async function newPassword(
   data: TPayloadNewPassword,
-): Promise<IResponseMessage> {
+): Promise<IResponse> {
   try {
     const response = await axios.post(
       "/auth/forgot-password/change-password",
@@ -80,6 +82,16 @@ export async function newPassword(
     return response.data;
   } catch (error) {
     console.error("Error from service newPassword: ", error);
+    throw error;
+  }
+}
+
+export async function firstLogin(data: TPayloadFirstLogin): Promise<IResponse> {
+  try {
+    const response = await axios.post("/auth/first-login", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error from service firstLogin: ", error);
     throw error;
   }
 }

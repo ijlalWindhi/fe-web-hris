@@ -8,17 +8,17 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Form } from "@/components/ui/form";
+import { InputField } from "@/components/common/input-field";
 import { DatePickerWithRange } from "@/components/common/input-date-picker-range";
 import { Button } from "@/components/ui/button";
+
 import { cn } from "@/utils/utils";
+import { SearchSchema } from "@/utils/global.schema";
 
 const data = [
   {
@@ -30,24 +30,24 @@ const data = [
   },
   {
     date: "2 Jan",
-    Attend: 50,
-    Sick: 20,
-    Leave: 25,
+    Attend: 0,
+    Sick: 0,
+    Leave: 0,
     "Out of City": 0,
   },
   {
     date: "3 Jan",
-    Attend: 30,
-    Sick: 45,
-    Leave: 8,
-    "Out of City": 5,
+    Attend: 0,
+    Sick: 0,
+    Leave: 0,
+    "Out of City": 0,
   },
   {
     date: "4 Jan",
     Attend: 0,
     Sick: 0,
     Leave: 0,
-    "Out of City": 8,
+    "Out of City": 0,
   },
   {
     date: "5 Jan",
@@ -58,43 +58,52 @@ const data = [
   },
   {
     date: "6 Jan",
-    Attend: 40,
-    Sick: 15,
+    Attend: 0,
+    Sick: 0,
     Leave: 0,
-    "Out of City": 8,
+    "Out of City": 0,
   },
   {
     date: "7 Jan",
-    Attend: 30,
-    Sick: 8,
-    Leave: 60,
-    "Out of City": 45,
+    Attend: 0,
+    Sick: 0,
+    Leave: 0,
+    "Out of City": 0,
   },
   {
     date: "8 Jan",
-    Attend: 10,
-    Sick: 8,
-    Leave: 15,
-    "Out of City": 40,
+    Attend: 0,
+    Sick: 0,
+    Leave: 0,
+    "Out of City": 0,
   },
   {
     date: "9 Jan",
-    Attend: 8,
-    Sick: 30,
-    Leave: 15,
-    "Out of City": 20,
+    Attend: 0,
+    Sick: 0,
+    Leave: 0,
+    "Out of City": 0,
   },
   {
     date: "10 Jan",
-    Attend: 40,
-    Sick: 20,
+    Attend: 0,
+    Sick: 0,
     Leave: 0,
-    "Out of City": 10,
+    "Out of City": 0,
   },
 ];
 
 export default function ChartSummary() {
   // variables
+  const form = useForm<z.infer<typeof SearchSchema>>({
+    resolver: zodResolver(SearchSchema),
+    defaultValues: {
+      search: {
+        start: undefined,
+        end: undefined,
+      },
+    },
+  });
   const [view, setView] = useState<"daily" | "weekly" | "monthly">("monthly");
   const type: ("daily" | "weekly" | "monthly")[] = [
     "daily",
@@ -109,7 +118,21 @@ export default function ChartSummary() {
           Attendance Graphics
         </h2>
         <div className="flex flex-wrap gap-2 md:items-center">
-          <DatePickerWithRange className="w-full md:w-auto" />
+          <Form {...form}>
+            <InputField
+              name="search"
+              control={form.control}
+              render={({ field }) => (
+                <DatePickerWithRange
+                  name="search"
+                  control={form.control}
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Select date range"
+                />
+              )}
+            />
+          </Form>
           {type.map((item) => (
             <Button
               key={item}

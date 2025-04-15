@@ -11,26 +11,29 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import ChartSummary from "./ChartSummary";
+import useAuth from "@/stores/auth";
 
 const stats = [
-  { value: 80, label: "🙋 Attend" },
-  { value: 80, label: "🤒 Sick" },
-  { value: 80, label: "🏝️ Leave" },
-  { value: 80, label: "🏙️ Out of City" },
+  { value: 0, label: "🙋 Attend" },
+  { value: 0, label: "🤒 Sick" },
+  { value: 0, label: "🏝️ Leave" },
+  { value: 0, label: "🏙️ Out of City" },
 ];
 
 export default function Summary() {
+  // variables
+  const { profile } = useAuth();
   return (
     <Card className="w-full lg:w-4/6 h-full">
       <CardHeader>
         <div className="flex flex-col md:flex-row md:items-center gap-2">
           <CardTitle>
             <span className="font-semibold text-2xl md:text-3xl lg:text-4xl">
-              Hello, Putri Ayu👋
+              Hello, {profile?.name ?? "-"}👋
             </span>
           </CardTitle>
-          <Badge variant={"outline"} className="w-fit">
-            <span className="text-primary">•</span> Super Admin
+          <Badge variant={"outline"} className="w-fit capitalize">
+            <span className="text-primary">•</span> {profile?.role?.name ?? "-"}
           </Badge>
         </div>
         <CardDescription>

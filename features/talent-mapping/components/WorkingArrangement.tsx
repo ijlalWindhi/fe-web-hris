@@ -1,69 +1,91 @@
 import React from "react";
-import { UseFormReturn } from "react-hook-form";
-import { z } from "zod";
+import { Info } from "lucide-react";
 
-import { InputField } from "@/components/common/input-field";
-import { Input } from "@/components/ui/input";
-import InputNumber from "@/components/common/input-number";
-import InputTimePicker from "@/components/common/input-time-picker";
+import { ITableHeader, TableCell } from "@/components/ui/table";
+import { Table } from "@/components/common/table";
+import { Button } from "@/components/ui/button";
 
-import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
+import { TShift } from "@/types";
+import useTalentMapping from "@/stores/talent-mapping";
+import { useDetailTalentMapping } from "../hooks/useTalentMapping";
 
-type TWorkingArrangmentProps = {
-  form: UseFormReturn<z.infer<typeof CreateTalentMappingSchema>>;
-};
+const TableHeader: ITableHeader[] = [
+  {
+    key: "label",
+    title: "",
+    className: "min-w-[6rem]",
+  },
+  {
+    key: "shift_id",
+    title: "",
+    className: "min-w-[8rem]",
+  },
+  {
+    key: "day",
+    title: "",
+    className: "min-w-[8rem]",
+  },
+  {
+    key: "time",
+    title: "",
+    className: "min-w-[8rem]",
+  },
+];
 
-export default function WorkingArrangement({
-  form,
-}: Readonly<TWorkingArrangmentProps>) {
+export default function WorkingArrangement() {
+  // variables
+  const {
+    selectedData,
+    toggleModalDetailWorkingArrangement,
+    setClientId,
+    setOutletId,
+  } = useTalentMapping();
+  const { data, isLoading } = useDetailTalentMapping(
+    selectedData?.talend_id ?? "",
+  );
+
   return (
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
-      <InputField
-        name="shift_id"
-        label="Shift ID"
-        primary
-        control={form.control}
-        render={({ field }) => (
-          <Input disabled placeholder="e.g. 123456" {...field} />
+      <div className="flex justify-between items-center gap-3">
+        <h2 className="font-medium text-sm">
+          Workdays : {data?.data?.workdays ?? 0}
+        </h2>
+        {selectedData && (
+          <Button
+            size="sm"
+            onClick={() => {
+              toggleModalDetailWorkingArrangement(true);
+              setClientId(data?.data?.client?.id ?? "");
+              setOutletId(data?.data?.outlet?.id ?? "");
+            }}
+            type="button"
+          >
+            <Info size={16} />
+            Detail
+          </Button>
         )}
-      />
-      <InputField
-        name="workdays"
-        label="Workdays"
-        primary
-        control={form.control}
-        render={({ field }) => <InputNumber placeholder="e.g. 1" {...field} />}
-      />
-      <div className="flex items-end justify-between gap-4">
-        <div className="w-full">
-          <InputField
-            name="start_time"
-            label="Set Time"
-            control={form.control}
-            render={({ field }) => (
-              <InputTimePicker
-                {...field}
-                value={field.value}
-                onChange={field.onChange}
-              />
-            )}
-          />
-        </div>
-        <p className="h-8">-</p>
-        <div className="w-full">
-          <InputField
-            name="end_time"
-            control={form.control}
-            render={({ field }) => (
-              <InputTimePicker
-                {...field}
-                value={field.value}
-                onChange={field.onChange}
-              />
-            )}
-          />
-        </div>
       </div>
+      <Table<TShift>
+        header={TableHeader}
+        data={data?.data?.shift ?? []}
+        loading={isLoading}
+        withoutHeader={true}
+      >
+        <TableCell<TShift> name="label">
+          {() => <span>Shift ID</span>}
+        </TableCell>
+        <TableCell<TShift> name="time">
+          {({ row }) => {
+            return (
+              <div className="flex gap-1">
+                <span>{row.start_time}</span>
+                <span>-</span>
+                <span>{row.end_time}</span>
+              </div>
+            );
+          }}
+        </TableCell>
+      </Table>
     </div>
   );
 }

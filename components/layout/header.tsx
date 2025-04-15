@@ -20,7 +20,7 @@ function Header() {
   const { isSidebarOpen, toggleSidebar } = useTheme();
   const { menu, profile } = useAuth();
   const isActiveTab = (path: string) =>
-    pathname.split("/")[1] === path.split("/")[1];
+    pathname?.split("/")[1] === path?.split("/")[1];
 
   return (
     <nav
@@ -62,7 +62,7 @@ function Header() {
               <NavItem
                 key={index}
                 menuItem={menuItem}
-                isActive={isActiveTab(menuItem.path)}
+                isActive={isActiveTab(menuItem?.path)}
                 isSidebarOpen={isSidebarOpen}
                 pathname={pathname}
                 navigationMode="header"

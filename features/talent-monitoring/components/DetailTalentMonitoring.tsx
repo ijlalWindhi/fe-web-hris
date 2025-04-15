@@ -24,13 +24,21 @@ import TalentTimesheet from "./TalentTimesheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { DATA_SIDEBAR } from "@/constants/talent-monitoring";
+import { useTalentInformation } from "../hooks/useTalentMonitoring";
 
-export default function DetailTalentMonitoring() {
+interface IDetailTalentMonitoringProps {
+  id: string;
+}
+
+export default function DetailTalentMonitoring({
+  id,
+}: Readonly<IDetailTalentMonitoringProps>) {
   // variables
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [activePath, setActivePath] = useState("");
+  const { data, isLoading } = useTalentInformation(id);
 
   // functions
   const handleNavigation = (path: string) => {
@@ -76,33 +84,12 @@ export default function DetailTalentMonitoring() {
                 </div>
               ))}
             </div>
-            <div className="!mt-6 gap-2 flex flex-col xl:flex-row items-center justify-between w-full">
-              <Link
-                href="/user-management/role-management"
-                className="w-full xl:w-auto"
-              >
-                <Button
-                  variant={"outline"}
-                  size={"sm"}
-                  className="w-full xl:w-auto"
-                >
-                  <ChevronLeft size={16} className="mr-1" />
-                  Back
-                </Button>
-              </Link>
-              <Link
-                href="/user-management/role-management"
-                className="w-full xl:w-auto"
-              >
-                <Button
-                  size={"sm"}
-                  className="w-full xl:w-auto bg-blue-600 hover:bg-blue-700"
-                >
-                  <Download size={16} className="mr-1" />
-                  Download
-                </Button>
-              </Link>
-            </div>
+            <Link href="/talent-monitoring" className="w-full">
+              <Button variant={"outline"} size={"sm"} className="w-full">
+                <ChevronLeft size={16} className="mr-1" />
+                Back
+              </Button>
+            </Link>
           </div>
           <div className="hidden lg:block min-h-[75vh] w-0.5 bg-gray-200" />
           <div className="w-full lg:w-5/6 px-4 max-h-[75vh] overflow-y-auto">
@@ -110,11 +97,11 @@ export default function DetailTalentMonitoring() {
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <BreadcrumbLink href="/talent-monitoring">
-                    Talent Monitoring
+                    TAD Monitoring
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
-                <BreadcrumbItem>Detail Talent</BreadcrumbItem>
+                <BreadcrumbItem>Detail TAD</BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbPage>
@@ -129,24 +116,40 @@ export default function DetailTalentMonitoring() {
             <div className="my-3 md:my-4 w-full h-20 bg-gradient-to-tr from-gray-50 to-gray-200 rounded-2xl flex items-center justify-start px-4 py-6 gap-2 border">
               <Avatar className={"w-14 h-14"}>
                 <AvatarImage
-                  src={"/images/unavailable-profile.webp"}
+                  src={data?.data?.photo || "/images/unavailable-profile.webp"}
                   alt="avatar"
                   className="object-cover w-full h-full rounded-full"
                 />
                 <AvatarFallback />
               </Avatar>
               <div>
-                <h1 className="font-semibold md:text-lg">Paimen Bin Kasimen</h1>
-                <p className="text-xs md:text-sm text-gray-500">Super Admin</p>
+                <h1 className="font-semibold md:text-lg">
+                  {data?.data?.name ?? "-"}
+                </h1>
+                <p className="text-xs md:text-sm text-gray-500">
+                  {data?.data?.role?.name ?? "-"}
+                </p>
               </div>
             </div>
-            {activePath === "talent-information" && <TalentInformation />}
-            {activePath === "talent-performance" && <TalentPerformance />}
-            {activePath === "talent-attendance" && <TalentAttendance />}
-            {activePath === "talent-mapping" && <TalentMapping />}
-            {activePath === "talent-timesheet" && <TalentTimesheet />}
-            {activePath === "contract-management" && <ContractManagement />}
-            {activePath === "payroll-details" && <PayrollDetails />}
+            {activePath === "talent-information" && (
+              <TalentInformation talentId={id} />
+            )}
+            {activePath === "talent-performance" && (
+              <TalentPerformance talentId={id} />
+            )}
+            {activePath === "talent-attendance" && (
+              <TalentAttendance talentId={id} />
+            )}
+            {activePath === "talent-mapping" && <TalentMapping talentId={id} />}
+            {activePath === "talent-timesheet" && (
+              <TalentTimesheet talentId={id} />
+            )}
+            {activePath === "contract-management" && (
+              <ContractManagement talentId={id} />
+            )}
+            {activePath === "payroll-details" && (
+              <PayrollDetails talentId={id} />
+            )}
           </div>
         </div>
       </CardContent>

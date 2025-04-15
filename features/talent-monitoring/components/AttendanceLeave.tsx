@@ -1,16 +1,26 @@
 import React from "react";
-import { Download } from "lucide-react";
+import { Download, CheckCircle2, XCircle } from "lucide-react";
+import { UseFormReturn } from "react-hook-form";
+import { z } from "zod";
 
 import { ITableHeader, TableCell } from "@/components/ui/table";
 import { Table } from "@/components/common/table";
 import { Badge } from "@/components/ui/badge";
 import { DatePickerWithRange } from "@/components/common/input-date-picker-range";
+import { InputField } from "@/components/common/input-field";
+import { Button } from "@/components/ui/button";
+import ModalApproveLeave from "./ApproveLeave";
+import ModalRejectLeave from "./RejectLeave";
 
-import { ILeaveSubmissionTalentMonitoring } from "@/types";
+import { ILeaveSubmissionTalentMonitoring, IParamsSearch } from "@/types";
+import { useAttendance } from "../hooks/useTalentMonitoring";
+import { truncateText } from "@/utils/truncate";
+import { SearchSchema } from "../schemas/talent-monitoring.schema";
+import useTalentMonitoring from "@/stores/talent-monitoring";
 
 const TableHeader: ITableHeader[] = [
   {
-    key: "leave_type",
+    key: "type",
     title: "Leave Type",
     className: "min-w-[8rem]",
   },
@@ -20,7 +30,7 @@ const TableHeader: ITableHeader[] = [
     className: "min-w-[11rem]",
   },
   {
-    key: "notes",
+    key: "note",
     title: "Notes",
     className: "min-w-[11rem]",
   },
@@ -34,71 +44,146 @@ const TableHeader: ITableHeader[] = [
     title: "Status",
     className: "min-w-[11rem]",
   },
+  {
+    key: "action",
+    title: "Action",
+  },
 ];
 
-export default function AttendanceLeave() {
+interface IAttendanceLeaveProps {
+  form: UseFormReturn<z.infer<typeof SearchSchema>>;
+  params: IParamsSearch;
+  sharedDateRange: { start?: Date; end?: Date };
+  onDateRangeChange: (value: { start?: Date; end?: Date }) => void;
+}
+
+export default function AttendanceLeave({
+  form,
+  params,
+  sharedDateRange,
+  onDateRangeChange,
+}: IAttendanceLeaveProps) {
+  // variables
+  const { data } = useAttendance(params);
+  const { setSelectedLeave, toggleModalApproveLeave, toggleModalRejectLeave } =
+    useTalentMonitoring();
+
+  // functions
+  const handleDateChange = (value: { start?: Date; end?: Date }) => {
+    onDateRangeChange(value);
+  };
+
   return (
     <div className="border rounded-xl p-4 space-y-2">
       <div className="flex flex-col md:flex-row justify-between md:items-center gap-2">
         <div className="flex flex-wrap gap-2 items-center">
           <h2 className="md:text-lg font-semibold">Leave Submission</h2>
           <Badge variant={"outline"}>
-            <span className="text-primary mr-1">•</span> Total 1 pending leave
-            request
+            <span className="text-primary mr-1">•</span> Total{" "}
+            {data?.data?.leave_submission?.[0]?.total_pending ?? 0} pending
+            leave request
           </Badge>
         </div>
-        <DatePickerWithRange className="w-full md:w-auto" />
+        <InputField
+          name="search"
+          control={form.control}
+          render={({ field }) => (
+            <DatePickerWithRange
+              name="search"
+              control={form.control}
+              value={sharedDateRange}
+              onChange={handleDateChange}
+              placeholder="Select date range"
+            />
+          )}
+        />
       </div>
       <Table<ILeaveSubmissionTalentMonitoring>
         header={TableHeader}
-        data={[
-          {
-            id: "1",
-            leave_type: "Annual Leave",
-            date_period: "15 March 2021 - 20 March 2021",
-            total_days: 6,
-            notes: "Family vacation",
-            evidence: null,
-            status: "Waiting for Approval",
-          },
-          {
-            id: "2",
-            leave_type: "Sick Leave",
-            date_period: "15 March 2021",
-            total_days: 1,
-            notes: "Sick",
-            evidence: "surat_dokter.pdf",
-            status: "Approved",
-          },
-        ]}
+        data={data?.data?.leave_submission ?? []}
         loading={false}
       >
         <TableCell<ILeaveSubmissionTalentMonitoring> name="date_period">
           {({ row }) => (
             <div className="flex items-center gap-1">
-              <Badge variant={"outline"} className="bg-white hover:bg-white">
-                {row.total_days} days
+              <Badge
+                variant={"outline"}
+                className="bg-white hover:bg-white min-w-fit"
+              >
+                {row.date_period} days
               </Badge>
-              <span>{row.date_period}</span>
+              <span>
+                {row.start_date ?? "-"} - {row.end_date ?? "-"}
+              </span>
             </div>
           )}
         </TableCell>
         <TableCell<ILeaveSubmissionTalentMonitoring> name="evidence">
           {({ row }) => (
-            <div className="flex items-center gap-1">
-              <span>{row.evidence ?? "-"}</span>
+            <div
+              className="flex items-center gap-1 hover:underline hover:text-primary hover:cursor-pointer"
+              onClick={() => {
+                if (row.evidence) {
+                  window.open(row.evidence, "_blank");
+                }
+              }}
+            >
+              <span>{truncateText(row.evidence, 14) || "-"}</span>
               {row.evidence && <Download size={16} className="text-primary" />}
             </div>
           )}
         </TableCell>
         <TableCell<ILeaveSubmissionTalentMonitoring> name="status">
           {({ row }) => (
-            <Badge variant={row.status === "Approved" ? "success" : "gray"}>
-              {row.status}
+            <Badge
+              variant={
+                row.status?.name === "Approved"
+                  ? "success"
+                  : row.status?.name === "Reject"
+                    ? "error"
+                    : "gray"
+              }
+            >
+              {row.status?.name ?? "-"}
             </Badge>
           )}
         </TableCell>
+        <TableCell<ILeaveSubmissionTalentMonitoring> name="action">
+          {({ row }) => (
+            <>
+              {row?.isedit ? (
+                <div className="flex items-center gap-1">
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setSelectedLeave(row);
+                      toggleModalApproveLeave(true);
+                    }}
+                  >
+                    <CheckCircle2 size={16} />
+                    Approve
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => {
+                      setSelectedLeave(row);
+                      toggleModalRejectLeave(true);
+                    }}
+                  >
+                    <XCircle size={16} />
+                    Reject
+                  </Button>
+                </div>
+              ) : (
+                <span>-</span>
+              )}
+            </>
+          )}
+        </TableCell>
       </Table>
+      <ModalApproveLeave params={params} />
+      <ModalRejectLeave params={params} />
     </div>
   );
 }

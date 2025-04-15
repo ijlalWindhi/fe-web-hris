@@ -12,45 +12,48 @@ export const DownloadReportSchema = z.object({
 });
 
 export const CreateMasterClientSchema = z.object({
-  basic_salary: z
+  name: z.string().nonempty("Client name is required"),
+  address: z.string().nonempty("Client address is required"),
+  cs_person: z.string().nonempty("CS Person is required"),
+  cs_number: z
     .string()
-    .min(1, "Basic Salary is required")
-    .regex(/^\d+$/, "Basic Salary must be a number"),
-  agency_fee: z
+    .nonempty("CS Number is required")
+    .min(10, "CS Number must be at least 10 characters")
+    .max(15, "CS Number must be at most 15 characters"),
+  cs_email: z
     .string()
-    .min(1, "Agency Fee is required")
-    .regex(/^\d+$/, "Agency Fee must be a number"),
+    .nonempty("CS Email is required")
+    .email("Invalid CS Email"),
+  start_contract: z.string().nonempty("Start Contract Date is required"),
+  end_contract: z.string().nonempty("End Contract Date is required"),
   outlet: z
     .array(
       z.object({
-        id: z.string().nullable().optional(),
+        id_outlet: z.string().optional(),
         name: z.string().nonempty("Outlet name is required"),
         address: z.string().nonempty("Outlet address is required"),
-        long: z.string().nonempty("Outlet longitude is required"),
-        lat: z.string().nonempty("Outlet latitude is required"),
+        longitude: z.string().nonempty("Outlet longitude is required"),
+        latitude: z.string().nonempty("Outlet latitude is required"),
       }),
     )
     .min(1, "At least one outlet is required"),
-  payroll_basic_salary: z
-    .string()
-    .min(1, "Payroll Basic Salary is required")
-    .regex(/^\d+$/, "Payroll Basic Salary must be a number"),
-  payroll_agency_fee: z
-    .string()
-    .min(1, "Payroll Agency Fee is required")
-    .regex(/^\d+$/, "Payroll Agency Fee must be a number"),
-  bpjs_deduction: z
-    .array(
-      z.object({
-        type: z.string().nonempty("BPJS Deduction Type is required"),
-        amount: z
-          .string()
-          .nonempty("BPJS Deduction Amount is required")
-          .regex(/^\d+$/, "BPJS Deduction Amount must be a number"),
-      }),
-    )
-    .min(1, "At least one BPJS Deduction is required"),
-  payment_due_date: z.string().nonempty("Payment Due Date is required"),
+  basic_salary: z.number().min(1, "Basic Salary is required"),
+  agency_fee: z.number().min(1, "Agency Fee is required"),
+  bpjs: z.array(
+    z.object({
+      name: z.string().nonempty("BPJS Deduction Name is required"),
+      amount: z.number().min(0, "BPJS Deduction Amount is required"),
+    }),
+  ),
+  // .min(1, "At least one BPJS Deduction is required"),
+  allowences: z.array(
+    z.object({
+      name: z.string().nonempty("Allowence Name is required"),
+      amount: z.number().min(0, "Allowence Amount is required"),
+    }),
+  ),
+  // .min(1, "At least one Allowence is required"),
+  payment_date: z.string().nonempty("Payment Due Date is required"),
 });
 
 export const CreateMasterClientOutletSchema = z.object({
@@ -58,4 +61,42 @@ export const CreateMasterClientOutletSchema = z.object({
   address: z.string().nonempty("Outlet address is required"),
   long: z.string().nonempty("Outlet longitude is required"),
   lat: z.string().nonempty("Outlet latitude is required"),
+});
+
+export const UploadSignatureSchema = z.object({
+  manager: z
+    .instanceof(File)
+    .optional()
+    .nullable()
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+      message: "Ukuran file maksimal 5MB",
+    }),
+  technical: z
+    .instanceof(File)
+    .optional()
+    .nullable()
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+      message: "Ukuran file maksimal 5MB",
+    }),
+  role1: z
+    .instanceof(File)
+    .optional()
+    .nullable()
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+      message: "Ukuran file maksimal 5MB",
+    }),
+  role2: z
+    .instanceof(File)
+    .optional()
+    .nullable()
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+      message: "Ukuran file maksimal 5MB",
+    }),
+  role3: z
+    .instanceof(File)
+    .optional()
+    .nullable()
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+      message: "Ukuran file maksimal 5MB",
+    }),
 });

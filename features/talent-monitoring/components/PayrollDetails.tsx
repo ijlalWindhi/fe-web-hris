@@ -1,85 +1,85 @@
-import React from "react";
+import React, { JSX } from "react";
+import { Download } from "lucide-react";
 
-import { ITableHeader } from "@/components/ui/table";
-import { Table } from "@/components/common/table";
+import { Button } from "@/components/ui/button";
 
-import { IPayrollDetailsTaletMonitoring } from "@/types";
+import { usePayroll } from "../hooks/useTalentMonitoring";
+interface IPayrollDetailsProps {
+  talentId: string;
+}
 
-const TableHeader: ITableHeader[] = [
-  {
-    key: "month",
-    title: "Month",
-    className: "min-w-[8rem]",
-  },
-  {
-    key: "gaji_pokok",
-    title: "Gaji Pokok",
-    className: "min-w-[11rem]",
-  },
-  {
-    key: "tunjangan_makan",
-    title: "Tunjangan Makan",
-    className: "min-w-[11rem]",
-  },
-  {
-    key: "tunjangan_bensin",
-    title: "Tunjangan Bensin",
-    className: "min-w-[11rem]",
-  },
-  {
-    key: "bonus_performance",
-    title: "Bonus Performance",
-    className: "min-w-[11rem]",
-  },
-  {
-    key: "potongan_pajak",
-    title: "Potongan Pajak",
-    className: "min-w-[11rem]",
-  },
-  {
-    key: "agency_fee",
-    title: "Agency Fee (%)",
-    className: "min-w-[11rem]",
-  },
-  {
-    key: "total",
-    title: "Total",
-    className: "min-w-[11rem]",
-  },
-];
+export default function PayrollDetails({
+  talentId,
+}: Readonly<IPayrollDetailsProps>) {
+  // variables
+  const { data } = usePayroll(talentId);
 
-export default function PayrollDetails() {
+  // functions
+  const renderTableRows = () => {
+    const rows: JSX.Element[] = [];
+
+    data?.data?.payroll?.forEach((monthData) => {
+      const month = monthData.bulan;
+      const fileUrl = monthData.file;
+
+      monthData.header_table.forEach((type, index) => {
+        rows.push(
+          <tr
+            key={`${month}-${type}-${index}`}
+            className="border-b border-gray-200 text-sm"
+          >
+            {index === 0 ? (
+              <td
+                rowSpan={monthData.header_table.length}
+                className="border px-4 py-2 text-left align-top"
+              >
+                {month}
+              </td>
+            ) : null}
+            <td className="border px-4 py-2">{type}</td>
+            <td className="border px-4 py-2 text-right">
+              {monthData.value[index]}
+            </td>
+            {index === 0 ? (
+              <td
+                rowSpan={monthData.header_table.length}
+                className="border px-4 py-2 align-top"
+              >
+                <div className="flex justify-center items-center h-full">
+                  <Button
+                    onClick={() => {
+                      window.open(fileUrl, "_blank");
+                    }}
+                    size={"sm"}
+                  >
+                    <Download size={16} />
+                    Download
+                  </Button>
+                </div>
+              </td>
+            ) : null}
+          </tr>,
+        );
+      });
+    });
+
+    return rows;
+  };
+
   return (
     <div className="border rounded-xl p-4 space-y-2">
       <h2 className="md:text-lg font-semibold">Payroll Details</h2>
-      <Table<IPayrollDetailsTaletMonitoring>
-        header={TableHeader}
-        data={[
-          {
-            id: "1",
-            month: "January 2021",
-            gaji_pokok: "Rp 1.000.000",
-            tunjangan_makan: "Rp 500.000",
-            tunjangan_bensin: "Rp 0",
-            bonus_performance: "Rp 0",
-            potongan_pajak: "Rp 0",
-            agency_fee: "5%",
-            total: "Rp 1.500.000",
-          },
-          {
-            id: "2",
-            month: "February 2021",
-            gaji_pokok: "Rp 1.000.000",
-            tunjangan_makan: "Rp 500.000",
-            tunjangan_bensin: "Rp 0",
-            bonus_performance: "Rp 0",
-            potongan_pajak: "Rp 0",
-            agency_fee: "5%",
-            total: "Rp 1.500.000",
-          },
-        ]}
-        loading={false}
-      ></Table>
+      <table className="w-full">
+        <thead>
+          <tr className="text-muted-foreground text-sm font-medium">
+            <th className="h-10 px-4">Month</th>
+            <th className="h-10 px-4">Type</th>
+            <th className="h-10 px-4">Amount</th>
+            <th className="h-10 px-4 w-32">Action</th>
+          </tr>
+        </thead>
+        <tbody>{renderTableRows()}</tbody>
+      </table>
     </div>
   );
 }

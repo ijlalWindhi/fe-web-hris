@@ -1,7 +1,8 @@
 "use client";
-import React from "react";
-import dynamic from "next/dynamic";
+import React, { useCallback, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Download, Plus } from "lucide-react";
+import dynamic from "next/dynamic";
 
 import {
   Card,
@@ -15,24 +16,68 @@ import { Button } from "@/components/ui/button";
 import { PaginationCompo } from "@/components/ui/pagination";
 import InputSearch from "@/components/common/input-search";
 import List from "./List";
+// import ModalDownloadReport from "./ModalDownloadReport";
+// import ModalMasterClient from "./ModalMasterClient";
+// import DetailMasterClient from "./DetailMasterClient";
 const ModalDownloadReport = dynamic(() => import("./ModalDownloadReport"));
 const ModalMasterClient = dynamic(() => import("./ModalMasterClient"));
 const DetailMasterClient = dynamic(() => import("./DetailMasterClient"));
 
-import useTheme from "@/stores/theme";
 import useMasterClient from "@/stores/master-client";
+import { TSearchParams } from "@/types";
+import { useSetParams } from "@/utils/set-params";
+import { useMasterClientList } from "../hooks/useMasterClient";
 
 export default function MasterClient() {
   // variables
   const { toggleModalDownloadReport, toggleModalMasterClient } =
     useMasterClient();
+  const updateParams = useSetParams();
+  const searchParams = useSearchParams();
+  const [queryParams, setQueryParams] = useState<TSearchParams>({
+    page: parseInt(searchParams.get("page") ?? "1"),
+    page_size: parseInt(searchParams.get("page_size") ?? "10"),
+    src: searchParams.get("src") ?? undefined,
+  });
+  const { data } = useMasterClientList(queryParams);
 
   // functions
-  const handleSearch = (searchTerm: string) => {
+  const handleSearch = useCallback(
+    async (searchTerm: string) => {
+      try {
+        const newParams: TSearchParams = {
+          ...queryParams,
+          src: searchTerm || undefined,
+          page: 1,
+        };
+
+        setQueryParams(newParams);
+        updateParams(newParams);
+      } catch (error) {
+        console.error("Error from handleSearch: ", error);
+      }
+    },
+    [queryParams, updateParams],
+  );
+
+  const handlePageChange = async ({
+    page,
+    pageSize,
+  }: {
+    page: number;
+    pageSize: number;
+  }) => {
     try {
-      console.log(searchTerm);
+      const newParams: TSearchParams = {
+        ...queryParams,
+        page: page,
+        page_size: pageSize,
+      };
+
+      setQueryParams(newParams);
+      updateParams(newParams);
     } catch (error) {
-      console.error("Error from handleSearch: ", error);
+      console.error("Error from handlePageChange:", error);
     }
   };
 
@@ -42,7 +87,8 @@ export default function MasterClient() {
         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-[40%]">
           <CardTitle className="font-semibold">Client List</CardTitle>
           <Badge variant={"outline"} className="w-fit">
-            <span className="text-primary">•</span> Total 100 Client
+            <span className="text-primary">•</span> Total{" "}
+            {data?.meta?.count ?? 0} Client
           </Badge>
         </div>
         <div className="flex flex-col sm:flex-row w-full md:w-[60%] items-center justify-end gap-2">
@@ -50,7 +96,7 @@ export default function MasterClient() {
             <InputSearch
               onSearch={handleSearch}
               placeholder="Search client here..."
-              defaultValue={""}
+              defaultValue={queryParams.src}
             />
           </div>
           <Button
@@ -73,17 +119,19 @@ export default function MasterClient() {
         </div>
       </CardHeader>
       <CardContent>
-        <List />
+        <List queryParams={queryParams} />
       </CardContent>
       <CardFooter>
         <PaginationCompo
           meta={{
-            page: 1,
-            page_size: 10,
-            count: 100,
-            page_count: 10,
+            page: queryParams.page,
+            page_size: queryParams.page_size,
+            count: data?.meta?.count ?? 0,
+            page_count: Math.ceil(
+              (data?.meta?.count ?? 0) / queryParams.page_size,
+            ),
           }}
-          onPageChange={(page) => console.log(page)}
+          onPageChange={(data) => handlePageChange(data)}
         />
       </CardFooter>
       <ModalDownloadReport />

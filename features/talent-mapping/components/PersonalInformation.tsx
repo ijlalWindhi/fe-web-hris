@@ -6,49 +6,68 @@ import { InputField } from "@/components/common/input-field";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/common/input-date-picket";
 
-import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
+import { createTalentMappingSchema } from "../schemas/talent-mapping.schema";
 
+type FormValues = z.infer<ReturnType<typeof createTalentMappingSchema>>;
 type TPersonalInformationProps = {
-  form: UseFormReturn<z.infer<typeof CreateTalentMappingSchema>>;
+  form: UseFormReturn<FormValues>;
+  mode: string;
 };
 
 export default function PersonalInformation({
   form,
+  mode,
 }: Readonly<TPersonalInformationProps>) {
   return (
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
       <InputField
         name="talent_id"
-        label="Talent ID"
+        label="TAD ID"
         primary
         control={form.control}
         render={({ field }) => (
-          <Input disabled placeholder="Talent ID" {...field} />
+          <Input disabled placeholder="TAD ID" {...field} />
         )}
       />
       <InputField
-        name="workdays"
-        label="Workdays"
+        name="name"
+        label="TAD Name"
         primary
         control={form.control}
-        render={({ field }) => <Input placeholder="e.g. Dhisa" {...field} />}
+        render={({ field }) => (
+          <Input
+            placeholder="e.g Dhisa"
+            {...field}
+            disabled={mode === "view"}
+          />
+        )}
       />
       <InputField
-        name="date_of_birth"
+        name="dob"
         label="Date of Birth"
         primary
         control={form.control}
         render={({ field }) => (
-          <DatePicker placeholder="Choose date of birth" {...field} />
+          <DatePicker
+            placeholder="Choose date of birth"
+            value={field.value}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            disabled={mode === "view"}
+          />
         )}
       />
       <InputField
-        name="id_number"
+        name="nik"
         label="ID Number"
         primary
         control={form.control}
         render={({ field }) => (
-          <Input placeholder="e.g. 1234567890" {...field} />
+          <Input
+            placeholder="e.g. 1234567890"
+            {...field}
+            disabled={mode === "view"}
+          />
         )}
       />
       <InputField
@@ -61,16 +80,22 @@ export default function PersonalInformation({
             type="email"
             placeholder="e.g. dhisa@dhisapro.com"
             {...field}
+            disabled={mode === "view"}
           />
         )}
       />
       <InputField
-        name="phone_number"
+        name="phone"
         label="Phone Number"
         primary
         control={form.control}
         render={({ field }) => (
-          <Input type="tel" placeholder="e.g. 081234567890" {...field} />
+          <Input
+            type="tel"
+            placeholder="e.g. 081234567890"
+            {...field}
+            disabled={mode === "view"}
+          />
         )}
       />
       <InputField
@@ -79,7 +104,11 @@ export default function PersonalInformation({
         primary
         control={form.control}
         render={({ field }) => (
-          <Input placeholder="e.g. Jl. Raya Bogor" {...field} />
+          <Input
+            placeholder="e.g. Jl. Raya Bogor"
+            {...field}
+            disabled={mode === "view"}
+          />
         )}
       />
     </div>

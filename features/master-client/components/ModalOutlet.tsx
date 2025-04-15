@@ -1,7 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import * as z from "zod";
-import { useForm } from "react-hook-form";
+import {
+  UseFieldArrayUpdate,
+  useForm,
+  type UseFieldArrayAppend,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MapPin } from "lucide-react";
 
@@ -14,15 +18,29 @@ import { Label } from "@/components/ui/label";
 import Map from "@/components/common/map";
 
 import useMasterClient from "@/stores/master-client";
-import { CreateMasterClientOutletSchema } from "../schemas/master-client.schema";
+import {
+  CreateMasterClientOutletSchema,
+  CreateMasterClientSchema,
+} from "../schemas/master-client.schema";
 
-export default function ModalOutlet() {
+interface IModalOutletProps {
+  append: UseFieldArrayAppend<z.infer<typeof CreateMasterClientSchema>>;
+  update: UseFieldArrayUpdate<
+    z.infer<typeof CreateMasterClientSchema>,
+    "outlet"
+  >;
+}
+
+export default function ModalOutlet({
+  append,
+  update,
+}: Readonly<IModalOutletProps>) {
   // variables
   const {
     modalAddOutlet,
-    selectedIdOutlet,
+    selectedOutlet,
     toggleModalAddOutlet,
-    setSelectedOutletId,
+    setSelectedOutlet,
   } = useMasterClient();
   const form = useForm<z.infer<typeof CreateMasterClientOutletSchema>>({
     resolver: zodResolver(CreateMasterClientOutletSchema),
@@ -42,8 +60,11 @@ export default function ModalOutlet() {
 
   // functions
   const handleClose = () => {
-    setSelectedOutletId(null);
+    setSelectedOutlet(null);
     toggleModalAddOutlet(false);
+    form.reset();
+    setLocation({ lat: -6.175372, long: 106.827194 });
+    setAddress("");
   };
 
   const handleGetCurrentLocation = () => {
@@ -96,6 +117,28 @@ export default function ModalOutlet() {
     }
   };
 
+  const onSubmit = async (
+    values: z.infer<typeof CreateMasterClientOutletSchema>,
+  ) => {
+    try {
+      const payload = {
+        name: values.name,
+        address: values.address,
+        latitude: values.lat,
+        longitude: values.long,
+        id_outlet: selectedOutlet?.id_outlet ?? undefined,
+      };
+      if (selectedOutlet) {
+        update(selectedOutlet?.index ?? 0, payload);
+      } else {
+        append(payload);
+      }
+      handleClose();
+    } catch (error) {
+      console.error("Error from onSubmit: ", error);
+    }
+  };
+
   // lifecycle
   useEffect(() => {
     if (location.lat && location.long) {
@@ -115,18 +158,28 @@ export default function ModalOutlet() {
     }
   }, [address, location, form]);
 
+  useEffect(() => {
+    if (selectedOutlet) {
+      form.setValue("name", selectedOutlet.name);
+      form.setValue("address", selectedOutlet.address);
+      form.setValue("lat", selectedOutlet.latitude.toString());
+      form.setValue("long", selectedOutlet.longitude.toString());
+      setLocation({
+        lat: selectedOutlet.latitude,
+        long: selectedOutlet.longitude,
+      });
+    }
+  }, [selectedOutlet, form]);
+
   return (
     <DialogAction
       isOpen={modalAddOutlet}
       onClose={handleClose}
-      title={`${selectedIdOutlet ? "Edit" : "Add"} Outlet`}
+      title={`${selectedOutlet ? "Edit" : "Add"} Outlet`}
       className="max-w-full md:max-w-2xl"
     >
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit((values) => console.log(values))}
-          className="pt-2"
-        >
+        <form className="pt-2">
           <div className="space-y-4">
             <InputField
               name="name"
@@ -200,7 +253,11 @@ export default function ModalOutlet() {
                 )}
               />
             </div>
-            <Button type="submit" className="w-full">
+            <Button
+              type="button"
+              onClick={form.handleSubmit((values) => onSubmit(values))}
+              className="w-full"
+            >
               Save
             </Button>
           </div>

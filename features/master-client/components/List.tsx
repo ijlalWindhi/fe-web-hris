@@ -13,9 +13,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 
-import { IResponseListMasterClient } from "@/types";
+import { IResponseListMasterClient, TSearchParams } from "@/types";
 import useMasterClient from "@/stores/master-client";
 import useTheme from "@/stores/theme";
+import {
+  useDeleteMasterClient,
+  useMasterClientList,
+} from "../hooks/useMasterClient";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -41,23 +45,40 @@ const TableHeader: ITableHeader[] = [
   { key: "action", title: "Action" },
 ];
 
-export default function List() {
+interface IListProps {
+  queryParams: TSearchParams;
+}
+
+export default function List({ queryParams }: Readonly<IListProps>) {
   // variables
-  const { setModalDelete } = useTheme();
+  const { setModalDelete, setModalSuccess } = useTheme();
   const {
-    setSelectedId,
+    setSelectedData,
     toggleModalDetailMasterClient,
     toggleModalMasterClient,
   } = useMasterClient();
+  const { data, isLoading } = useMasterClientList(queryParams);
+  const deleteUser = useDeleteMasterClient();
 
   // functions
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     try {
       setModalDelete({
         open: true,
         type: "client",
-        action: () => {
-          console.log("Delete talent with ID: ", id);
+        action: async () => {
+          const res = await deleteUser.mutateAsync(id);
+          if (res.status === "success") {
+            setModalSuccess({
+              open: true,
+              title: "TAD Successfully Deleted",
+              message: "The TAD information has been deleted successfully.",
+              actionVariant: "default",
+              actionMessage: "Back",
+              action: () => {},
+              animation: "success",
+            });
+          }
         },
       });
     } catch (error) {
@@ -68,24 +89,25 @@ export default function List() {
   return (
     <Table<IResponseListMasterClient>
       header={TableHeader}
-      data={[
-        {
-          id: 1,
-          name: "John Doe",
-          address: "Jl. Lorem Ipsum Dolor Sit Amet",
-          outlet: ["Outlet 1", "Outlet 2"],
-        },
-      ]}
-      loading={false}
+      data={data?.data || []}
+      loading={isLoading}
     >
       <TableCell<IResponseListMasterClient> name="outlet">
         {({ row }) => (
           <div className="flex gap-1 flex-wrap">
-            {row.outlet.map((outlet, index) => (
-              <Badge key={index} variant={"outline"} className="w-fit bg-white">
-                <span className="text-primary">•</span> {outlet}
-              </Badge>
-            ))}
+            {row?.outlet?.length > 0 ? (
+              row?.outlet?.map((outlet, index) => (
+                <Badge
+                  key={index}
+                  variant={"outline"}
+                  className="w-fit bg-white"
+                >
+                  <span className="text-primary">•</span> {outlet?.name ?? "-"}
+                </Badge>
+              ))
+            ) : (
+              <span>-</span>
+            )}
           </div>
         )}
       </TableCell>
@@ -103,7 +125,7 @@ export default function List() {
                 <DropdownMenuItem
                   onClick={() => {
                     setTimeout(() => {
-                      setSelectedId(row.id);
+                      setSelectedData(row);
                       toggleModalDetailMasterClient(true);
                     }, 100);
                   }}
@@ -114,7 +136,7 @@ export default function List() {
                 <DropdownMenuItem
                   onClick={() => {
                     setTimeout(() => {
-                      setSelectedId(row.id);
+                      setSelectedData(row);
                       toggleModalMasterClient(true);
                     }, 100);
                   }}

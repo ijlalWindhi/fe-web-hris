@@ -15,6 +15,16 @@ export interface IResponsePagination<T = unknown> {
   page_count: number;
 }
 
-export interface IResponseMessage {
+export interface IResponse<T = unknown> {
+  meta: IMeta;
+  data: Data<T>;
+  status: string;
+  code: number;
   message: string;
 }
+
+export type TSearchParams = {
+  page: number;
+  page_size: number;
+  src: string | undefined;
+};

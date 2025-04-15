@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,9 +10,6 @@ import { Input } from "@/components/ui/input";
 import { InputField } from "@/components/common/input-field";
 import InputProfile from "@/components/common/input-profile";
 import DialogAction from "@/components/common/dialog-action";
-
-import useUserManagement from "@/stores/user-management";
-import { CreateUserManagementSchema } from "../schemas/user-management.schema";
 import {
   Select,
   SelectContent,
@@ -23,42 +20,123 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import useUserManagement from "@/stores/user-management";
+import useTheme from "@/stores/theme";
+import { CreateUserManagementSchema } from "../schemas/user-management.schema";
+import {
+  useCreateUserManagement,
+  useUpdateUserManagement,
+} from "../hooks/useUserManagement";
+import { uploadFile } from "@/services/file";
+import { TPayloadUserManagement } from "@/types";
+
 export default function ModalTalent() {
   // variables
+  const [file, setFile] = useState<File | null>(null);
   const {
     modalUserManagement,
-    selectedId,
+    selectedData,
     toggleModalUserManagement,
-    setSelectedId,
+    setSelectedData,
   } = useUserManagement();
+  const { setModalSuccess } = useTheme();
+  const createUserManagement = useCreateUserManagement();
+  const updateUserManagement = useUpdateUserManagement();
   const form = useForm<z.infer<typeof CreateUserManagementSchema>>({
     resolver: zodResolver(CreateUserManagementSchema),
     defaultValues: {
       name: "",
       email: "",
-      phone_number: "",
-      role: "admin",
+      phone: "",
+      role_id: "",
       address: "",
     },
   });
 
   // functions
   const handleClose = () => {
-    setSelectedId(null);
+    setSelectedData(null);
     toggleModalUserManagement(false);
+    form.reset();
+    setFile(null);
   };
 
   const onSubmit = async (
     values: z.infer<typeof CreateUserManagementSchema>,
   ) => {
-    console.log(values);
+    try {
+      const payload: TPayloadUserManagement = {
+        ...values,
+        photo: "",
+        role_id: parseInt(values.role_id),
+        status: true,
+      };
+      if (file) {
+        const response = await uploadFile(file);
+        payload.photo = response;
+      } else {
+        payload.photo = selectedData?.photo ?? "";
+      }
+      if (selectedData) {
+        const res = await updateUserManagement.mutateAsync({
+          id: selectedData?.id_user,
+          data: payload,
+        });
+        if (res.status === "success") {
+          setModalSuccess({
+            open: true,
+            title: "User Updated",
+            message:
+              "The User's information has been updated and saved successfully.",
+            actionVariant: "default",
+            actionMessage: "Back",
+            action: () => {
+              handleClose();
+            },
+            animation: "success",
+          });
+        }
+      } else {
+        const res = await createUserManagement.mutateAsync(payload);
+        if (res.status === "success") {
+          setModalSuccess({
+            open: true,
+            title: "User Created",
+            message:
+              "The User's information has been created and saved successfully.",
+            actionVariant: "default",
+            actionMessage: "Back",
+            action: () => {
+              handleClose();
+            },
+            animation: "success",
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error from onSubmit: ", error);
+    } finally {
+      handleClose();
+    }
   };
+
+  useEffect(() => {
+    if (selectedData) {
+      form.reset({
+        name: selectedData.name,
+        email: selectedData.email,
+        phone: selectedData.phone,
+        role_id: selectedData.role.id.toString(),
+        address: selectedData.address,
+      });
+    }
+  }, [selectedData, form]);
 
   return (
     <DialogAction
       isOpen={modalUserManagement}
       onClose={handleClose}
-      title={`${selectedId ? "Edit" : "Register"} User`}
+      title={`${selectedData ? "Edit" : "Register"} User`}
       className="max-w-full md:max-w-2xl"
     >
       <Form {...form}>
@@ -66,7 +144,8 @@ export default function ModalTalent() {
           <InputProfile
             width="w-16 md:w-20"
             height="h-16 md:h-20"
-            onFileChange={(file) => console.log(file)}
+            onFileChange={(file) => setFile(file)}
+            defaultImage={selectedData?.photo}
           />
           <InputField
             name="name"
@@ -87,7 +166,7 @@ export default function ModalTalent() {
             )}
           />
           <InputField
-            name="phone_number"
+            name="phone"
             label="Number Phone"
             primary
             control={form.control}
@@ -96,20 +175,24 @@ export default function ModalTalent() {
             )}
           />
           <InputField
-            name="role"
+            name="role_id"
             label="Role"
             primary
             control={form.control}
             render={({ field }) => (
-              <Select defaultValue={field.value}>
+              <Select
+                value={field.value || selectedData?.role.id.toString()}
+                onValueChange={(value) => field.onChange(value)}
+              >
                 <SelectTrigger className="w-full rounded-full">
                   <SelectValue placeholder="Select Role" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Pilih Role</SelectLabel>
-                    <SelectItem value="admin">Admin</SelectItem>
-                    <SelectItem value="super_admin">Super Admin</SelectItem>
+                    <SelectItem value="1">Employee</SelectItem>
+                    <SelectItem value="2">Admin</SelectItem>
+                    <SelectItem value="3">Super Admin</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -124,7 +207,13 @@ export default function ModalTalent() {
               <Input {...field} placeholder="e.g. Jakarta" />
             )}
           />
-          <Button type="submit" className="mt-4 w-full">
+          <Button
+            type="submit"
+            className="mt-4 w-full"
+            loading={
+              createUserManagement.isPending || updateUserManagement.isPending
+            }
+          >
             Save
           </Button>
         </form>

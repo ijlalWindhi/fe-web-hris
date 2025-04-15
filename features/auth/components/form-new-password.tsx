@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -9,6 +9,7 @@ import { ArrowRight } from "lucide-react";
 
 import { Form } from "@/components/ui/form";
 import { InputPassword } from "@/components/common/input-password";
+import { Input } from "@/components/ui/input";
 import { InputField } from "@/components/common/input-field";
 import { Button } from "@/components/ui/button";
 
@@ -20,12 +21,12 @@ export default function FormNewPassword() {
   // variables
   const router = useRouter();
   const newPassword = useNewPassword();
-  const searchParams = useSearchParams();
   const loading = newPassword.isPending;
   const { setModalSuccess } = useTheme();
   const form = useForm<z.infer<typeof NewPasswordSchema>>({
     resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
+      token: "",
       password: "",
       repeat_password: "",
     },
@@ -44,7 +45,7 @@ export default function FormNewPassword() {
 
       const data = {
         password: values.password,
-        token: searchParams.get("token") || "",
+        token: values.token,
       };
 
       const res = await newPassword.mutateAsync(data);
@@ -69,6 +70,15 @@ export default function FormNewPassword() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+        <InputField
+          name="token"
+          label="Token"
+          primary
+          control={form.control}
+          render={({ field }) => (
+            <Input placeholder="Enter your token" {...field} />
+          )}
+        />
         <InputField
           name="password"
           label="Password"

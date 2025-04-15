@@ -56,7 +56,7 @@ const TableBody = React.memo(
           <tr>
             <td colSpan={1000} className="h-32">
               <div className="flex h-full w-full items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin" />
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
             </td>
           </tr>

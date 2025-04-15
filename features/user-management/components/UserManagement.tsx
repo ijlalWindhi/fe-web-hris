@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useCallback, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Plus } from "lucide-react";
-import dynamic from "next/dynamic";
 
 import {
   Card,
@@ -15,20 +15,62 @@ import { Button } from "@/components/ui/button";
 import InputSearch from "@/components/common/input-search";
 import { PaginationCompo } from "@/components/ui/pagination";
 import List from "./List";
-const ModalUserManagement = dynamic(() => import("./ModalUserManagement"));
+import ModalUserManagement from "./ModalUserManagement";
 
 import useUserManagement from "@/stores/user-management";
+import { TSearchParams } from "@/types";
+import { useSetParams } from "@/utils/set-params";
+import { useUserList } from "../hooks/useUserManagement";
 
 export default function UserManagement() {
   // variables
   const { toggleModalUserManagement } = useUserManagement();
+  const updateParams = useSetParams();
+  const searchParams = useSearchParams();
+  const [queryParams, setQueryParams] = useState<TSearchParams>({
+    page: parseInt(searchParams.get("page") ?? "1"),
+    page_size: parseInt(searchParams.get("page_size") ?? "10"),
+    src: searchParams.get("src") ?? undefined,
+  });
+  const { data } = useUserList(queryParams);
 
   // functions
-  const handleSearch = (searchTerm: string) => {
+  const handleSearch = useCallback(
+    async (searchTerm: string) => {
+      try {
+        const newParams: TSearchParams = {
+          ...queryParams,
+          src: searchTerm || undefined,
+          page: 1,
+        };
+
+        setQueryParams(newParams);
+        updateParams(newParams);
+      } catch (error) {
+        console.error("Error from handleSearch: ", error);
+      }
+    },
+    [queryParams, updateParams],
+  );
+
+  const handlePageChange = async ({
+    page,
+    pageSize,
+  }: {
+    page: number;
+    pageSize: number;
+  }) => {
     try {
-      console.log(searchTerm);
+      const newParams: TSearchParams = {
+        ...queryParams,
+        page: page,
+        page_size: pageSize,
+      };
+
+      setQueryParams(newParams);
+      updateParams(newParams);
     } catch (error) {
-      console.error("Error from handleSearch: ", error);
+      console.error("Error from handlePageChange:", error);
     }
   };
 
@@ -38,7 +80,8 @@ export default function UserManagement() {
         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-[40%]">
           <CardTitle className="font-semibold">User List</CardTitle>
           <Badge variant={"outline"} className="w-fit">
-            <span className="text-primary">•</span> Total 100 User
+            <span className="text-primary">•</span> Total{" "}
+            {data?.meta?.count ?? 0} User
           </Badge>
         </div>
         <div className="flex flex-col sm:flex-row w-full md:w-[60%] items-center justify-end gap-2">
@@ -46,31 +89,33 @@ export default function UserManagement() {
             <InputSearch
               onSearch={handleSearch}
               placeholder="Search user here..."
-              defaultValue={""}
+              defaultValue={queryParams.src}
             />
           </div>
-          <Button
+          {/* <Button
             size="sm"
             className="w-full md:w-auto"
             onClick={() => toggleModalUserManagement(true)}
           >
             <Plus size={16} />
             Register User
-          </Button>
+          </Button> */}
         </div>
       </CardHeader>
       <CardContent>
-        <List />
+        <List queryParams={queryParams} />
       </CardContent>
       <CardFooter>
         <PaginationCompo
           meta={{
-            page: 1,
-            page_size: 10,
-            count: 100,
-            page_count: 10,
+            page: queryParams.page,
+            page_size: queryParams.page_size,
+            count: data?.meta?.count ?? 0,
+            page_count: Math.ceil(
+              (data?.meta?.count ?? 0) / queryParams.page_size,
+            ),
           }}
-          onPageChange={(page) => console.log(page)}
+          onPageChange={(data) => handlePageChange(data)}
         />
       </CardFooter>
       <ModalUserManagement />

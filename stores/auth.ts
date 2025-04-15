@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Settings, User } from "lucide-react";
 
 import { getProfile, getPermissions, getMenu } from "@/services/auth";
 import {
@@ -8,6 +7,8 @@ import {
   IAuthStore,
   TResponseProfile,
   TResponsePermission,
+  TResponseMenu,
+  TPermission,
 } from "@/types";
 
 const useAuth = create<IAuthStore>()(
@@ -16,77 +17,20 @@ const useAuth = create<IAuthStore>()(
       // state
       profile: {} as TResponseProfile,
       permission: [],
-      menu: [
-        {
-          id: 2,
-          title: "Dashboard",
-          path: "/",
-          icon: null,
-          sub: [],
-        },
-        {
-          id: 3,
-          title: "Talent Mapping",
-          path: "/talent-mapping",
-          icon: null,
-          sub: [],
-        },
-        {
-          id: 5,
-          title: "Talent Monitoring",
-          path: "/talent-monitoring",
-          icon: null,
-          sub: [],
-        },
-        {
-          id: 6,
-          title: "Client Billing",
-          path: "/client-billing",
-          icon: null,
-          sub: [],
-        },
-        {
-          id: 7,
-          title: "Master Client",
-          path: "/master-client",
-          icon: null,
-          sub: [],
-        },
-        {
-          id: 8,
-          title: "User Management",
-          path: "/user-management",
-          icon: null,
-          sub: [
-            {
-              id: 8,
-              title: "Role Management",
-              path: "/user-management/role-management",
-              icon: Settings,
-              sub: [],
-            },
-            {
-              id: 9,
-              title: "User Management",
-              path: "/user-management",
-              icon: User,
-              sub: [],
-            },
-          ],
-        },
-      ],
+      menu: [],
 
       // actions
       getProfile: async () => {
         try {
           const profile = await getProfile();
-          if (profile) {
+          const data = profile.data || ({} as TResponseProfile);
+          if (profile.status === "success" && data) {
             setState((state) => ({
               ...state,
-              profile: profile,
+              profile: data,
             }));
           }
-          return profile || {};
+          return data || {};
         } catch (error) {
           console.error("Error store getProfile:", error);
           throw error;
@@ -95,9 +39,10 @@ const useAuth = create<IAuthStore>()(
       getPermission: async () => {
         try {
           const permissions = await getPermissions();
-          let flattenedPermissions: TResponsePermission[] = [];
-          if (permissions) {
-            flattenedPermissions = permissions?.results?.flat() || [];
+          const data = permissions.data || ({} as TResponsePermission);
+          let flattenedPermissions: TPermission[] = [];
+          if (permissions.status === "success" && data?.results?.length > 0) {
+            flattenedPermissions = data?.results?.flat() || [];
             setState((state) => ({
               ...state,
               permission: flattenedPermissions || [],
@@ -112,9 +57,10 @@ const useAuth = create<IAuthStore>()(
       getMenu: async () => {
         try {
           const menus = await getMenu();
+          const data = menus.data || ({} as TResponseMenu);
           let flattenedMenus: INavItem[] = [];
           if (menus) {
-            flattenedMenus = menus?.results?.flat() || [];
+            flattenedMenus = data?.results?.flat() || [];
             setState((state) => ({
               ...state,
               menu: flattenedMenus || [],
@@ -125,6 +71,14 @@ const useAuth = create<IAuthStore>()(
           console.error("Error store getMenu:", error);
           throw error;
         }
+      },
+      logout: () => {
+        setState((state) => ({
+          ...state,
+          profile: {} as TResponseProfile,
+          permission: [],
+          menu: [],
+        }));
       },
     }),
     {

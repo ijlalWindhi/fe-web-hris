@@ -9,6 +9,7 @@ const passwordRequirements = {
 
 export const NewPasswordSchema = z
   .object({
+    token: z.string().nonempty("Token is required"),
     password: z
       .string()
       .nonempty("Password is required")

@@ -130,7 +130,10 @@ const NavItem: React.FC<NavItemProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  const haveSubItems = menuItem.sub && menuItem.sub.length > 0;
+  const haveSubItems =
+    menuItem.sub &&
+    menuItem.sub.length > 0 &&
+    menuItem.sub.some((subItem) => subItem.is_show);
 
   // memoized variables
   const navItemClasses = useMemo(

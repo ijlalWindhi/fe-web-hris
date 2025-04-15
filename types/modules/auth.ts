@@ -2,11 +2,12 @@ import { INavItem } from "./theme";
 
 export interface IAuthStore {
   profile: TResponseProfile;
-  permission: TResponsePermission[];
+  permission: TPermission[];
   menu: INavItem[];
   getProfile: () => Promise<TResponseProfile>;
-  getPermission: () => Promise<TResponsePermission[]>;
+  getPermission: () => Promise<TPermission[]>;
   getMenu: () => Promise<INavItem[]>;
+  logout: () => void;
 }
 
 // Login
@@ -18,9 +19,15 @@ export type TPayloadLogin = {
 export type TResponseLogin = {
   id: string;
   email: string;
-  username: string;
-  is_active: boolean;
+  name: string;
+  isact: boolean;
+  role: {
+    nama: string;
+    id: number;
+  };
   token: string;
+  token_face_id: string | null;
+  change_password: boolean;
 };
 
 // Reset Password
@@ -34,29 +41,44 @@ export type TPayloadNewPassword = {
   password: string;
 };
 
+// First Login
+export type TPayloadFirstLogin = {
+  email: string;
+  password: string;
+  confirm_password: string;
+};
+
 // Profile
 export type TResponseProfile = {
   id: string;
   email: string;
-  username: string;
   name: string;
-  is_active: boolean;
+  isact: boolean;
+  phone: string;
   refreshed_token: string;
   image: string;
   role: {
+    id: number;
+    name: string;
+  };
+  address: string;
+};
+
+// Permission
+export type TPermission = {
+  id: number;
+  permission: string;
+  module: {
     id: number;
     nama: string;
   };
 };
 
-// Permission
-export type TModule = {
-  id: number;
-  nama: string;
+export type TResponsePermission = {
+  results: TPermission[];
 };
 
-export type TResponsePermission = {
-  id: number;
-  permission: string;
-  module: TModule;
+// Menu
+export type TResponseMenu = {
+  results: INavItem[];
 };

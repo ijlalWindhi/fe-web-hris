@@ -1,5 +1,5 @@
 import React from "react";
-import { EllipsisVertical, Download, Info, Pencil, Trash } from "lucide-react";
+import { EllipsisVertical, Info, Pencil, Trash } from "lucide-react";
 
 import { ITableHeader, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -12,14 +12,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { IResponseList } from "@/types";
+import { IResponseListTalentMapping, TSearchParams } from "@/types";
 import useTheme from "@/stores/theme";
 import useTalentMapping from "@/stores/talent-mapping";
+import {
+  useTalentMappingList,
+  useDeleteTalentMapping,
+} from "../hooks/useTalentMapping";
+import { hasPermission } from "@/utils/get-permission";
 
 const TableHeader: ITableHeader[] = [
   {
-    key: "id",
-    title: "Talent ID",
+    key: "talend_id",
+    title: "TAD ID",
     className: "min-w-[6rem]",
   },
   {
@@ -28,12 +33,12 @@ const TableHeader: ITableHeader[] = [
     className: "min-w-[10rem]",
   },
   {
-    key: "date_of_birth",
+    key: "dob",
     title: "Date of Birth",
     className: "min-w-[14rem]",
   },
   {
-    key: "id_number",
+    key: "nik",
     title: "ID Number",
     className: "min-w-[14rem]",
   },
@@ -55,23 +60,40 @@ const TableHeader: ITableHeader[] = [
   { key: "action", title: "Action" },
 ];
 
-export default function List() {
+interface IListProps {
+  queryParams: TSearchParams;
+}
+
+export default function List({ queryParams }: Readonly<IListProps>) {
   // variables
   const { setModalDelete, setModalSuccess } = useTheme();
   const {
-    setSelectedId,
+    setSelectedData,
     toggleModalTalentMapping,
     toggleModalDetailTalentMapping,
   } = useTalentMapping();
+  const { data, isLoading } = useTalentMappingList(queryParams);
+  const deleteTalentMapping = useDeleteTalentMapping();
 
   // functions
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     try {
       setModalDelete({
         open: true,
-        type: "talent",
-        action: () => {
-          console.log("Delete talent with ID: ", id);
+        type: "TAD",
+        action: async () => {
+          const res = await deleteTalentMapping.mutateAsync(id);
+          if (res.status === "success") {
+            setModalSuccess({
+              open: true,
+              title: "Data Deleted Successfully!",
+              message: "The TAD data has been removed from the system.",
+              actionMessage: "Back",
+              actionVariant: "outline",
+              animation: "success",
+              action: () => {},
+            });
+          }
         },
       });
     } catch (error) {
@@ -79,47 +101,18 @@ export default function List() {
     }
   };
 
-  const handleDownload = (id: number) => {
-    try {
-      setModalSuccess({
-        open: true,
-        title: "Download Successful!",
-        message:
-          "The talent data has been downloaded successfully. You can now review it on your device.",
-        actionMessage: "Close",
-        actionVariant: "outline",
-        animation: "success",
-        action: () => {
-          console.log("Download talent with ID: ", id);
-        },
-      });
-    } catch (error) {
-      console.error("Error from handleDownload: ", error);
-    }
-  };
-
   return (
-    <Table<IResponseList>
+    <Table<IResponseListTalentMapping>
       header={TableHeader}
-      data={[
-        {
-          id: 1,
-          name: "John Doe",
-          date_of_birth: "1990-01-01",
-          id_number: "1234567890",
-          email: "asd@mail.com",
-          phone: "081234567890",
-          address: "Jl. Lorem Ipsum Dolor Sit Amet",
-        },
-      ]}
-      loading={false}
+      data={data?.data || []}
+      loading={isLoading}
     >
-      <TableCell<IResponseList> name="name">
+      <TableCell<IResponseListTalentMapping> name="name">
         {({ row }) => (
           <div className="flex items-center gap-1">
             <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage
-                src={"/images/unavailable-profile.webp"}
+                src={row?.photo || "/images/unavailable-profile.webp"}
                 alt="avatar"
                 className="object-cover w-full h-full"
               />
@@ -131,7 +124,7 @@ export default function List() {
           </div>
         )}
       </TableCell>
-      <TableCell<IResponseList> name="action">
+      <TableCell<IResponseListTalentMapping> name="action">
         {({ row }) => (
           <div className="flex gap-1">
             <DropdownMenu>
@@ -145,7 +138,7 @@ export default function List() {
                 <DropdownMenuItem
                   onClick={() => {
                     setTimeout(() => {
-                      setSelectedId(row.id);
+                      setSelectedData(row);
                       toggleModalDetailTalentMapping(true);
                     }, 100);
                   }}
@@ -153,23 +146,31 @@ export default function List() {
                   <Info className="h-5 w-5" />
                   Detail
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setSelectedId(row.id);
-                    toggleModalTalentMapping(true);
-                  }}
-                >
-                  <Pencil className="h-5 w-5" />
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDelete(row.id)}>
-                  <Trash className="h-5 w-5" />
-                  Delete
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDownload(row.id)}>
-                  <Download className="h-5 w-5" />
-                  Download
-                </DropdownMenuItem>
+                {hasPermission("Talent Mapping", "edit") && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setTimeout(() => {
+                        setSelectedData(row);
+                        toggleModalTalentMapping(true);
+                      }, 100);
+                    }}
+                  >
+                    <Pencil className="h-5 w-5" />
+                    Edit
+                  </DropdownMenuItem>
+                )}
+                {hasPermission("Talent Mapping", "delete") && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setTimeout(() => {
+                        handleDelete(row.talend_id);
+                      }, 100);
+                    }}
+                  >
+                    <Trash className="h-5 w-5" />
+                    Delete
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

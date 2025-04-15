@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import dynamic from "next/dynamic";
+import React, { useCallback, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Download } from "lucide-react";
 
 import {
@@ -15,37 +15,84 @@ import { Button } from "@/components/ui/button";
 import { PaginationCompo } from "@/components/ui/pagination";
 import InputSearch from "@/components/common/input-search";
 import List from "./List";
-const DetailClientBilling = dynamic(() => import("./DetailClientBilling"));
+import DetailClientBilling from "./DetailClientBilling";
 
 import useTheme from "@/stores/theme";
+import { TSearchParams } from "@/types";
+import { useSetParams } from "@/utils/set-params";
+import { useMasterClientList } from "@/features/master-client/hooks/useMasterClient";
+import { useDownloadBilling } from "../hooks/useClientBilling";
+import ModalDetailBilling from "./ModalDetailBilling";
 
 export default function ClientBilling() {
   // variables
   const { setModalSuccess } = useTheme();
+  const updateParams = useSetParams();
+  const searchParams = useSearchParams();
+  const [queryParams, setQueryParams] = useState<TSearchParams>({
+    page: parseInt(searchParams.get("page") ?? "1"),
+    page_size: parseInt(searchParams.get("page_size") ?? "10"),
+    src: searchParams.get("src") ?? undefined,
+  });
+  const { data } = useMasterClientList(queryParams);
+  const downloadBilling = useDownloadBilling();
 
   // functions
-  const handleSearch = (searchTerm: string) => {
+  const handleSearch = useCallback(
+    async (searchTerm: string) => {
+      try {
+        const newParams: TSearchParams = {
+          ...queryParams,
+          src: searchTerm || undefined,
+          page: 1,
+        };
+
+        setQueryParams(newParams);
+        updateParams(newParams);
+      } catch (error) {
+        console.error("Error from handleSearch: ", error);
+      }
+    },
+    [queryParams, updateParams],
+  );
+
+  const handlePageChange = async ({
+    page,
+    pageSize,
+  }: {
+    page: number;
+    pageSize: number;
+  }) => {
     try {
-      console.log(searchTerm);
+      const newParams: TSearchParams = {
+        ...queryParams,
+        page: page,
+        page_size: pageSize,
+      };
+
+      setQueryParams(newParams);
+      updateParams(newParams);
     } catch (error) {
-      console.error("Error from handleSearch: ", error);
+      console.error("Error from handlePageChange:", error);
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     try {
-      setModalSuccess({
-        open: true,
-        title: "Download Successful!",
-        message:
-          "The client billing data has been downloaded successfully. You can now review it on your device.",
-        actionMessage: "Close",
-        actionVariant: "outline",
-        animation: "success",
-        action: () => {
-          console.log("Download talent with ID: ");
-        },
-      });
+      const res = await downloadBilling.mutateAsync();
+      if (res?.status === "success") {
+        window.open(res?.data?.file, "_blank");
+        setModalSuccess({
+          open: true,
+          title: "Download Successful!",
+          message:
+            "The client billing data has been downloaded successfully. You can now review it on your device.",
+          actionMessage: "Close",
+          actionVariant: "outline",
+          animation: "success",
+          action: () => {},
+        });
+      }
     } catch (error) {
       console.error("Error from handleDownload: ", error);
     }
@@ -57,7 +104,8 @@ export default function ClientBilling() {
         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-[40%]">
           <CardTitle className="font-semibold">Client List</CardTitle>
           <Badge variant={"outline"} className="w-fit">
-            <span className="text-primary">•</span> Total 100 Talent
+            <span className="text-primary">•</span> Total{" "}
+            {data?.meta?.count ?? 0} Client
           </Badge>
         </div>
         <div className="flex flex-col sm:flex-row w-full md:w-[60%] items-center justify-end gap-2">
@@ -65,7 +113,7 @@ export default function ClientBilling() {
             <InputSearch
               onSearch={handleSearch}
               placeholder="Search client here..."
-              defaultValue={""}
+              defaultValue={queryParams.src}
             />
           </div>
           <Button
@@ -79,21 +127,24 @@ export default function ClientBilling() {
         </div>
       </CardHeader>
       <CardContent>
-        <List />
+        <List queryParams={queryParams} />
       </CardContent>
       <CardFooter>
         <PaginationCompo
           meta={{
-            page: 1,
-            page_size: 10,
-            count: 100,
-            page_count: 10,
+            page: queryParams.page,
+            page_size: queryParams.page_size,
+            count: data?.meta?.count ?? 0,
+            page_count: Math.ceil(
+              (data?.meta?.count ?? 0) / queryParams.page_size,
+            ),
           }}
-          onPageChange={(page) => console.log(page)}
+          onPageChange={(data) => handlePageChange(data)}
         />
       </CardFooter>
 
       <DetailClientBilling />
+      <ModalDetailBilling />
     </Card>
   );
 }

@@ -11,17 +11,34 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import InputSearch from "@/components/common/input-search";
-import List from "@/features/user-management/components/List";
+import ModalUserManagement from "@/features/user-management/components/ModalUserManagement";
+import List from "./List";
 
-export default function DetailListUser() {
-  // functions
-  const handleSearch = (searchTerm: string) => {
-    try {
-      console.log(searchTerm);
-    } catch (error) {
-      console.error("Error from handleSearch: ", error);
-    }
-  };
+import { TSearchParams } from "@/types";
+import { useUserRole, useRoleDetail } from "../hooks/useRoleManagement";
+
+interface IDetailListUserProps {
+  id: string;
+  queryParams: TSearchParams;
+  handleSearch: (searchTerm: string) => void;
+  handlePageChange: ({
+    page,
+    pageSize,
+  }: {
+    page: number;
+    pageSize: number;
+  }) => void;
+}
+
+export default function DetailListUser({
+  id,
+  queryParams,
+  handleSearch,
+  handlePageChange,
+}: Readonly<IDetailListUserProps>) {
+  // variables
+  const { data } = useUserRole(id, queryParams);
+  const { data: roleData } = useRoleDetail(id);
 
   return (
     <div className="flex flex-col gap-4 w-full lg:w-3/4">
@@ -35,7 +52,9 @@ export default function DetailListUser() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Super Admin</BreadcrumbPage>
+              <BreadcrumbPage className="capitalize">
+                {roleData?.data?.role_name}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -43,20 +62,23 @@ export default function DetailListUser() {
           <InputSearch
             onSearch={handleSearch}
             placeholder="Search user here..."
-            defaultValue={""}
+            defaultValue={queryParams.src}
           />
         </div>
       </div>
-      <List />
+      <List queryParams={queryParams} id={id} />
       <PaginationCompo
         meta={{
-          page: 1,
-          page_size: 10,
-          count: 100,
-          page_count: 10,
+          page: queryParams.page,
+          page_size: queryParams.page_size,
+          count: data?.meta?.count ?? 0,
+          page_count: Math.ceil(
+            (data?.meta?.count ?? 0) / queryParams.page_size,
+          ),
         }}
-        onPageChange={(page) => console.log(page)}
+        onPageChange={(data) => handlePageChange(data)}
       />
+      <ModalUserManagement />
     </div>
   );
 }

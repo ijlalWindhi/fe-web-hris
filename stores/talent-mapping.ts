@@ -1,5 +1,9 @@
 import { create } from "zustand";
 
+import {
+  getOptionMasterClient,
+  getOptionOutlet,
+} from "@/services/master-client";
 import { ITalentMappingStore } from "@/types";
 
 const useTalentMapping = create<ITalentMappingStore>((set) => ({
@@ -7,7 +11,12 @@ const useTalentMapping = create<ITalentMappingStore>((set) => ({
   modalDetailTalentMapping: false,
   modalTalentMapping: false,
   modalHistoryContract: false,
-  selectedId: null,
+  modalDetailWorkingArrangement: false,
+  selectedData: null,
+  optionsClient: [],
+  optionsOutlet: [],
+  outletId: "",
+  clientId: "",
 
   // actions
   toggleModalDetailTalentMapping: (isOpen) =>
@@ -17,7 +26,21 @@ const useTalentMapping = create<ITalentMappingStore>((set) => ({
     set({
       modalHistoryContract: isOpen,
     }),
-  setSelectedId: (id) => set({ selectedId: id }),
+  toggleModalDetailWorkingArrangement: (isOpen) =>
+    set({ modalDetailWorkingArrangement: isOpen }),
+  setSelectedData: (id) => set({ selectedData: id }),
+  fetchOptionsClient: async () => {
+    const response = await getOptionMasterClient();
+    set({ optionsClient: response.data || [] });
+    return response.data || [];
+  },
+  fetchOptionsOutlet: async (clientId) => {
+    const response = await getOptionOutlet(clientId);
+    set({ optionsOutlet: response.data || [] });
+    return response.data || [];
+  },
+  setOutletId: (outletId) => set({ outletId }),
+  setClientId: (clientId) => set({ clientId }),
 }));
 
 export default useTalentMapping;

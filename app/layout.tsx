@@ -20,6 +20,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
+  title: "OMIS",
   description: METADATA.description,
   keywords: METADATA.keyword,
   creator: METADATA.creator,

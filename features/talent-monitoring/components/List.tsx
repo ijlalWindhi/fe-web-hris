@@ -13,12 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { IResponseListTalentMonitoring } from "@/types";
+import { IResponseListTalentMonitoring, TSearchParams } from "@/types";
+import { useTalentMonitoringList } from "../hooks/useTalentMonitoring";
 
 const TableHeader: ITableHeader[] = [
   {
-    key: "id",
-    title: "Talent ID",
+    key: "talend_id",
+    title: "TAD ID",
     className: "min-w-[6rem]",
   },
   {
@@ -27,12 +28,12 @@ const TableHeader: ITableHeader[] = [
     className: "min-w-[10rem]",
   },
   {
-    key: "date_of_birth",
+    key: "dob",
     title: "Date of Birth",
     className: "min-w-[14rem]",
   },
   {
-    key: "id_number",
+    key: "nik",
     title: "ID Number",
     className: "min-w-[14rem]",
   },
@@ -54,32 +55,27 @@ const TableHeader: ITableHeader[] = [
   { key: "action", title: "Action" },
 ];
 
-export default function List() {
+interface IListProps {
+  queryParams: TSearchParams;
+}
+
+export default function List({ queryParams }: Readonly<IListProps>) {
   // variables
   const router = useRouter();
+  const { data, isLoading } = useTalentMonitoringList(queryParams);
 
   return (
     <Table<IResponseListTalentMonitoring>
       header={TableHeader}
-      data={[
-        {
-          id: 1,
-          name: "John Doe",
-          date_of_birth: "1990-01-01",
-          id_number: "1234567890",
-          email: "asd@mail.com",
-          phone: "081234567890",
-          address: "Jl. Lorem Ipsum Dolor Sit Amet",
-        },
-      ]}
-      loading={false}
+      data={data?.data || []}
+      loading={isLoading}
     >
       <TableCell<IResponseListTalentMonitoring> name="name">
         {({ row }) => (
           <div className="flex items-center gap-1">
             <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage
-                src={"/images/unavailable-profile.webp"}
+                src={row?.photo || "/images/unavailable-profile.webp"}
                 alt="avatar"
                 className="object-cover w-full h-full"
               />
@@ -104,7 +100,7 @@ export default function List() {
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
                   onClick={() => {
-                    router.push(`/talent-monitoring/${row.id}`);
+                    router.push(`/talent-monitoring/${row.talend_id}`);
                   }}
                 >
                   <Info className="h-5 w-5" />

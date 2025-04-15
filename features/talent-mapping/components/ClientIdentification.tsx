@@ -6,37 +6,46 @@ import { z } from "zod";
 
 import { InputField } from "@/components/common/input-field";
 import { Input } from "@/components/ui/input";
-import InfiniteCombobox from "@/components/common/input-infinite-select";
+import InputCombobox from "@/components/common/input-combobox";
 
-import { CreateTalentMappingSchema } from "../schemas/talent-mapping.schema";
+import { createTalentMappingSchema } from "../schemas/talent-mapping.schema";
+import useTalentMapping from "@/stores/talent-mapping";
 
+type FormValues = z.infer<ReturnType<typeof createTalentMappingSchema>>;
 type TClientIdentificationProps = {
-  form: UseFormReturn<z.infer<typeof CreateTalentMappingSchema>>;
+  form: UseFormReturn<FormValues>;
+  mode: string;
 };
 
 export default function ClientIdentification({
   form,
+  mode,
 }: Readonly<TClientIdentificationProps>) {
+  // variables
+  const { optionsClient, optionsOutlet, fetchOptionsOutlet } =
+    useTalentMapping();
+
   // functions
-  const getOptionClientName = async () => {
-    return {
-      data: [
-        {
-          id: 1,
-          zona: "Zona 1",
-        },
-        {
-          id: 2,
-          zona: "Zona 2",
-        },
-        {
-          id: 3,
-          zona: "Zona 3",
-        },
-      ],
-      total: 3,
-    } as any;
+  const handleClientChange = async (value: string) => {
+    await fetchOptionsOutlet(value);
+    const client = optionsClient?.find((item) => item.id?.toString() === value);
+    form.setValue("client_id", client?.id_client ?? "");
+    form.setValue("client_address", client?.address ?? "");
+    form.setValue("outlet_mapping", "");
+    form.setValue("outlet_id", "");
+    form.setValue("outlet_address", "");
+    form.setValue("outlet_lat", "");
+    form.setValue("outlet_long", "");
   };
+
+  const handleOutletChange = async (value: string) => {
+    const outlet = optionsOutlet?.find((item) => item.id?.toString() === value);
+    form.setValue("outlet_id", outlet?.outlet_id ?? "");
+    form.setValue("outlet_address", outlet?.address ?? "");
+    form.setValue("outlet_lat", outlet?.latitude?.toString() ?? "");
+    form.setValue("outlet_long", outlet?.longitude?.toString() ?? "");
+  };
+
   return (
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
       <InputField
@@ -45,17 +54,17 @@ export default function ClientIdentification({
         primary
         control={form.control}
         render={({ field }) => (
-          <InfiniteCombobox
-            value={field.value}
-            defaultValue={""}
-            onChange={(value) => console.log("JOSSSS")}
-            onClear={() => console.log("MASUKKK")}
-            fetchData={() => getOptionClientName()}
-            valueKey="id"
-            labelKey="zona"
-            pageSize={10}
+          <InputCombobox
+            field={field}
+            options={
+              optionsClient?.map((item) => ({
+                label: item.name,
+                value: item.id?.toString() ?? "",
+              })) || []
+            }
             placeholder="Select client name"
-            className="w-full"
+            onChange={(value) => handleClientChange(value)}
+            disabled={mode === "view"}
           />
         )}
       />
@@ -83,17 +92,17 @@ export default function ClientIdentification({
         primary
         control={form.control}
         render={({ field }) => (
-          <InfiniteCombobox
-            value={field.value}
-            defaultValue={""}
-            onChange={(value) => console.log("JOSSSS")}
-            onClear={() => console.log("MASUKKK")}
-            fetchData={getOptionClientName}
-            valueKey="id"
-            labelKey="zona"
-            pageSize={10}
+          <InputCombobox
+            field={field}
+            options={
+              optionsOutlet?.map((item) => ({
+                label: item.name,
+                value: item.id?.toString() ?? "",
+              })) || []
+            }
             placeholder="Select outlet"
-            className="w-full"
+            onChange={(value) => handleOutletChange(value)}
+            disabled={form.watch("client_id") === "" || mode === "view"}
           />
         )}
       />
@@ -113,6 +122,24 @@ export default function ClientIdentification({
         control={form.control}
         render={({ field }) => (
           <Input disabled placeholder="Outlet Address" {...field} />
+        )}
+      />
+      <InputField
+        name="outlet_lat"
+        label="Outlet Latitude"
+        primary
+        control={form.control}
+        render={({ field }) => (
+          <Input disabled placeholder="Outlet Latitude" {...field} />
+        )}
+      />
+      <InputField
+        name="outlet_long"
+        label="Outlet Longitude"
+        primary
+        control={form.control}
+        render={({ field }) => (
+          <Input disabled placeholder="Outlet Longitude" {...field} />
         )}
       />
     </div>

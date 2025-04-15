@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
-import * as React from "react";
+import React, { useCallback, useEffect } from "react";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import type { DateRange } from "react-day-picker";
-import { cn } from "@/utils/utils";
+import { useController, Control } from "react-hook-form";
+import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -13,27 +15,81 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
+import { cn } from "@/utils/utils";
+
 interface DatePickerWithRangeProps {
   className?: string;
+  name: string;
+  control: Control<z.infer<any>> | undefined;
+  onChange?: (value: { start?: Date; end?: Date }) => void;
+  value?: { start?: Date; end?: Date };
+  placeholder?: string;
 }
 
 export function DatePickerWithRange({
   className,
+  name,
+  control,
+  onChange,
+  value,
+  placeholder = "Pick a date",
 }: Readonly<DatePickerWithRangeProps>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2024, 11, 27),
-    to: new Date(2025, 0, 1),
+  const {
+    field: { value: fieldValue, onChange: fieldOnChange },
+  } = useController({
+    name,
+    control,
   });
+  const [date, setDate] = React.useState<DateRange | undefined>(
+    fieldValue
+      ? {
+          from: fieldValue.start,
+          to: fieldValue.end,
+        }
+      : undefined,
+  );
+
+  // functions
+  const handleDateChange = useCallback(
+    (selectedDate: DateRange | undefined) => {
+      setDate(selectedDate);
+
+      const newValue = selectedDate
+        ? {
+            start: selectedDate.from,
+            end: selectedDate.to,
+          }
+        : { start: undefined, end: undefined };
+
+      fieldOnChange(newValue);
+
+      if (onChange) {
+        onChange(newValue);
+      }
+    },
+    [fieldOnChange, onChange],
+  );
+
+  // lifecycle
+  useEffect(() => {
+    if (value && !date) {
+      setDate({
+        from: value.start,
+        to: value.end,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            id="date"
+            id={name}
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-start text-left font-normal text-black",
+              "w-full justify-start text-left font-normal text-black",
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4 text-primary" />
@@ -47,7 +103,7 @@ export function DatePickerWithRange({
                 format(date.from, "dd MMMM yyyy")
               )
             ) : (
-              <span>Pick a date</span>
+              <span>{placeholder}</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -57,7 +113,7 @@ export function DatePickerWithRange({
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={handleDateChange}
             numberOfMonths={2}
           />
         </PopoverContent>

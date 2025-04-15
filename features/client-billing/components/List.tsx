@@ -11,10 +11,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import { IResponseListClientBilling } from "@/types";
-import useClientBilling from "@/stores/client-billing";
 import { Badge } from "@/components/ui/badge";
+
+import { IResponseListClientBilling, TSearchParams } from "@/types";
+import useClientBilling from "@/stores/client-billing";
+import { useClientBillingList } from "../hooks/useClientBilling";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -40,30 +41,28 @@ const TableHeader: ITableHeader[] = [
   { key: "action", title: "Action" },
 ];
 
-export default function List() {
+interface IListProps {
+  queryParams: TSearchParams;
+}
+
+export default function List({ queryParams }: Readonly<IListProps>) {
   // variables
-  const { setSelectedId, toggleModalDetailClientBilling, setDetailType } =
+  const { setSelectedData, toggleModalDetailClientBilling, setDetailType } =
     useClientBilling();
+  const { data, isLoading } = useClientBillingList(queryParams);
 
   return (
     <Table<IResponseListClientBilling>
       header={TableHeader}
-      data={[
-        {
-          id: 1,
-          name: "John Doe",
-          address: "Jl. Lorem Ipsum Dolor Sit Amet",
-          status: "Complete",
-        },
-      ]}
-      loading={false}
+      data={data?.data || []}
+      loading={isLoading}
     >
       <TableCell<IResponseListClientBilling> name="name">
         {({ row }) => (
           <div className="flex items-center gap-1">
             <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage
-                src={"/images/unavailable-profile.webp"}
+                src={row?.photo || "/images/unavailable-profile.webp"}
                 alt="avatar"
                 className="object-cover w-full h-full"
               />
@@ -77,8 +76,8 @@ export default function List() {
       </TableCell>
       <TableCell<IResponseListClientBilling> name="status">
         {({ row }) => (
-          <Badge variant={row.status === "Pending" ? "pending" : "success"}>
-            • {row.status}
+          <Badge variant={row.payment_status ? "success" : "pending"}>
+            • {row.payment_status ? "Complete" : "Pending"}
           </Badge>
         )}
       </TableCell>
@@ -96,7 +95,7 @@ export default function List() {
                 <DropdownMenuItem
                   onClick={() => {
                     setTimeout(() => {
-                      setSelectedId(row.id);
+                      setSelectedData(row);
                       setDetailType("detail");
                       toggleModalDetailClientBilling(true);
                     }, 100);
@@ -108,7 +107,7 @@ export default function List() {
                 <DropdownMenuItem
                   onClick={() => {
                     setTimeout(() => {
-                      setSelectedId(row.id);
+                      setSelectedData(row);
                       setDetailType("edit");
                       toggleModalDetailClientBilling(true);
                     }, 100);

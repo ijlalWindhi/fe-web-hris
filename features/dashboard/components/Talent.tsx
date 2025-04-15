@@ -7,7 +7,12 @@ import {
   RadialBarChart,
   TooltipProps,
 } from "recharts";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+import { Form } from "@/components/ui/form";
+import { InputField } from "@/components/common/input-field";
 import {
   Card,
   CardContent,
@@ -21,6 +26,8 @@ import {
   ChartContainer,
   ChartTooltip,
 } from "@/components/ui/chart";
+
+import { SearchSchema } from "@/utils/global.schema";
 
 const chartConfig = {
   mapped: {
@@ -57,12 +64,37 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
 };
 
 export default function Talent() {
+  // variables
+  const form = useForm<z.infer<typeof SearchSchema>>({
+    resolver: zodResolver(SearchSchema),
+    defaultValues: {
+      search: {
+        start: undefined,
+        end: undefined,
+      },
+    },
+  });
+
   return (
     <Card>
       <CardHeader className="pb-2 pt-0 md:pb-3">
-        <CardTitle>Talent</CardTitle>
+        <CardTitle>TAD</CardTitle>
         <CardDescription>
-          <DatePickerWithRange />
+          <Form {...form}>
+            <InputField
+              name="search"
+              control={form.control}
+              render={({ field }) => (
+                <DatePickerWithRange
+                  name="search"
+                  control={form.control}
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Select date range"
+                />
+              )}
+            />
+          </Form>
         </CardDescription>
       </CardHeader>
       <CardContent className="pb-0">
@@ -72,7 +104,7 @@ export default function Talent() {
             className="w-full min-h-[200px] max-h-[200px]"
           >
             <RadialBarChart
-              data={[{ mapped: 3, notMapped: 1 }]}
+              data={[{ mapped: 0, notMapped: 0 }]}
               endAngle={180}
               innerRadius="80%"
               outerRadius="160%"
@@ -95,14 +127,14 @@ export default function Talent() {
                             y={(viewBox.cy ?? 0) + 15}
                             className="fill-slate-900 text-3xl font-normal"
                           >
-                            {10}
+                            {0}
                           </tspan>
                           <tspan
                             x={viewBox.cx}
                             y={(viewBox.cy ?? 0) - 20}
                             className="fill-muted-foreground text-sm"
                           >
-                            Total Talent
+                            Total TAD
                           </tspan>
                         </text>
                       );

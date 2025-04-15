@@ -2,13 +2,17 @@
 import React from "react";
 import {
   Label,
-  PolarGrid,
   PolarRadiusAxis,
   RadialBar,
   RadialBarChart,
   TooltipProps,
 } from "recharts";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+import { Form } from "@/components/ui/form";
+import { InputField } from "@/components/common/input-field";
 import {
   Card,
   CardContent,
@@ -22,6 +26,8 @@ import {
   ChartContainer,
   ChartTooltip,
 } from "@/components/ui/chart";
+
+import { SearchSchema } from "@/utils/global.schema";
 
 const chartConfig = {
   complete: {
@@ -69,12 +75,37 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
 };
 
 export default function ClientBilling() {
+  // variables
+  const form = useForm<z.infer<typeof SearchSchema>>({
+    resolver: zodResolver(SearchSchema),
+    defaultValues: {
+      search: {
+        start: undefined,
+        end: undefined,
+      },
+    },
+  });
+
   return (
     <Card>
       <CardHeader className="pb-2 pt-0 md:pb-3">
         <CardTitle>Client Billing</CardTitle>
         <CardDescription>
-          <DatePickerWithRange />
+          <Form {...form}>
+            <InputField
+              name="search"
+              control={form.control}
+              render={({ field }) => (
+                <DatePickerWithRange
+                  name="search"
+                  control={form.control}
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Select date range"
+                />
+              )}
+            />
+          </Form>
         </CardDescription>
       </CardHeader>
       <CardContent className="p-0">
@@ -84,7 +115,7 @@ export default function ClientBilling() {
             className="w-full min-h-[160px] max-h-[160px]"
           >
             <RadialBarChart
-              data={[{ complete: 10, overdue: 1, pending: 1 }]}
+              data={[{ complete: 0, overdue: 0, pending: 0 }]}
               startAngle={250}
               endAngle={-70}
               innerRadius={70}
@@ -102,7 +133,7 @@ export default function ClientBilling() {
                             y={(viewBox.cy ?? 0) + 30}
                             className="fill-slate-900 text-xl md:text-3xl font-normal"
                           >
-                            {10}
+                            {0}
                           </tspan>
                           <tspan
                             x={viewBox.cx}
