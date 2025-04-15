@@ -76,7 +76,7 @@ export default function ModalPermission() {
                       }
                       className="data-[state=checked]:bg-blue-600"
                     />
-                    <span className="text-sm">{perm.name}</span>
+                    <span className="text-sm capitalize">{perm.name}</span>
                   </div>
                 );
               })}
