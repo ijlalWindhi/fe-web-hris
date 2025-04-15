@@ -21,6 +21,7 @@ import useTheme from "@/stores/theme";
 import { TSearchParams } from "@/types";
 import { useSetParams } from "@/utils/set-params";
 import { useMasterClientList } from "@/features/master-client/hooks/useMasterClient";
+import { useDownloadBilling } from "../hooks/useClientBilling";
 import ModalDetailBilling from "./ModalDetailBilling";
 
 export default function ClientBilling() {
@@ -34,6 +35,7 @@ export default function ClientBilling() {
     src: searchParams.get("src") ?? undefined,
   });
   const { data } = useMasterClientList(queryParams);
+  const downloadBilling = useDownloadBilling();
 
   // functions
   const handleSearch = useCallback(
@@ -75,20 +77,22 @@ export default function ClientBilling() {
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     try {
-      setModalSuccess({
-        open: true,
-        title: "Download Successful!",
-        message:
-          "The client billing data has been downloaded successfully. You can now review it on your device.",
-        actionMessage: "Close",
-        actionVariant: "outline",
-        animation: "success",
-        action: () => {
-          console.log("Download talent with ID: ");
-        },
-      });
+      const res = await downloadBilling.mutateAsync();
+      if (res?.status === "success") {
+        window.open(res?.data?.file, "_blank");
+        setModalSuccess({
+          open: true,
+          title: "Download Successful!",
+          message:
+            "The client billing data has been downloaded successfully. You can now review it on your device.",
+          actionMessage: "Close",
+          actionVariant: "outline",
+          animation: "success",
+          action: () => {},
+        });
+      }
     } catch (error) {
       console.error("Error from handleDownload: ", error);
     }

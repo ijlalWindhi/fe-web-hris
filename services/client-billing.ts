@@ -5,6 +5,7 @@ import {
   IResponseDetailClientBilling,
   IResponseDetailBilling,
   TSearchParams,
+  IResponseDownloadBilling,
 } from "@/types";
 
 export async function getListClientBilling(
@@ -60,6 +61,20 @@ export async function verifyBilling(id: string): Promise<IResponse<null>> {
     return response.data;
   } catch (error) {
     console.error("Error from service verifyBilling: ", error);
+    throw error;
+  }
+}
+
+export async function downloadBilling(): Promise<
+  IResponse<IResponseDownloadBilling>
+> {
+  try {
+    const response = await axios.get<IResponse<IResponseDownloadBilling>>(
+      "/client-billing/download/file",
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service downloadBilling: ", error);
     throw error;
   }
 }

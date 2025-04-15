@@ -47,3 +47,7 @@ export interface IResponseDetailBilling {
     jumlah: number;
   }[];
 }
+
+export interface IResponseDownloadBilling {
+  file: string;
+}

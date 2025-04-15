@@ -4,6 +4,7 @@ import {
   getDetailClientBilling,
   getDetailBilling,
   verifyBilling,
+  downloadBilling,
 } from "@/services/client-billing";
 import { TSearchParams } from "@/types";
 
@@ -33,5 +34,11 @@ export function useDetailBilling(id: string) {
 export function useVerifyBilling() {
   return useMutation({
     mutationFn: (id: string) => verifyBilling(id),
+  });
+}
+
+export function useDownloadBilling() {
+  return useMutation({
+    mutationFn: () => downloadBilling(),
   });
 }
