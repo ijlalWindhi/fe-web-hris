@@ -5,7 +5,6 @@ const publicPages = [
   "/auth/login",
   "/auth/reset-password",
   "/auth/new-password",
-  "/auth/first-login",
 ];
 
 // Define public assets paths that should always be accessible
