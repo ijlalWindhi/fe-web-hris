@@ -20,13 +20,15 @@ export default function Profile() {
   const router = useRouter();
   const isMobile = useIsMobile();
   const updateUserManagement = useUpdateUserManagement();
-  const { profile, getProfile } = useAuth();
+  const { profile, getProfile, logout } = useAuth();
 
   // functions
   const handleLogout = () => {
     try {
       deleteCookie("token");
+      logout();
       router.push("/auth/login");
+      localStorage.removeItem(`${process.env.NEXT_PUBLIC_STORAGE_NAME}:auth`);
     } catch (error) {
       console.error("Error from handleLogout: ", error);
     }

@@ -72,6 +72,14 @@ const useAuth = create<IAuthStore>()(
           throw error;
         }
       },
+      logout: () => {
+        setState((state) => ({
+          ...state,
+          profile: {} as TResponseProfile,
+          permission: [],
+          menu: [],
+        }));
+      },
     }),
     {
       name: `${process.env.NEXT_PUBLIC_STORAGE_NAME}:auth`,

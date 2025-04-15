@@ -7,6 +7,7 @@ export interface IAuthStore {
   getProfile: () => Promise<TResponseProfile>;
   getPermission: () => Promise<TPermission[]>;
   getMenu: () => Promise<INavItem[]>;
+  logout: () => void;
 }
 
 // Login
