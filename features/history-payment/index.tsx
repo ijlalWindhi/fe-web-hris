@@ -1,3 +1,3 @@
-import ClientBilling from "./components/ClientBilling";
+import HistoryPayment from "./components/HistoryPayment";
 
-export default ClientBilling;
+export default HistoryPayment;
