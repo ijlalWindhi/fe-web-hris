@@ -77,9 +77,15 @@ export function DatePickerWithRange({
         from: value.start,
         to: value.end,
       });
+    } else if (value && date) {
+      const newDate = {
+        from: value.start,
+        to: value.end,
+      };
+      setDate(newDate);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [value]);
 
   return (
     <div className={cn("grid gap-2", className)}>
