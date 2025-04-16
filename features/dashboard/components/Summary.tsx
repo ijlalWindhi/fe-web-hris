@@ -12,6 +12,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import ChartSummary from "./ChartSummary";
 import useAuth from "@/stores/auth";
+import CardReminder from "./CardReminder";
 
 const stats = [
   { value: 0, label: "🙋 Attend" },
@@ -41,6 +42,18 @@ export default function Summary() {
           and HR insights at your fingertips.
         </CardDescription>
       </CardHeader>
+      <div className="flex items-center gap-2 w-full overflow-x-auto mt-4">
+        <CardReminder
+          client="PT Cinta Sejati"
+          date="17 April 2025"
+          status="Payment Not Processed"
+        />
+        <CardReminder
+          client="PT Cinta Sejati"
+          date="17 April 2025"
+          status="Payment Not Processed"
+        />
+      </div>
       <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 items-center justify-between">
         {stats.map((stat, index) => (
           <div
