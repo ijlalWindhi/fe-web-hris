@@ -70,6 +70,7 @@ export function ClientLayoutWrapper({
       "Detail Role Management": "Role Management",
       "Master Data": "Master Data",
       "History Payment": "History Payment",
+      "Claim & Compensation": "Claim & Compensation",
     };
 
     return moduleMapping[title] || title;

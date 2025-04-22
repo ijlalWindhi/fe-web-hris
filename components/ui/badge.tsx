@@ -19,6 +19,7 @@ const badgeVariants = cva(
         success: "border border-green-500 bg-green-50 text-green-500",
         error: "border border-red-500 bg-red-50 text-red-500",
         gray: "border border-gray-300 bg-gray-50 text-gray-500",
+        blue: "border border-blue-500 bg-blue-50 text-blue-500",
       },
     },
     defaultVariants: {
