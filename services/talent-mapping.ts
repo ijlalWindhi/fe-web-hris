@@ -139,7 +139,7 @@ export async function getTalentOptions({
 }): Promise<IResponse<IResponseTalentOptions[]>> {
   try {
     const response = await axios.get<IResponse<IResponseTalentOptions[]>>(
-      "/talent-mapping/option",
+      "/talent-mapping/data/option",
       {
         params: {
           src,
