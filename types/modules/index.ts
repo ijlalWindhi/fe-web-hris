@@ -10,3 +10,4 @@ export * from "./master-data";
 export * from "./history-payment";
 export * from "./dashboard";
 export * from "./claim-compensation";
+export * from "./type-tad";
