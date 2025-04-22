@@ -68,7 +68,8 @@ export function ClientLayoutWrapper({
       "User Management": "User Management",
       "Role Management": "Role Management",
       "Detail Role Management": "Role Management",
-      "Master Data": "Master Data",
+      Holiday: "Holiday",
+      "Type Tad": "Type Tad",
       "History Payment": "History Payment",
       "Claim & Compensation": "Claim & Compensation",
     };
