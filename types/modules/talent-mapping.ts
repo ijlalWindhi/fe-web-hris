@@ -104,6 +104,11 @@ export interface IResponseHistoryTalentMapping {
   file_name: string;
 }
 
+export interface IResponseTalentOptions {
+  id: string;
+  name: string;
+}
+
 export interface TShift {
   shift_id: string;
   day: string;

@@ -7,6 +7,7 @@ import {
   IResponseViewTalentMapping,
   IResponseHistoryTalentMapping,
   IResponseShiftCalender,
+  IResponseTalentOptions,
   TParamsShiftCalender,
   TSearchParams,
 } from "@/types";
@@ -125,6 +126,30 @@ export async function getShiftCalender(
     return response.data;
   } catch (error) {
     console.error("Error from service getShiftCalender: ", error);
+    throw error;
+  }
+}
+
+export async function getTalentOptions({
+  client_id,
+  src,
+}: {
+  client_id: string;
+  src?: string;
+}): Promise<IResponse<IResponseTalentOptions[]>> {
+  try {
+    const response = await axios.get<IResponse<IResponseTalentOptions[]>>(
+      "/talent-mapping/option",
+      {
+        params: {
+          src,
+          client_id,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getTalentOptions: ", error);
     throw error;
   }
 }
