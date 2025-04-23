@@ -9,7 +9,9 @@ export interface IResponseClaimCompensation {
   id: number;
   photo: string;
   talent_name: string;
+  talent_id: string;
   client_name: string;
+  client_id: string;
   service_name: string;
   amount: number;
   payment_date: string;
