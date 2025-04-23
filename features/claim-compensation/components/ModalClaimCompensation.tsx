@@ -134,14 +134,7 @@ export default function ModalClaimCompensation() {
   // lifecycle
   useEffect(() => {
     if (selectedData) {
-      form.setValue(
-        "payment_date",
-        formatDate({
-          inputDate: selectedData.payment_date,
-          formatFrom: "yyyy-MM-dd",
-          formatTo: "dd MMMM yyyy",
-        }),
-      );
+      form.setValue("payment_date", selectedData.payment_date);
       form.setValue("code_user", selectedData.talent_name);
       form.setValue("client_id", selectedData.client_name);
       form.setValue("service_name", selectedData.service_name);
