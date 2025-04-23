@@ -135,8 +135,8 @@ export default function ModalClaimCompensation() {
   useEffect(() => {
     if (selectedData) {
       form.setValue("payment_date", selectedData.payment_date);
-      form.setValue("code_user", selectedData.talent_id);
-      form.setValue("client_id", selectedData.client_id);
+      form.setValue("code_user", selectedData.talent_id?.toString());
+      form.setValue("client_id", selectedData.client_id?.toString());
       form.setValue("service_name", selectedData.service_name);
       form.setValue("amount", selectedData.amount);
       form.setValue("type", selectedData.type.id.toString());
