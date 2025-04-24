@@ -8,6 +8,7 @@ import {
   IResponseHistoryTalentMapping,
   IResponseShiftCalender,
   IResponseTalentOptions,
+  IResponsePtkpOptions,
   TParamsShiftCalender,
   TSearchParams,
 } from "@/types";
@@ -150,6 +151,23 @@ export async function getTalentOptions({
     return response.data;
   } catch (error) {
     console.error("Error from service getTalentOptions: ", error);
+    throw error;
+  }
+}
+
+export async function getPtkpOptions(
+  src?: string,
+): Promise<IResponse<IResponsePtkpOptions[]>> {
+  try {
+    const response = await axios.get<IResponse<IResponsePtkpOptions[]>>(
+      "/ptkp/option",
+      {
+        params: { src },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getPtkpOptions: ", error);
     throw error;
   }
 }

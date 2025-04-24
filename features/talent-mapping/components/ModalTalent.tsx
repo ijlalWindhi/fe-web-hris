@@ -55,10 +55,18 @@ export default function ModalTalent() {
       email: "",
       phone: "",
       address: "",
+      bpjs_number: "",
+      ptkp: "",
+      npwp: "",
+      bank_account_name: "",
+      bank_account_number: "",
+      type_tad: "",
       client_id: "",
       outlet_id: "",
       contract_start_date: "",
       contract_end_date: "",
+      current_salary: 0,
+      resign_date: "",
     },
   });
   const { data, refetch } = useDetailTalentMapping(
@@ -109,6 +117,12 @@ export default function ModalTalent() {
         email: values.email,
         phone: values.phone,
         address: values.address,
+        bpjs_number: values.bpjs_number,
+        bank_account_name: values.bank_account_name,
+        bank_account_number: values.bank_account_number,
+        ptkp: Number(values.ptkp || 0),
+        npwp: values.npwp,
+        type_tad: Number(values.type_tad || 0),
         client_id: Number(values.client_name),
         outlet_id: Number(values.outlet_mapping),
         contract: {
@@ -127,6 +141,14 @@ export default function ModalTalent() {
               })
             : "",
           file: "",
+          current_salary: values.current_salary,
+          resign_date: values.resign_date
+            ? formatDate({
+                inputDate: values.resign_date,
+                formatFrom: "dd MMMM yyyy",
+                formatTo: "dd-MM-yyyy",
+              })
+            : "",
         },
       };
       if (file) {
@@ -205,6 +227,12 @@ export default function ModalTalent() {
         email: initialValue?.email,
         phone: initialValue?.phone,
         address: initialValue?.address,
+        bpjs_number: initialValue?.bpjs_number,
+        bank_account_name: initialValue?.bank_account_name,
+        bank_account_number: initialValue?.bank_account_number,
+        ptkp: initialValue?.ptkp?.toString(),
+        npwp: initialValue?.npwp,
+        type_tad: initialValue?.type_tad?.toString(),
         client_id: initialValue?.client?.id,
         outlet_mapping: initialValue?.outlet?.id,
         contract_start_date: initialValue?.contract?.start_date
@@ -217,6 +245,14 @@ export default function ModalTalent() {
         contract_end_date: initialValue?.contract?.end_date
           ? formatDate({
               inputDate: initialValue?.contract?.end_date ?? "",
+              formatFrom: "dd-MM-yyyy",
+              formatTo: "dd MMMM yyyy",
+            })
+          : undefined,
+        current_salary: initialValue?.contract?.current_salary,
+        resign_date: initialValue?.contract?.resign_date
+          ? formatDate({
+              inputDate: initialValue?.contract?.resign_date ?? "",
               formatFrom: "dd-MM-yyyy",
               formatTo: "dd MMMM yyyy",
             })

@@ -44,6 +44,13 @@ export interface IResponseDetailTalentMapping {
   email: string;
   phone: string;
   address: string;
+  bpjs_number: string;
+  bank_account_name: string | null;
+  bank_account_number: string | null;
+  ptkp: number;
+  ptkp_name: string;
+  npwp: string;
+  type_tad: number;
   client: {
     id: string;
     name: string;
@@ -58,6 +65,8 @@ export interface IResponseDetailTalentMapping {
     start_date: string;
     end_date: string;
     file: string;
+    current_salary: number;
+    resign_date: string | null;
   };
 }
 
@@ -124,6 +133,12 @@ export interface TPayloadTalentMapping {
   email?: string;
   phone?: string;
   address?: string;
+  bpjs_number?: string;
+  bank_account_name?: string | null;
+  bank_account_number?: string | null;
+  ptkp?: number;
+  npwp?: string;
+  type_tad?: number;
   client_id?: number;
   outlet_id?: number;
   shift?: {
@@ -137,5 +152,12 @@ export interface TPayloadTalentMapping {
     start_date: string;
     end_date: string;
     file: string;
+    current_salary?: number;
+    resign_date?: string;
   };
+}
+
+export interface IResponsePtkpOptions {
+  id: number;
+  tipe: string;
 }

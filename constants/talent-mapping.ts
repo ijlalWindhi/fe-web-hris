@@ -7,6 +7,10 @@ export const fieldToTabMapping: any = {
   email: "personal_information",
   phone: "personal_information",
   address: "personal_information",
+  bpjs_number: "personal_information",
+  ptkp: "personal_information",
+  npwp: "personal_information",
+  type_tad: "personal_information",
 
   // Client Identification tab fields
   client_name: "client_identification",

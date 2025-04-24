@@ -6,6 +6,7 @@ import {
   getHistoryTalentMapping,
   getShiftCalender,
   getTalentOptions,
+  getPtkpOptions,
   createTalentMapping,
   updateTalentMapping,
   deleteTalentMapping,
@@ -96,5 +97,12 @@ export function useTalentOptions({
   return useQuery({
     queryKey: ["talentOptions", client_id, src],
     queryFn: () => getTalentOptions({ client_id, src }),
+  });
+}
+
+export function usePtkpOptions(src?: string) {
+  return useQuery({
+    queryKey: ["ptkpOptions", src],
+    queryFn: () => getPtkpOptions(src),
   });
 }

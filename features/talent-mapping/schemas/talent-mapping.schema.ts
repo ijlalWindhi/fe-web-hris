@@ -20,6 +20,12 @@ export const createTalentMappingSchema = (roleId: number) => {
       .min(10, "Phone number must be at least 10 characters")
       .max(15, "Phone number must be at most 15 characters"),
     address: z.string().nonempty("Address is required"),
+    bpjs_number: z.string().nonempty("BPJS Number is required"),
+    bank_account_name: z.string().optional().nullable(),
+    bank_account_number: z.string().optional().nullable(),
+    ptkp: z.string().nonempty("PTKP is required"),
+    npwp: z.string().nonempty("NPWP is required"),
+    type_tad: z.string().nonempty("Type TAD is required"),
     client_name: z.string().optional().nullable(),
     client_id: z.string().optional().nullable(),
     client_address: z.string().optional().nullable(),
@@ -39,10 +45,14 @@ export const createTalentMappingSchema = (roleId: number) => {
           contract_end_date: z
             .string()
             .nonempty("Contract End Date is required"),
+          current_salary: z.number().optional(),
+          resign_date: z.string().optional(),
         })
       : baseSchema.extend({
           contract_start_date: z.string().optional(),
           contract_end_date: z.string().optional(),
+          current_salary: z.number().optional(),
+          resign_date: z.string().optional(),
         });
 
   return schemaWithContract.superRefine((data, ctx) => {

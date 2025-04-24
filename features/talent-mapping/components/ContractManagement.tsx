@@ -8,6 +8,7 @@ import { TableCell, type ITableHeader } from "@/components/ui/table";
 import { InputField } from "@/components/common/input-field";
 import { DatePicker } from "@/components/common/input-date-picket";
 import { Button } from "@/components/ui/button";
+import { InputCurrency } from "@/components/common/input-currency";
 import InputFile from "@/components/common/input-file-attachment";
 
 import { createTalentMappingSchema } from "../schemas/talent-mapping.schema";
@@ -29,7 +30,7 @@ const TableHeader: ITableHeader[] = [
   {
     key: "contract_date",
     title: "Contract Date",
-    className: "min-w-[6rem]",
+    className: "min-w-[13rem]",
   },
   {
     key: "file_name",
@@ -60,6 +61,21 @@ function ContractManagement({
 
   return (
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
+      <InputField
+        name="current_salary"
+        label="Current Salary"
+        control={form.control}
+        render={({ field }) => (
+          <InputCurrency
+            placeholder="e.g. 1.000.000"
+            value={field.value}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            disabled={mode === "view"}
+          />
+        )}
+      />
+
       <div className="flex items-end justify-between gap-2">
         <div className="w-full">
           <InputField
@@ -97,6 +113,20 @@ function ContractManagement({
         </div>
       </div>
 
+      <InputField
+        name="resign_date"
+        label="Resign Date"
+        control={form.control}
+        render={({ field }) => (
+          <DatePicker
+            placeholder="Choose resign date"
+            value={field.value}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            disabled={mode === "view"}
+          />
+        )}
+      />
       <InputFile
         label="Contract Document"
         defaultValue={detail?.data?.contract?.file}
