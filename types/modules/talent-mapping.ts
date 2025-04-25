@@ -51,6 +51,7 @@ export interface IResponseDetailTalentMapping {
   ptkp_name: string;
   npwp: string;
   type_tad: number;
+  gender: number;
   client: {
     id: string;
     name: string;
@@ -139,6 +140,7 @@ export interface TPayloadTalentMapping {
   ptkp?: number;
   npwp?: string;
   type_tad?: number;
+  gender?: number;
   client_id?: number;
   outlet_id?: number;
   shift?: {

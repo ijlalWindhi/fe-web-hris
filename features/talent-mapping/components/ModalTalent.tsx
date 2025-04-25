@@ -61,6 +61,7 @@ export default function ModalTalent() {
       bank_account_name: "",
       bank_account_number: "",
       type_tad: "",
+      gender: "",
       client_id: "",
       outlet_id: "",
       contract_start_date: "",
@@ -123,6 +124,7 @@ export default function ModalTalent() {
         ptkp: Number(values.ptkp || 0),
         npwp: values.npwp,
         type_tad: Number(values.type_tad || 0),
+        gender: Number(values.gender || 0),
         client_id: Number(values.client_name),
         outlet_id: Number(values.outlet_mapping),
         contract: {
@@ -233,6 +235,7 @@ export default function ModalTalent() {
         ptkp: initialValue?.ptkp?.toString(),
         npwp: initialValue?.npwp,
         type_tad: initialValue?.type_tad?.toString(),
+        gender: initialValue?.gender?.toString(),
         client_id: initialValue?.client?.id,
         outlet_mapping: initialValue?.outlet?.id,
         contract_start_date: initialValue?.contract?.start_date

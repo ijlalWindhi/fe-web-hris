@@ -119,6 +119,23 @@ export default function PersonalInformation({
         )}
       />
       <InputField
+        name="gender"
+        label="Gender"
+        primary
+        control={form.control}
+        render={({ field }) => (
+          <InputCombobox
+            field={field}
+            options={[
+              { label: "Laki-laki", value: "0" },
+              { label: "Perempuan", value: "1" },
+            ]}
+            placeholder="Select gender"
+            disabled={mode === "view"}
+          />
+        )}
+      />
+      <InputField
         name="bpjs_number"
         label="BPJS TK Number"
         primary

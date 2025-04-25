@@ -26,6 +26,7 @@ export const createTalentMappingSchema = (roleId: number) => {
     ptkp: z.string().nonempty("PTKP is required"),
     npwp: z.string().nonempty("NPWP is required"),
     type_tad: z.string().nonempty("Type TAD is required"),
+    gender: z.string().nonempty("Gender is required"),
     client_name: z.string().optional().nullable(),
     client_id: z.string().optional().nullable(),
     client_address: z.string().optional().nullable(),
