@@ -4,6 +4,8 @@ import {
   IResponseDashboard,
   IResponseTad,
   IResponseBilling,
+  IResponsePaymentReminder,
+  IResponseAttendanceSummary,
 } from "@/types";
 
 export async function getDashboard(
@@ -56,6 +58,38 @@ export async function getBilling(
     return response.data;
   } catch (error) {
     console.error("Error from service getBilling: ", error);
+    throw error;
+  }
+}
+
+export async function getAttendanceSummary(
+  start?: string,
+  end?: string,
+): Promise<IResponse<IResponseAttendanceSummary[]>> {
+  try {
+    const response = await axios.get<IResponse<IResponseAttendanceSummary[]>>(
+      "/dashboard/attendance-sum",
+      {
+        params: { start, end },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getAttendanceSummary: ", error);
+    throw error;
+  }
+}
+
+export async function getPaymentReminder(): Promise<
+  IResponse<IResponsePaymentReminder[]>
+> {
+  try {
+    const response = await axios.get<IResponse<IResponsePaymentReminder[]>>(
+      "/dashboard/payment-reminder",
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getPaymentReminder: ", error);
     throw error;
   }
 }
