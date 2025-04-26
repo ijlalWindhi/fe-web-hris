@@ -193,7 +193,7 @@ export default function DetailMasterClient() {
                 {data?.data?.total_active}
               </span>
             </div>
-            <Form {...form}>
+            {/* <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6"
@@ -269,7 +269,7 @@ export default function DetailMasterClient() {
                   </Button>
                 )}
               </form>
-            </Form>
+            </Form> */}
           </TabsContent>
           <TabsContent value="payroll">
             <dl className="divide-y">
