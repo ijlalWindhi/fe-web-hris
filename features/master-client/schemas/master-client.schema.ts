@@ -14,6 +14,8 @@ export const DownloadReportSchema = z.object({
 export const CreateMasterClientSchema = z.object({
   name: z.string().nonempty("Client name is required"),
   address: z.string().nonempty("Client address is required"),
+  npwp: z.string().nonempty("NPWP is required"),
+  brand_name: z.string().nonempty("Brand name is required"),
   cs_person: z.string().nonempty("CS Person is required"),
   cs_number: z
     .string()
@@ -50,6 +52,7 @@ export const CreateMasterClientSchema = z.object({
     z.object({
       name: z.string().nonempty("Allowence Name is required"),
       amount: z.number().min(0, "Allowence Amount is required"),
+      is_daily: z.string().nonempty("Type is required"),
     }),
   ),
   // .min(1, "At least one Allowence is required"),

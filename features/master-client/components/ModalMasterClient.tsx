@@ -48,6 +48,8 @@ export default function ModalTalent() {
     defaultValues: {
       name: "",
       address: "",
+      npwp: "",
+      brand_name: "",
       cs_person: "",
       cs_number: "",
       cs_email: "",
@@ -84,6 +86,7 @@ export default function ModalTalent() {
       ],
       allowences: [
         {
+          is_daily: "",
           name: "",
           amount: 0,
         },
@@ -153,6 +156,7 @@ export default function ModalTalent() {
         allowences: values.allowences.map((item) => ({
           ...item,
           amount: item.amount,
+          is_daily: item.is_daily === "1",
         })),
         payment_date: formatDate({
           inputDate: values.payment_date,

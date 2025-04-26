@@ -38,6 +38,8 @@ export interface IResponseDetailMasterClient {
   name: string;
   address: string;
   photo: string;
+  npwp: string;
+  brand_name: string;
   outlet: {
     id_outlet: string;
     name: string;
@@ -58,6 +60,7 @@ export interface IResponseDetailMasterClient {
     id: string;
     name: string;
     amount: string;
+    id_daily: boolean;
   }[];
   cs_person: string;
   cs_number: string;
@@ -112,6 +115,8 @@ export type TPayloadMasterClient = {
   photo: string;
   name: string;
   address: string;
+  npwp: string;
+  brand_name: string;
   outlet: {
     id_outlet?: string;
     name: string;
@@ -129,6 +134,7 @@ export type TPayloadMasterClient = {
   allowences: {
     name: string;
     amount: number;
+    is_daily: boolean;
   }[];
   cs_person: string;
   cs_number: string;
