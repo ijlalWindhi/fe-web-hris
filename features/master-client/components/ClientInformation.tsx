@@ -39,6 +39,22 @@ export default function ClientInformation({
         render={({ field }) => <Input placeholder="e.g. Jl. Raya" {...field} />}
       />
       <InputField
+        name="npwp"
+        label="NPWP"
+        primary
+        control={form.control}
+        render={({ field }) => (
+          <Input placeholder="e.g. 123456789" {...field} />
+        )}
+      />
+      <InputField
+        name="brand_name"
+        label="Adjustable Brand Name"
+        primary
+        control={form.control}
+        render={({ field }) => <Input placeholder="e.g. Maju+" {...field} />}
+      />
+      <InputField
         name="cs_person"
         label="CS Name"
         primary

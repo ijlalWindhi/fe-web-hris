@@ -51,6 +51,7 @@ export interface IResponseDetailMasterClient {
   basic_salary: string;
   agency_fee: string;
   payment_date: string;
+  payment_day: string;
   bpjs: {
     id: string;
     name: string;
@@ -60,7 +61,7 @@ export interface IResponseDetailMasterClient {
     id: string;
     name: string;
     amount: string;
-    id_daily: boolean;
+    is_daily: boolean;
   }[];
   cs_person: string;
   cs_number: string;
@@ -127,6 +128,7 @@ export type TPayloadMasterClient = {
   basic_salary: number;
   agency_fee: number;
   payment_date: string;
+  payment_day: number;
   bpjs: {
     name: string;
     amount: number;

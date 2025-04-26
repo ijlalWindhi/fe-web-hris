@@ -58,6 +58,7 @@ export default function ModalTalent() {
       outlet: [],
       basic_salary: 0,
       agency_fee: 0,
+      payment_day: 0,
       bpjs: [
         {
           name: "Jaminan Hari Tua(JHT)",
@@ -149,6 +150,7 @@ export default function ModalTalent() {
         outlet: modifiedOutlets,
         basic_salary: values.basic_salary,
         agency_fee: values.agency_fee,
+        payment_day: Number(values.payment_day),
         bpjs: values.bpjs.map((item) => ({
           ...item,
           amount: item.amount,
@@ -251,6 +253,7 @@ export default function ModalTalent() {
           })) ?? [],
         basic_salary: Number(data?.basic_salary ?? 0),
         agency_fee: Number(data?.agency_fee ?? 0),
+        payment_day: Number(data?.payment_day ?? 0),
         bpjs:
           data?.bpjs?.map((item) => ({
             ...item,
@@ -260,6 +263,7 @@ export default function ModalTalent() {
           data?.allowences?.map((item) => ({
             ...item,
             amount: Number(item.amount ?? 0),
+            is_daily: item.is_daily ? "1" : "0",
           })) ?? [],
         payment_date: data?.payment_date
           ? formatDate({
