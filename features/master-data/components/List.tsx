@@ -117,7 +117,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                {hasPermission("Master Data", "edit") && (
+                {hasPermission("Holiday", "edit") && (
                   <DropdownMenuItem
                     onClick={() => {
                       setTimeout(() => {
@@ -130,7 +130,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                     Edit
                   </DropdownMenuItem>
                 )}
-                {hasPermission("Master Data", "delete") && (
+                {hasPermission("Holiday", "delete") && (
                   <DropdownMenuItem
                     className="text-red-500"
                     onClick={() => {
