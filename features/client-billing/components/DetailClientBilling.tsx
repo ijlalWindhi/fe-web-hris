@@ -22,6 +22,7 @@ import {
 } from "../hooks/useClientBilling";
 import { formatCurrency } from "@/utils/format-currency";
 import { hasPermission } from "@/utils/get-permission";
+import { truncateText } from "@/utils/truncate";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -41,7 +42,7 @@ const TableHeader: ITableHeader[] = [
   },
   {
     key: "status",
-    title: "Current Status",
+    title: "Status",
     className: "min-w-[10rem]",
   },
   {
@@ -172,8 +173,8 @@ export default function DetailClientBilling() {
                     window.open(row.evidence_payment, "_blank");
                   }}
                 >
-                  {row.evidence_payment}{" "}
-                  <Download size={16} className="text-primary ml-2" />
+                  {truncateText(row.evidence_payment, 50)}{" "}
+                  <Download className="text-primary w-8 h-8" />
                 </div>
               ) : (
                 "-"
