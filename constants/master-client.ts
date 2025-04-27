@@ -6,6 +6,8 @@ export const fieldToTabMapping: any = {
   cs_person: "client_information",
   cs_number: "client_information",
   cs_email: "client_information",
+  npwp: "client_information",
+  brand_name: "client_information",
 
   // Outlet tab fields
   outlet: "outlet_list",
@@ -13,6 +15,7 @@ export const fieldToTabMapping: any = {
   // Payroll tab fields
   basic_salary: "payroll",
   agency_fee: "payroll",
+  payment_day: "payroll",
   bpjs: "payroll",
   allowences: "payroll",
   payment_date: "payroll",

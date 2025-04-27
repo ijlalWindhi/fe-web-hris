@@ -11,6 +11,8 @@ import { DatePicker } from "@/components/common/input-date-picket";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import InputNumber from "@/components/common/input-number";
+import InputCombobox from "@/components/common/input-combobox";
 
 import { CreateMasterClientSchema } from "../schemas/master-client.schema";
 
@@ -39,7 +41,7 @@ export default function Payroll({ form }: Readonly<TPayrollProps>) {
   };
 
   const handleAddFieldAllowences = () => {
-    appendAllowences({ name: "", amount: 0 });
+    appendAllowences({ name: "", amount: 0, is_daily: "" });
   };
 
   return (
@@ -74,6 +76,20 @@ export default function Payroll({ form }: Readonly<TPayrollProps>) {
           />
         )}
       />
+      <InputField
+        name="payment_day"
+        label="Payment Day (H+)"
+        primary
+        control={form.control}
+        render={({ field }) => (
+          <InputNumber
+            value={field.value}
+            onChange={field.onChange}
+            min={0}
+            max={999999}
+          />
+        )}
+      />
       <div className="space-y-4 pt-2">
         <div className="flex items-center justify-between">
           <Label>
@@ -89,7 +105,7 @@ export default function Payroll({ form }: Readonly<TPayrollProps>) {
         </div>
         {fields.map((field, index) => (
           <div key={field.id}>
-            <div className="flex w-full justify-between items-end gap-2 flex-col md:flex-row">
+            <div className="flex w-full justify-between items-start gap-2 flex-col md:flex-row">
               <InputField
                 name={`bpjs.${index}.name`}
                 control={form.control}
@@ -142,7 +158,23 @@ export default function Payroll({ form }: Readonly<TPayrollProps>) {
         </div>
         {fieldsAllowences.map((field, index) => (
           <div key={field.id}>
-            <div className="flex w-full justify-between items-end gap-2 flex-col md:flex-row">
+            <div className="flex w-full justify-between items-start gap-2 flex-col md:flex-row">
+              <InputField
+                name={`allowences.${index}.is_daily`}
+                primary
+                control={form.control}
+                render={({ field }) => (
+                  <InputCombobox
+                    field={field}
+                    options={[
+                      { label: "Daily", value: "1" },
+                      { label: "Monthly", value: "0" },
+                    ]}
+                    placeholder="Select type"
+                    className="w-32"
+                  />
+                )}
+              />
               <InputField
                 name={`allowences.${index}.name`}
                 control={form.control}

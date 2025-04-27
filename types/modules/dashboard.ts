@@ -19,3 +19,18 @@ export interface IResponseBilling {
     overdue: number;
   }[];
 }
+
+export interface IResponseAttendanceSummary {
+  value: number;
+  label: string;
+}
+
+export interface IResponsePaymentReminder {
+  id: number;
+  client_id: string;
+  client_name: string;
+  date: string;
+  amount: number;
+  status: number;
+  status_name: string;
+}
