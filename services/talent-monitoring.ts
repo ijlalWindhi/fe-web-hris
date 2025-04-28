@@ -187,7 +187,7 @@ export async function updatePerformance(
 export async function resetDevice(id: string): Promise<IResponse<null>> {
   try {
     const response = await axios.post<IResponse<null>>(
-      `/talent-monitoring/reset-device/${id}`,
+      `/talent-monitor/reset-device/${id}`,
     );
     return response.data;
   } catch (error) {
