@@ -62,6 +62,7 @@ export default function ModalTalent() {
       bank_account_name: "",
       bank_account_number: "",
       type_tad: "",
+      role_id: "",
       gender: "",
       client_id: "",
       outlet_id: "",
@@ -125,6 +126,7 @@ export default function ModalTalent() {
         ptkp: Number(values.ptkp || 0),
         npwp: values.npwp,
         type_tad: Number(values.type_tad || 0),
+        role_id: Number(values.role_id || 0),
         gender: Number(values.gender || 0),
         client_id: Number(values.client_name),
         outlet_id: Number(values.outlet_mapping),
@@ -236,6 +238,7 @@ export default function ModalTalent() {
         ptkp: initialValue?.ptkp?.toString(),
         npwp: initialValue?.npwp,
         type_tad: initialValue?.type_tad?.toString(),
+        role_id: initialValue?.role_id?.toString(),
         gender: initialValue?.gender?.toString(),
         client_id: initialValue?.client?.id,
         outlet_mapping: initialValue?.outlet?.id,
@@ -325,6 +328,16 @@ export default function ModalTalent() {
       form.setValue("outlet_long", "");
       form.setValue("contract_start_date", "");
       form.setValue("contract_end_date", "");
+      form.setValue("current_salary", 0);
+      form.setValue("resign_date", "");
+      form.setValue("bpjs_number", "");
+      form.setValue("bank_account_name", "");
+      form.setValue("bank_account_number", "");
+      form.setValue("ptkp", "");
+      form.setValue("npwp", "");
+      form.setValue("type_tad", "");
+      form.setValue("gender", "");
+      form.setValue("role_id", "");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalTalentMapping]);

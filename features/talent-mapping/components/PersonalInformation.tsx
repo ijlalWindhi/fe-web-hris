@@ -8,7 +8,10 @@ import { DatePicker } from "@/components/common/input-date-picket";
 import InputCombobox from "@/components/common/input-combobox";
 
 import { createTalentMappingSchema } from "../schemas/talent-mapping.schema";
-import { usePtkpOptions } from "../hooks/useTalentMapping";
+import {
+  usePtkpOptions,
+  useRoleTalentMappingOptions,
+} from "../hooks/useTalentMapping";
 import { useTypeTadOptions } from "@/features/type-tad/hooks/useTypeTad";
 
 type FormValues = z.infer<ReturnType<typeof createTalentMappingSchema>>;
@@ -22,6 +25,7 @@ export default function PersonalInformation({
   // variables
   const { data: optionsPtkp } = usePtkpOptions();
   const { data: optionsTypeTad } = useTypeTadOptions();
+  const { data: optionsRole } = useRoleTalentMappingOptions();
 
   return (
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
@@ -190,6 +194,24 @@ export default function PersonalInformation({
               })) || []
             }
             placeholder="Select type TAD"
+          />
+        )}
+      />
+      <InputField
+        name="role_id"
+        label="User Role"
+        primary
+        control={form.control}
+        render={({ field }) => (
+          <InputCombobox
+            field={field}
+            options={
+              optionsRole?.data?.map((item) => ({
+                label: item.name,
+                value: item.id?.toString() ?? "",
+              })) || []
+            }
+            placeholder="Select user role"
           />
         )}
       />

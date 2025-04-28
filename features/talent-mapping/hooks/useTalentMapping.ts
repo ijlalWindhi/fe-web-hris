@@ -7,6 +7,7 @@ import {
   getShiftCalender,
   getTalentOptions,
   getPtkpOptions,
+  getRoleTalentMappingOptions,
   createTalentMapping,
   updateTalentMapping,
   deleteTalentMapping,
@@ -104,5 +105,12 @@ export function usePtkpOptions(src?: string) {
   return useQuery({
     queryKey: ["ptkpOptions", src],
     queryFn: () => getPtkpOptions(src),
+  });
+}
+
+export function useRoleTalentMappingOptions() {
+  return useQuery({
+    queryKey: ["roleTalentMappingOptions"],
+    queryFn: () => getRoleTalentMappingOptions(),
   });
 }

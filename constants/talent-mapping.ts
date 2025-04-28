@@ -11,6 +11,7 @@ export const fieldToTabMapping: any = {
   ptkp: "personal_information",
   npwp: "personal_information",
   type_tad: "personal_information",
+  role_id: "personal_information",
 
   // Client Identification tab fields
   client_name: "client_identification",
