@@ -253,7 +253,7 @@ export default function ModalTalent() {
               formatTo: "dd MMMM yyyy",
             })
           : undefined,
-        current_salary: initialValue?.contract?.current_salary,
+        current_salary: initialValue?.contract?.current_salary || 0,
         resign_date: initialValue?.contract?.resign_date
           ? formatDate({
               inputDate: initialValue?.contract?.resign_date ?? "",
