@@ -11,6 +11,7 @@ import {
   getPerformance,
   getPayroll,
   updatePerformance,
+  resetDevice,
 } from "@/services/talent-monitoring";
 import {
   IParamsSearch,
@@ -108,5 +109,11 @@ export function useUpdatePerformance() {
       id: number;
       data: TPayloadUpdatePerformance;
     }) => updatePerformance(id, data),
+  });
+}
+
+export function useResetDevice() {
+  return useMutation({
+    mutationFn: (id: string) => resetDevice(id),
   });
 }

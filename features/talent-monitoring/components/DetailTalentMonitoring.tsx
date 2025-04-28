@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { ChevronLeft, Download } from "lucide-react";
+import { ChevronLeft, Download, Smartphone } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,12 @@ import TalentTimesheet from "./TalentTimesheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { DATA_SIDEBAR } from "@/constants/talent-monitoring";
-import { useTalentInformation } from "../hooks/useTalentMonitoring";
+import {
+  useTalentInformation,
+  useResetDevice,
+} from "../hooks/useTalentMonitoring";
+import { hasPermission } from "@/utils/get-permission";
+import useTheme from "@/stores/theme";
 
 interface IDetailTalentMonitoringProps {
   id: string;
@@ -37,8 +42,10 @@ export default function DetailTalentMonitoring({
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const { setModalSuccess } = useTheme();
   const [activePath, setActivePath] = useState("");
-  const { data, isLoading } = useTalentInformation(id);
+  const { data } = useTalentInformation(id);
+  const resetDeviceMutate = useResetDevice();
 
   // functions
   const handleNavigation = (path: string) => {
@@ -47,6 +54,23 @@ export default function DetailTalentMonitoring({
     router.push(
       `${pathname}?${new URLSearchParams({ ...Object.fromEntries(searchParams.entries()), path }).toString()}`,
     );
+  };
+
+  const resetDevice = async () => {
+    try {
+      await resetDeviceMutate.mutateAsync(id);
+      setModalSuccess({
+        open: true,
+        title: "Reset Device Successfully!",
+        message:
+          "Device has been reset successfully. You can now log in to your account.",
+        actionVariant: "default",
+        actionMessage: "Back",
+        action: () => {},
+      });
+    } catch (error) {
+      console.error("Error resetting device:", error);
+    }
   };
 
   // lifecycle
@@ -84,12 +108,25 @@ export default function DetailTalentMonitoring({
                 </div>
               ))}
             </div>
-            <Link href="/talent-monitoring" className="w-full">
-              <Button variant={"outline"} size={"sm"} className="w-full">
-                <ChevronLeft size={16} className="mr-1" />
-                Back
-              </Button>
-            </Link>
+            <div className="space-y-2">
+              <Link href="/talent-monitoring" className="w-full">
+                <Button variant={"outline"} size={"sm"} className="w-full">
+                  <ChevronLeft size={16} className="mr-1" />
+                  Back
+                </Button>
+              </Link>
+              {hasPermission("Talent Monitoring", "reset device") && (
+                <Button
+                  variant={"destructive"}
+                  size={"sm"}
+                  className="w-full"
+                  onClick={resetDevice}
+                >
+                  <Smartphone size={16} className="mr-1" />
+                  Reset Device
+                </Button>
+              )}
+            </div>
           </div>
           <div className="hidden lg:block min-h-[75vh] w-0.5 bg-gray-200" />
           <div className="w-full lg:w-5/6 px-4 max-h-[75vh] overflow-y-auto">

@@ -183,3 +183,15 @@ export async function updatePerformance(
     throw error;
   }
 }
+
+export async function resetDevice(id: string): Promise<IResponse<null>> {
+  try {
+    const response = await axios.post<IResponse<null>>(
+      `/talent-monitoring/reset-device/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service resetDevice: ", error);
+    throw error;
+  }
+}
