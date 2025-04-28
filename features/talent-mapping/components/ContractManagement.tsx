@@ -18,11 +18,11 @@ import {
   useHistoryTalentMapping,
 } from "../hooks/useTalentMapping";
 import useTalentMapping from "@/stores/talent-mapping";
+import { hasPermission } from "@/utils/get-permission";
 
 type FormValues = z.infer<ReturnType<typeof createTalentMappingSchema>>;
 type TContractManagementProps = {
   form: UseFormReturn<FormValues>;
-  mode: string;
   setFileContract?: (file: File | null) => void;
 };
 
@@ -42,7 +42,6 @@ const TableHeader: ITableHeader[] = [
 
 function ContractManagement({
   form,
-  mode,
   setFileContract,
 }: Readonly<TContractManagementProps>) {
   // variables
@@ -53,6 +52,7 @@ function ContractManagement({
   const { data, isLoading } = useHistoryTalentMapping(
     selectedData?.talend_id ?? "",
   );
+  const isEdit = hasPermission("Talent Mapping", "add contract");
 
   // functions
   const handleDownload = (url: string) => {
@@ -71,7 +71,7 @@ function ContractManagement({
             value={field.value}
             onChange={field.onChange}
             onBlur={field.onBlur}
-            disabled={mode === "view"}
+            disabled={!isEdit}
           />
         )}
       />
@@ -89,7 +89,7 @@ function ContractManagement({
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
-                disabled={mode === "view"}
+                disabled={!isEdit}
               />
             )}
           />
@@ -106,7 +106,7 @@ function ContractManagement({
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
-                disabled={mode === "view"}
+                disabled={!isEdit}
               />
             )}
           />
@@ -123,7 +123,7 @@ function ContractManagement({
             value={field.value}
             onChange={field.onChange}
             onBlur={field.onBlur}
-            disabled={mode === "view"}
+            disabled={!isEdit}
           />
         )}
       />
@@ -136,7 +136,7 @@ function ContractManagement({
         onFileChange={(file) => {
           setFileContract?.(file);
         }}
-        disabled={mode === "view"}
+        disabled={!isEdit}
       />
 
       <Table<IResponseHistoryTalentMapping>

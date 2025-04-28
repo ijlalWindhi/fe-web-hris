@@ -28,6 +28,7 @@ import { formatDate } from "@/utils/format-date";
 import { uploadFile } from "@/services/file";
 import { TPayloadTalentMapping } from "@/types";
 import { fieldToTabMapping } from "@/constants/talent-mapping";
+import { hasPermission } from "@/utils/get-permission";
 
 export default function ModalTalent() {
   // variables
@@ -378,23 +379,17 @@ export default function ModalTalent() {
               <TabsTrigger value="working_arrangement">
                 Working Arrangement
               </TabsTrigger>
-              {selectedData?.talend_id && (
+              {hasPermission("Talent Mapping", "add contract") && (
                 <TabsTrigger value="contract_management">
                   Contract Management
                 </TabsTrigger>
               )}
             </TabsList>
             <TabsContent value="personal_information">
-              <PersonalInformation
-                form={form}
-                mode={profile?.role?.id === 2 ? "view" : "create"}
-              />
+              <PersonalInformation form={form} />
             </TabsContent>
             <TabsContent value="client_identification">
-              <ClientIdentification
-                form={form}
-                mode={profile?.role?.id === 2 ? "view" : "create"}
-              />
+              <ClientIdentification form={form} />
             </TabsContent>
             <TabsContent value="working_arrangement">
               <WorkingArrangement />
@@ -402,7 +397,6 @@ export default function ModalTalent() {
             <TabsContent value="contract_management">
               <ContractManagement
                 form={form}
-                mode={profile?.role?.id === 3 ? "view" : "create"}
                 setFileContract={setFileContract}
               />
             </TabsContent>
