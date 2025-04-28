@@ -27,6 +27,7 @@ import {
   useCreateUserManagement,
   useUpdateUserManagement,
 } from "../hooks/useUserManagement";
+import { useRoleOptions } from "@/features/role-management/hooks/useRoleManagement";
 import { uploadFile } from "@/services/file";
 import { TPayloadUserManagement } from "@/types";
 
@@ -42,6 +43,7 @@ export default function ModalTalent() {
   const { setModalSuccess } = useTheme();
   const createUserManagement = useCreateUserManagement();
   const updateUserManagement = useUpdateUserManagement();
+  const { data: optionsRole } = useRoleOptions();
   const form = useForm<z.infer<typeof CreateUserManagementSchema>>({
     resolver: zodResolver(CreateUserManagementSchema),
     defaultValues: {
@@ -190,9 +192,15 @@ export default function ModalTalent() {
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Pilih Role</SelectLabel>
-                    <SelectItem value="1">Employee</SelectItem>
-                    <SelectItem value="2">Admin</SelectItem>
-                    <SelectItem value="3">Super Admin</SelectItem>
+                    {optionsRole?.data?.map((item) => (
+                      <SelectItem
+                        className="capitalize"
+                        key={item.id}
+                        value={item.id.toString()}
+                      >
+                        {item.name}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>

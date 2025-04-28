@@ -4,6 +4,7 @@ import {
   getUserRoleManagement,
   getDetailPermission,
   getOptionsModule,
+  getRoleOptions,
   postPermission,
   updatePermission,
 } from "@/services/role-management";
@@ -63,5 +64,12 @@ export function useUpdatePermission() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["permissionDetail"] });
     },
+  });
+}
+
+export function useRoleOptions() {
+  return useQuery({
+    queryKey: ["roleOptions"],
+    queryFn: () => getRoleOptions(),
   });
 }
