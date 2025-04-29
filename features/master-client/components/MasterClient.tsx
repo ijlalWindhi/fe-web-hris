@@ -100,7 +100,7 @@ export default function MasterClient() {
               defaultValue={queryParams.src}
             />
           </div>
-          <Button
+          {/* <Button
             variant={"default-outline"}
             size="sm"
             className="w-full md:w-auto"
@@ -108,7 +108,7 @@ export default function MasterClient() {
           >
             <Download size={16} />
             Download Report
-          </Button>
+          </Button> */}
           {hasPermission("Master Client", "create") && (
             <Button
               size="sm"
