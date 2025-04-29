@@ -27,4 +27,5 @@ export interface IResponseTypeTadOptions {
   id: number;
   type_tad: string;
   type_employee: string;
+  client_name: string;
 }

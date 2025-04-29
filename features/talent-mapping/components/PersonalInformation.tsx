@@ -189,7 +189,7 @@ export default function PersonalInformation({
             field={field}
             options={
               optionsTypeTad?.data?.map((item) => ({
-                label: `${item.type_tad} - ${item.type_employee}`,
+                label: `${item.type_tad} - ${item.type_employee} (${item.client_name})`,
                 value: item.id?.toString() ?? "",
               })) || []
             }
