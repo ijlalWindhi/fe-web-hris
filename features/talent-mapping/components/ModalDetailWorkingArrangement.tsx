@@ -200,7 +200,7 @@ export default function ModalDetailWorkingArrangement() {
                   }
                   placeholder="Select client name"
                   onChange={(value) => handleClientChange(value)}
-                  disabled={!hasPermission("Talent Mapping", "own client")}
+                  disabled={hasPermission("Talent Mapping", "own client")}
                 />
               )}
             />
