@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getListTalentMonitor,
   getTalentInformation,
@@ -121,7 +121,13 @@ export function useInformationDevice(id: string) {
 }
 
 export function useResetDevice() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => resetDevice(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["informationDevice"],
+      });
+    },
   });
 }
