@@ -64,7 +64,7 @@ export default function DetailTalent() {
           <TabsTrigger value="mapping_information">
             Mapping Information
           </TabsTrigger>
-          {profile?.role?.id === 2 && (
+          {hasPermission("Talent Mapping", "working arrangement") && (
             <TabsTrigger value="working_arrangement">
               Working Arrangement
             </TabsTrigger>
