@@ -9,6 +9,7 @@ import {
   IResponseTimesheet,
   IResponsePerformance,
   IResponsePayroll,
+  IResponseInformationDevice,
   TPayloadUpdatePerformance,
   TSearchParams,
   IParamsSearch,
@@ -164,6 +165,20 @@ export async function getPayroll(
     return response.data;
   } catch (error) {
     console.error("Error from service getPayroll: ", error);
+    throw error;
+  }
+}
+
+export async function getInformationDevice(
+  id: string,
+): Promise<IResponse<IResponseInformationDevice>> {
+  try {
+    const response = await axios.get<IResponse<IResponseInformationDevice>>(
+      `/talent-monitor/information-device/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getInformationDevice: ", error);
     throw error;
   }
 }

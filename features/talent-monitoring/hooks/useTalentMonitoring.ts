@@ -10,6 +10,7 @@ import {
   getTimesheet,
   getPerformance,
   getPayroll,
+  getInformationDevice,
   updatePerformance,
   resetDevice,
 } from "@/services/talent-monitoring";
@@ -109,6 +110,13 @@ export function useUpdatePerformance() {
       id: number;
       data: TPayloadUpdatePerformance;
     }) => updatePerformance(id, data),
+  });
+}
+
+export function useInformationDevice(id: string) {
+  return useQuery({
+    queryKey: ["informationDevice", id],
+    queryFn: () => getInformationDevice(id),
   });
 }
 

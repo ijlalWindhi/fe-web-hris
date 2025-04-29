@@ -27,9 +27,11 @@ import { DATA_SIDEBAR } from "@/constants/talent-monitoring";
 import {
   useTalentInformation,
   useResetDevice,
+  useInformationDevice,
 } from "../hooks/useTalentMonitoring";
 import { hasPermission } from "@/utils/get-permission";
 import useTheme from "@/stores/theme";
+import { cn } from "@/utils/utils";
 
 interface IDetailTalentMonitoringProps {
   id: string;
@@ -45,6 +47,7 @@ export default function DetailTalentMonitoring({
   const { setModalSuccess } = useTheme();
   const [activePath, setActivePath] = useState("");
   const { data } = useTalentInformation(id);
+  const { data: informationDevice } = useInformationDevice(id);
   const resetDeviceMutate = useResetDevice();
 
   // functions
@@ -116,15 +119,31 @@ export default function DetailTalentMonitoring({
                 </Button>
               </Link>
               {hasPermission("Talent Monitoring", "reset device") && (
-                <Button
-                  variant={"destructive"}
-                  size={"sm"}
-                  className="w-full"
-                  onClick={resetDevice}
-                >
-                  <Smartphone size={16} className="mr-1" />
-                  Reset Device
-                </Button>
+                <div className="space-y-2 p-2 rounded-xl text-center border">
+                  <p
+                    className={cn(
+                      "text-xs font-semibold",
+                      informationDevice?.data?.active_device
+                        ? "text-green-500"
+                        : "text-red-500",
+                    )}
+                  >
+                    Device is{" "}
+                    {informationDevice?.data?.active_device
+                      ? "registered"
+                      : "not registered"}
+                  </p>
+                  <Button
+                    variant={"destructive"}
+                    size={"sm"}
+                    className="w-full"
+                    onClick={resetDevice}
+                    disabled={!informationDevice?.data?.active_device}
+                  >
+                    <Smartphone size={16} className="mr-1" />
+                    Reset Device
+                  </Button>
+                </div>
               )}
             </div>
           </div>
