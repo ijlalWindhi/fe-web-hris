@@ -28,6 +28,7 @@ export type TPayloadUserManagement = {
   email: string;
   phone: string;
   role_id: number;
+  client_id?: number | null;
   address: string;
   photo: string;
   status: boolean;
