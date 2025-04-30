@@ -73,7 +73,7 @@ export default function DetailRoleManagement({ id }: { readonly id: string }) {
       <CardContent>
         <div className="w-full flex flex-col lg:flex-row justify-start gap-4">
           <div className="lg:min-h-[75vh] w-full lg:w-1/4 flex flex-col md:justify-between md:gap-4">
-            <div className="space-y-4">
+            <div className="space-y-4 max-h-[65vh] overflow-y-auto">
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="md:text-lg font-semibold">Super Admin</h2>
                 <Badge variant={"outline"} className="w-fit">
@@ -96,12 +96,8 @@ export default function DetailRoleManagement({ id }: { readonly id: string }) {
                 ))}
               </ul>
             </div>
-            <Link href="/user-management/role-management">
-              <Button
-                variant={"outline"}
-                size={"sm"}
-                className="w-full lg:w-1/2 !mt-6"
-              >
+            <Link href="/user-management/role-management" className="w-full">
+              <Button variant={"outline"} size={"sm"} className="w-full !mt-4">
                 <ChevronLeft size={16} />
                 Back
               </Button>

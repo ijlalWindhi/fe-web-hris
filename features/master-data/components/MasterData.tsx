@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { PaginationCompo } from "@/components/ui/pagination";
 import InputSearch from "@/components/common/input-search";
+import { Button } from "@/components/ui/button";
 import List from "./List";
 import ModalHoliday from "./ModalHoliday";
 
@@ -20,7 +21,7 @@ import useMasterData from "@/stores/master-data";
 import { TSearchParams } from "@/types";
 import { useSetParams } from "@/utils/set-params";
 import { useMasterHolidayList } from "../hooks/useMasterData";
-import { Button } from "@/components/ui/button";
+import { hasPermission } from "@/utils/get-permission";
 
 export default function MasterData() {
   // variables
@@ -92,10 +93,12 @@ export default function MasterData() {
               defaultValue={queryParams.src}
             />
           </div>
-          <Button onClick={() => toggleModalMasterHoliday(true)}>
-            <Plus size={16} />
-            Add Holiday Calendar
-          </Button>
+          {hasPermission("Holiday", "create") && (
+            <Button onClick={() => toggleModalMasterHoliday(true)}>
+              <Plus size={16} />
+              Add Holiday Calendar
+            </Button>
+          )}
         </div>
       </CardHeader>
       <CardContent>

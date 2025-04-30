@@ -10,6 +10,8 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format, startOfMonth, endOfMonth } from "date-fns";
+import { Loader2 } from "lucide-react";
 
 import { Form } from "@/components/ui/form";
 import { InputField } from "@/components/common/input-field";
@@ -28,6 +30,7 @@ import {
 } from "@/components/ui/chart";
 
 import { SearchSchema } from "@/utils/global.schema";
+import { useTad } from "../hooks/useDashboard";
 
 const chartConfig = {
   mapped: {
@@ -69,11 +72,20 @@ export default function Talent() {
     resolver: zodResolver(SearchSchema),
     defaultValues: {
       search: {
-        start: undefined,
-        end: undefined,
+        start: startOfMonth(new Date()),
+        end: endOfMonth(new Date()),
       },
     },
   });
+  const startDate = formatDateForApi(form.watch("search.start"));
+  const endDate = formatDateForApi(form.watch("search.end"));
+  const { data, isLoading, error } = useTad(startDate, endDate);
+
+  // functions
+  function formatDateForApi(date: Date | undefined): string | undefined {
+    if (!date) return undefined;
+    return format(date, "dd-MM-yyyy");
+  }
 
   return (
     <Card>
@@ -98,79 +110,109 @@ export default function Talent() {
         </CardDescription>
       </CardHeader>
       <CardContent className="pb-0">
-        <div className="border border-gray-200 bg-gray-50 rounded-lg p-2 h-36">
-          <ChartContainer
-            config={chartConfig}
-            className="w-full min-h-[200px] max-h-[200px]"
-          >
-            <RadialBarChart
-              data={[{ mapped: 0, notMapped: 0 }]}
-              endAngle={180}
-              innerRadius="80%"
-              outerRadius="160%"
-            >
-              <defs>
-                <linearGradient id="slaGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(var(--primary))" />
-                  <stop offset="100%" stopColor="hsl(var(--primary))" />
-                </linearGradient>
-              </defs>
-              <ChartTooltip cursor={false} content={<CustomTooltip />} />
-              <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                      return (
-                        <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle">
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy ?? 0) + 15}
-                            className="fill-slate-900 text-3xl font-normal"
-                          >
-                            {0}
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy ?? 0) - 20}
-                            className="fill-muted-foreground text-sm"
-                          >
-                            Total TAD
-                          </tspan>
-                        </text>
-                      );
-                    }
-                  }}
-                />
-              </PolarRadiusAxis>
-              <RadialBar
-                dataKey="notMapped"
-                stackId="a"
-                cornerRadius={5}
-                fill="#F2F4F7"
-                className="stroke-transparent stroke-2"
-              />
-              <RadialBar
-                dataKey="mapped"
-                stackId="a"
-                cornerRadius={5}
-                fill="url(#slaGradient)"
-                className="stroke-transparent stroke-2 fill-primary"
-              />
-            </RadialBarChart>
-          </ChartContainer>
-        </div>
+        {isLoading && (
+          <div className="flex items-center justify-center h-full">
+            <Loader2 className="animate-spin h-8 w-8 text-primary" />
+          </div>
+        )}
+        {error && (
+          <div className="flex items-center justify-center h-full text-red-500">
+            Error loading data
+          </div>
+        )}
+        {!isLoading && !error && data?.data && (
+          <>
+            <div className="border border-gray-200 bg-gray-50 rounded-lg p-2 h-36">
+              <ChartContainer
+                config={chartConfig}
+                className="w-full min-h-[200px] max-h-[200px]"
+              >
+                <RadialBarChart
+                  data={data?.data?.result ?? []}
+                  endAngle={180}
+                  innerRadius="80%"
+                  outerRadius="160%"
+                >
+                  <defs>
+                    <linearGradient
+                      id="slaGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="0%" stopColor="hsl(var(--primary))" />
+                      <stop offset="100%" stopColor="hsl(var(--primary))" />
+                    </linearGradient>
+                  </defs>
+                  <ChartTooltip cursor={false} content={<CustomTooltip />} />
+                  <PolarRadiusAxis
+                    tick={false}
+                    tickLine={false}
+                    axisLine={false}
+                  >
+                    <Label
+                      content={({ viewBox }) => {
+                        if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                          return (
+                            <text
+                              x={viewBox.cx}
+                              y={viewBox.cy}
+                              textAnchor="middle"
+                            >
+                              <tspan
+                                x={viewBox.cx}
+                                y={(viewBox.cy ?? 0) + 15}
+                                className="fill-slate-900 text-3xl font-normal"
+                              >
+                                {data.data?.total ?? 0}
+                              </tspan>
+                              <tspan
+                                x={viewBox.cx}
+                                y={(viewBox.cy ?? 0) - 20}
+                                className="fill-muted-foreground text-sm"
+                              >
+                                Total TAD
+                              </tspan>
+                            </text>
+                          );
+                        }
+                      }}
+                    />
+                  </PolarRadiusAxis>
+                  <RadialBar
+                    dataKey="notMapped"
+                    stackId="a"
+                    cornerRadius={5}
+                    fill="#F2F4F7"
+                    className="stroke-transparent stroke-2"
+                  />
+                  <RadialBar
+                    dataKey="mapped"
+                    stackId="a"
+                    cornerRadius={5}
+                    fill="url(#slaGradient)"
+                    className="stroke-transparent stroke-2 fill-primary"
+                  />
+                </RadialBarChart>
+              </ChartContainer>
+            </div>
 
-        {/* Legend */}
-        <div className="flex justify-center items-center gap-8 mt-3">
-          <div className="flex items-center gap-2 border px-4 py-1 rounded-full">
-            <div className="w-3 h-3 rounded-full bg-primary" />
-            <span className="text-xs md:text-sm text-gray-600">Mapped</span>
-          </div>
-          <div className="flex items-center gap-2 border px-4 py-1 rounded-full">
-            <div className="w-3 h-3 rounded-full bg-[#F2F4F7]" />
-            <span className="text-xs md:text-sm text-gray-600">Not Mapped</span>
-          </div>
-        </div>
+            {/* Legend */}
+            <div className="flex justify-center items-center gap-8 mt-3">
+              <div className="flex items-center gap-2 border px-4 py-1 rounded-full">
+                <div className="w-3 h-3 rounded-full bg-primary" />
+                <span className="text-xs md:text-sm text-gray-600">Mapped</span>
+              </div>
+              <div className="flex items-center gap-2 border px-4 py-1 rounded-full">
+                <div className="w-3 h-3 rounded-full bg-[#F2F4F7]" />
+                <span className="text-xs md:text-sm text-gray-600">
+                  Not Mapped
+                </span>
+              </div>
+            </div>
+          </>
+        )}
       </CardContent>
     </Card>
   );

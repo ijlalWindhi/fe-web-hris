@@ -11,6 +11,7 @@ import ModalRatingPerformance from "./ModalRatingPerformance";
 import { usePerformance } from "../hooks/useTalentMonitoring";
 import { ITalentPerformanceTalentMonitoring } from "@/types";
 import useTalentMonitoring from "@/stores/talent-monitoring";
+import { hasPermission } from "@/utils/get-permission";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -90,7 +91,7 @@ export default function TalentPerformance({
         <TableCell<ITalentPerformanceTalentMonitoring> name="action">
           {({ row }) => (
             <div className="flex items-center gap-2">
-              {row?.isedit ? (
+              {row?.isedit && hasPermission("Talent Monitoring", "edit") ? (
                 <Button
                   size={"sm"}
                   onClick={() => {

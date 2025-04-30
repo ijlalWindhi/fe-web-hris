@@ -164,3 +164,7 @@ body {
   animation: slideInFromBottom 0.3s ease-out;
 }
 /* Animations For Sheet Action Component */
+
+.desktop-header::-webkit-scrollbar {
+  height: 4px !important;
+}

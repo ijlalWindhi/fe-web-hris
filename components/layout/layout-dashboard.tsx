@@ -19,7 +19,7 @@ export function ClientLayoutWrapper({
   const isMobile = useIsMobile();
   const pathname = usePathname();
   const { isSidebarOpen, toggleSidebar } = useTheme();
-  const { permission, menu } = useAuth();
+  const { permission, menu, getPermission, getMenu } = useAuth();
 
   // functions
   const findMenuItemByPath = (
@@ -68,8 +68,10 @@ export function ClientLayoutWrapper({
       "User Management": "User Management",
       "Role Management": "Role Management",
       "Detail Role Management": "Role Management",
-      "Master Data": "Master Data",
+      Holiday: "Holiday",
+      "Type Tad": "Type Tad",
       "History Payment": "History Payment",
+      "Claim & Compensation": "Claim & Compensation",
     };
 
     return moduleMapping[title] || title;
@@ -116,6 +118,11 @@ export function ClientLayoutWrapper({
     checkUserPermission();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [permission, menu]);
+
+  useEffect(() => {
+    getPermission();
+    getMenu();
+  }, []);
 
   return (
     <div className="min-h-screen h-full bg-gray-50">

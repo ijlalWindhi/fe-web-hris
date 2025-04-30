@@ -19,7 +19,7 @@ import { TSearchParams } from "@/types";
 import { useSetParams } from "@/utils/set-params";
 import { useHistoryPaymentList } from "../hooks/useHistoryPayment";
 
-export default function ClientBilling() {
+export default function HistoryPayment() {
   // variables
   const updateParams = useSetParams();
   const searchParams = useSearchParams();

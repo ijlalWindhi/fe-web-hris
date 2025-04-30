@@ -10,6 +10,7 @@ import {
   useViewTalentMapping,
   useDeleteTalentMapping,
 } from "../hooks/useTalentMapping";
+import { hasPermission } from "@/utils/get-permission";
 
 export default function HeaderDetailTalent() {
   // variables
@@ -71,13 +72,15 @@ export default function HeaderDetailTalent() {
         </div>
       </div>
       <div className="flex gap-1 absolute top-0 right-0">
-        <Button
-          variant="outline"
-          className="h-8 w-8 p-0"
-          onClick={handleDelete}
-        >
-          <Trash className="h-5 w-5 text-red-500" />
-        </Button>
+        {hasPermission("Talent Mapping", "delete") && (
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={handleDelete}
+          >
+            <Trash className="h-5 w-5 text-red-500" />
+          </Button>
+        )}
       </div>
     </div>
   );

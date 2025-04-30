@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getListTalentMonitor,
   getTalentInformation,
@@ -10,7 +10,9 @@ import {
   getTimesheet,
   getPerformance,
   getPayroll,
+  getInformationDevice,
   updatePerformance,
+  resetDevice,
 } from "@/services/talent-monitoring";
 import {
   IParamsSearch,
@@ -108,5 +110,24 @@ export function useUpdatePerformance() {
       id: number;
       data: TPayloadUpdatePerformance;
     }) => updatePerformance(id, data),
+  });
+}
+
+export function useInformationDevice(id: string) {
+  return useQuery({
+    queryKey: ["informationDevice", id],
+    queryFn: () => getInformationDevice(id),
+  });
+}
+
+export function useResetDevice() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => resetDevice(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["informationDevice"],
+      });
+    },
   });
 }

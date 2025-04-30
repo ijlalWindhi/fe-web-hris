@@ -5,6 +5,9 @@ import {
   getViewTalentMapping,
   getHistoryTalentMapping,
   getShiftCalender,
+  getTalentOptions,
+  getPtkpOptions,
+  getRoleTalentMappingOptions,
   createTalentMapping,
   updateTalentMapping,
   deleteTalentMapping,
@@ -82,5 +85,32 @@ export function useShiftCalender(params: TParamsShiftCalender) {
     queryKey: ["shiftCalender", params],
     queryFn: () => getShiftCalender(params),
     enabled: false,
+  });
+}
+
+export function useTalentOptions({
+  client_id,
+  src,
+}: {
+  client_id: string;
+  src?: string;
+}) {
+  return useQuery({
+    queryKey: ["talentOptions", client_id, src],
+    queryFn: () => getTalentOptions({ client_id, src }),
+  });
+}
+
+export function usePtkpOptions(src?: string) {
+  return useQuery({
+    queryKey: ["ptkpOptions", src],
+    queryFn: () => getPtkpOptions(src),
+  });
+}
+
+export function useRoleTalentMappingOptions() {
+  return useQuery({
+    queryKey: ["roleTalentMappingOptions"],
+    queryFn: () => getRoleTalentMappingOptions(),
   });
 }

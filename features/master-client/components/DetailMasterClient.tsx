@@ -30,6 +30,7 @@ import {
   useUploadSignature,
 } from "../hooks/useMasterClient";
 import { uploadFile } from "@/services/file";
+import { hasPermission } from "@/utils/get-permission";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -146,7 +147,7 @@ export default function DetailMasterClient() {
             alt="logo client"
             width={50}
             height={50}
-            className="rounded-lg"
+            className="rounded-lg h-12 w-12 object-cover"
           />
           <div className="space-y-1.5">
             <div className="flex items-center">
@@ -192,7 +193,7 @@ export default function DetailMasterClient() {
                 {data?.data?.total_active}
               </span>
             </div>
-            <Form {...form}>
+            {/* <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6"
@@ -262,11 +263,13 @@ export default function DetailMasterClient() {
                     />
                   )}
                 />
-                <Button type="submit" className="w-full">
-                  Submit
-                </Button>
+                {hasPermission("Master Client", "edit") && (
+                  <Button type="submit" className="w-full">
+                    Submit
+                  </Button>
+                )}
               </form>
-            </Form>
+            </Form> */}
           </TabsContent>
           <TabsContent value="payroll">
             <dl className="divide-y">

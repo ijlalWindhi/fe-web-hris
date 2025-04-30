@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -11,6 +11,15 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  format,
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  startOfDay,
+  endOfDay,
+} from "date-fns";
 
 import { Form } from "@/components/ui/form";
 import { InputField } from "@/components/common/input-field";
@@ -19,97 +28,64 @@ import { Button } from "@/components/ui/button";
 
 import { cn } from "@/utils/utils";
 import { SearchSchema } from "@/utils/global.schema";
+import { useDashboard } from "../hooks/useDashboard";
+import { Loader2 } from "lucide-react";
 
-const data = [
-  {
-    date: "1 Jan",
-    Attend: 0,
-    Sick: 0,
-    Leave: 0,
-    "Out of City": 0,
-  },
-  {
-    date: "2 Jan",
-    Attend: 0,
-    Sick: 0,
-    Leave: 0,
-    "Out of City": 0,
-  },
-  {
-    date: "3 Jan",
-    Attend: 0,
-    Sick: 0,
-    Leave: 0,
-    "Out of City": 0,
-  },
-  {
-    date: "4 Jan",
-    Attend: 0,
-    Sick: 0,
-    Leave: 0,
-    "Out of City": 0,
-  },
-  {
-    date: "5 Jan",
-    Attend: 0,
-    Sick: 0,
-    Leave: 0,
-    "Out of City": 0,
-  },
-  {
-    date: "6 Jan",
-    Attend: 0,
-    Sick: 0,
-    Leave: 0,
-    "Out of City": 0,
-  },
-  {
-    date: "7 Jan",
-    Attend: 0,
-    Sick: 0,
-    Leave: 0,
-    "Out of City": 0,
-  },
-  {
-    date: "8 Jan",
-    Attend: 0,
-    Sick: 0,
-    Leave: 0,
-    "Out of City": 0,
-  },
-  {
-    date: "9 Jan",
-    Attend: 0,
-    Sick: 0,
-    Leave: 0,
-    "Out of City": 0,
-  },
-  {
-    date: "10 Jan",
-    Attend: 0,
-    Sick: 0,
-    Leave: 0,
-    "Out of City": 0,
-  },
-];
+type ViewType = "daily" | "weekly" | "monthly";
+type SearchFormValues = z.infer<typeof SearchSchema>;
 
-export default function ChartSummary() {
-  // variables
-  const form = useForm<z.infer<typeof SearchSchema>>({
+const ChartSummary = () => {
+  // Variables
+  const [view, setView] = useState<ViewType>("monthly");
+  const types: ViewType[] = ["daily", "weekly", "monthly"];
+  const form = useForm<SearchFormValues>({
     resolver: zodResolver(SearchSchema),
     defaultValues: {
       search: {
-        start: undefined,
-        end: undefined,
+        start: startOfMonth(new Date()),
+        end: endOfMonth(new Date()),
       },
     },
   });
-  const [view, setView] = useState<"daily" | "weekly" | "monthly">("monthly");
-  const type: ("daily" | "weekly" | "monthly")[] = [
-    "daily",
-    "weekly",
-    "monthly",
-  ];
+  const startDate = formatDateForApi(form.watch("search.start"));
+  const endDate = formatDateForApi(form.watch("search.end"));
+  const { data, isLoading, error } = useDashboard(startDate, endDate);
+
+  // functions
+  function formatDateForApi(date: Date | undefined): string | undefined {
+    if (!date) return undefined;
+    return format(date, "dd-MM-yyyy");
+  }
+
+  const handleViewChange = (newView: ViewType): void => {
+    const now = new Date();
+    let startDate: Date, endDate: Date;
+
+    switch (newView) {
+      case "monthly":
+        startDate = startOfMonth(now);
+        endDate = endOfMonth(now);
+        break;
+      case "weekly":
+        startDate = startOfWeek(now, { weekStartsOn: 1 });
+        endDate = endOfWeek(now, { weekStartsOn: 1 });
+        break;
+      case "daily":
+        startDate = startOfDay(now);
+        endDate = endOfDay(now);
+        break;
+      default:
+        startDate = startOfMonth(now);
+        endDate = endOfMonth(now);
+    }
+
+    form.setValue("search", {
+      start: startDate,
+      end: endDate,
+    });
+
+    setView(newView);
+  };
 
   return (
     <div className="w-full">
@@ -119,24 +95,27 @@ export default function ChartSummary() {
         </h2>
         <div className="flex flex-wrap gap-2 md:items-center">
           <Form {...form}>
-            <InputField
-              name="search"
-              control={form.control}
-              render={({ field }) => (
-                <DatePickerWithRange
-                  name="search"
-                  control={form.control}
-                  value={field.value}
-                  onChange={field.onChange}
-                  placeholder="Select date range"
-                />
-              )}
-            />
+            <form>
+              <InputField
+                name="search"
+                control={form.control}
+                render={({ field }) => (
+                  <DatePickerWithRange
+                    name="search"
+                    control={form.control}
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Select date range"
+                  />
+                )}
+              />
+            </form>
           </Form>
-          {type.map((item) => (
+          {types.map((item) => (
             <Button
               key={item}
-              onClick={() => setView(item)}
+              type="button"
+              onClick={() => handleViewChange(item)}
               variant={view === item ? "default" : "outline"}
               className={cn(
                 "capitalize w-20",
@@ -149,27 +128,41 @@ export default function ChartSummary() {
         </div>
       </div>
       <div className="h-[400px] w-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={data}
-            margin={{
-              top: 20,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Legend />
-            <Bar dataKey="Attend" fill="#194DFF" />
-            <Bar dataKey="Sick" fill="#101828" />
-            <Bar dataKey="Leave" fill="#E8EDFF" />
-            <Bar dataKey="Out of City" fill="#95ADFF" />
-          </BarChart>
-        </ResponsiveContainer>
+        {isLoading && (
+          <div className="flex items-center justify-center h-full">
+            <Loader2 className="animate-spin h-8 w-8 text-primary" />
+          </div>
+        )}
+        {error && (
+          <div className="flex items-center justify-center h-full text-red-500">
+            Error loading data
+          </div>
+        )}
+        {!isLoading && !error && data?.data && (
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={data.data}
+              margin={{
+                top: 20,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Legend />
+              <Bar dataKey="Attend" fill="#194DFF" />
+              <Bar dataKey="Sick" fill="#101828" />
+              <Bar dataKey="Leave" fill="#E8EDFF" />
+              <Bar dataKey="Out of City" fill="#95ADFF" />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
       </div>
     </div>
   );
-}
+};
+
+export default ChartSummary;

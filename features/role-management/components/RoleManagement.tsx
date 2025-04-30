@@ -20,6 +20,7 @@ import { useRoleList } from "../hooks/useRoleManagement";
 import { IResponseRoleManagement, TSearchParams } from "@/types";
 import { useSetParams } from "@/utils/set-params";
 import useRoleManagement from "@/stores/role-management";
+import { hasPermission } from "@/utils/get-permission";
 
 export default function RoleManagement() {
   // variables
@@ -140,14 +141,16 @@ export default function RoleManagement() {
                       View More
                     </Button>
                   </Link>
-                  <Button
-                    variant={"outline"}
-                    size={"sm"}
-                    className="!mt-4 w-full"
-                    onClick={() => handleClick(role)}
-                  >
-                    Edit
-                  </Button>
+                  {hasPermission("Role Management", "edit") && (
+                    <Button
+                      variant={"outline"}
+                      size={"sm"}
+                      className="!mt-4 w-full"
+                      onClick={() => handleClick(role)}
+                    >
+                      Edit
+                    </Button>
+                  )}
                 </div>
               </div>
             );

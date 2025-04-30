@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { IResponseListClientBilling, TSearchParams } from "@/types";
 import useClientBilling from "@/stores/client-billing";
 import { useClientBillingList } from "../hooks/useClientBilling";
+import { hasPermission } from "@/utils/get-permission";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -104,18 +105,20 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                   <Info className="h-5 w-5" />
                   Detail
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setTimeout(() => {
-                      setSelectedData(row);
-                      setDetailType("edit");
-                      toggleModalDetailClientBilling(true);
-                    }, 100);
-                  }}
-                >
-                  <Pencil className="h-5 w-5" />
-                  Edit
-                </DropdownMenuItem>
+                {hasPermission("Client Billing", "edit") && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setTimeout(() => {
+                        setSelectedData(row);
+                        setDetailType("edit");
+                        toggleModalDetailClientBilling(true);
+                      }, 100);
+                    }}
+                  >
+                    <Pencil className="h-5 w-5" />
+                    Edit
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

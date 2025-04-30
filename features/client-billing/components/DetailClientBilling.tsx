@@ -21,6 +21,8 @@ import {
   useVerifyBilling,
 } from "../hooks/useClientBilling";
 import { formatCurrency } from "@/utils/format-currency";
+import { hasPermission } from "@/utils/get-permission";
+import { truncateText } from "@/utils/truncate";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -40,7 +42,7 @@ const TableHeader: ITableHeader[] = [
   },
   {
     key: "status",
-    title: "Current Status",
+    title: "Status",
     className: "min-w-[10rem]",
   },
   {
@@ -155,7 +157,9 @@ export default function DetailClientBilling() {
           </TableCell>
           <TableCell<IResponseDetailClientBilling> name="status">
             {({ row }) => (
-              <Badge variant={row.status ? "success" : "pending"}>
+              <Badge
+                variant={row.status?.name === "Pending" ? "pending" : "success"}
+              >
                 • {row?.status?.name ?? "-"}
               </Badge>
             )}
@@ -169,8 +173,8 @@ export default function DetailClientBilling() {
                     window.open(row.evidence_payment, "_blank");
                   }}
                 >
-                  {row.evidence_payment}{" "}
-                  <Download size={16} className="text-primary ml-2" />
+                  {truncateText(row.evidence_payment, 50)}{" "}
+                  <Download className="text-primary w-8 h-8" />
                 </div>
               ) : (
                 "-"
@@ -180,17 +184,19 @@ export default function DetailClientBilling() {
           <TableCell<IResponseDetailClientBilling> name="action">
             {({ row }) => (
               <div className="flex items-center justify-between gap-1">
-                {detailType === "edit" && !row?.verify && (
-                  <Button
-                    variant={"outline"}
-                    size="sm"
-                    onClick={() => handleVerifyBilling(row.id)}
-                    loading={verifyBilling.isPending}
-                  >
-                    <BadgeCheck size={16} className="text-green-500" />
-                    Verify
-                  </Button>
-                )}
+                {detailType === "edit" &&
+                  !row?.verify &&
+                  hasPermission("Client Billing", "edit") && (
+                    <Button
+                      variant={"outline"}
+                      size="sm"
+                      onClick={() => handleVerifyBilling(row.id)}
+                      loading={verifyBilling.isPending}
+                    >
+                      <BadgeCheck size={16} className="text-green-500" />
+                      Verify
+                    </Button>
+                  )}
                 <Button
                   variant={"outline"}
                   size="icon"

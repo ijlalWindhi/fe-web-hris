@@ -3,18 +3,21 @@ import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
 
 import DialogAction from "@/components/common/dialog-action";
+import { Switch } from "@/components/ui/switch";
 
 import useRoleManagement from "@/stores/role-management";
+import useAuth from "@/stores/auth";
 import {
   usePermissionDetail,
   useUpdatePermission,
 } from "../hooks/useRoleManagement";
-import { Switch } from "@/components/ui/switch";
+import { toast } from "@/hooks/use-toast";
 
 export default function ModalPermission() {
   // variables
   const { selectedData, modalRole, toggleModalRole, setSelectedData } =
     useRoleManagement();
+  const { getPermission, getMenu } = useAuth();
   const { data, refetch, isLoading } = usePermissionDetail(
     selectedData?.id?.toString() ?? "0",
   );
@@ -25,6 +28,8 @@ export default function ModalPermission() {
     try {
       toggleModalRole(false);
       setSelectedData(selectedData);
+      getPermission();
+      getMenu();
     } catch (error) {
       console.error("Error from handleClose: ", error);
     }
@@ -32,7 +37,15 @@ export default function ModalPermission() {
 
   const togglePermission = async (id: string) => {
     try {
-      await updatePermission.mutateAsync(id);
+      const res = await updatePermission.mutateAsync(id);
+      if (res?.status === "success") {
+        toast({
+          title: "Success",
+          description: "Permission updated successfully.",
+          variant: "default",
+        });
+        refetch();
+      }
     } catch (error) {
       console.error("Error from togglePermission: ", error);
     }

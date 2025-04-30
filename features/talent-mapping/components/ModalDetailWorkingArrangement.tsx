@@ -28,6 +28,7 @@ import useAuth from "@/stores/auth";
 import { useShiftCalender } from "../hooks/useTalentMapping";
 import { SearchWorkingArrangementSchema } from "../schemas/talent-mapping.schema";
 import { formatDate } from "@/utils/format-date";
+import { hasPermission } from "@/utils/get-permission";
 
 export default function ModalDetailWorkingArrangement() {
   // variables
@@ -199,7 +200,7 @@ export default function ModalDetailWorkingArrangement() {
                   }
                   placeholder="Select client name"
                   onChange={(value) => handleClientChange(value)}
-                  disabled={profile?.role?.id === 2}
+                  disabled={hasPermission("Talent Mapping", "own client")}
                 />
               )}
             />

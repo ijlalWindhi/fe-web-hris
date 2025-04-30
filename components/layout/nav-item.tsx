@@ -94,7 +94,7 @@ const SubMenuItems: React.FC<{
           {subItem.icon &&
             !isMobile &&
             ICONS[subItem.icon as unknown as keyof typeof ICONS]}
-          {mode === "sidebar" && <div className=" w-2 h-2 rounded-full" />}
+          {mode === "sidebar" && <div className="w-2 h-2 rounded-full" />}
           <span
             className={`text-sm font-normal capitalize ${
               mode === "header"
@@ -128,7 +128,9 @@ const NavItem: React.FC<NavItemProps> = ({
 }) => {
   // variables
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ left: 0 });
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const navItemRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const haveSubItems =
     menuItem.sub &&
@@ -188,7 +190,41 @@ const NavItem: React.FC<NavItemProps> = ({
     haveSubItems,
   ]);
 
-  // functions
+  // Update dropdown position when scrolling
+  useEffect(() => {
+    if (!isDropdownOpen || navigationMode !== "header" || !navItemRef.current)
+      return;
+
+    const updatePosition = () => {
+      if (navItemRef.current) {
+        const rect = navItemRef.current.getBoundingClientRect();
+        setDropdownPosition({ left: rect.left });
+      }
+    };
+
+    // Set initial position
+    updatePosition();
+
+    // Update position on scroll
+    const handleScroll = () => {
+      updatePosition();
+    };
+
+    // Add event listener to parent scroll container
+    const headerContainer = document.querySelector(".desktop-header");
+    if (headerContainer) {
+      headerContainer.addEventListener("scroll", handleScroll);
+    }
+
+    // Cleanup
+    return () => {
+      if (headerContainer) {
+        headerContainer.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [isDropdownOpen, navigationMode]);
+
+  // Click outside handler
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
       if (
@@ -235,14 +271,24 @@ const NavItem: React.FC<NavItemProps> = ({
         <div className="w-full">
           {(navigationMode === "header" ||
             (isMobile && navigationMode === "sidebar")) && (
-            <div onClick={handleNavItemClick} className={navItemClasses}>
+            <div
+              ref={navItemRef}
+              onClick={handleNavItemClick}
+              className={navItemClasses}
+            >
               {navItemContent}
             </div>
           )}
 
-          {/* Dropdown for header mode */}
+          {/* Dropdown for header mode - With fixed position but dynamically updated left value */}
           {navigationMode === "header" && isDropdownOpen && haveSubItems && (
-            <div className="absolute z-10 mt-2 w-[200px] rounded-3xl bg-white shadow-lg border">
+            <div
+              className="fixed z-10 mt-2 w-[200px] rounded-3xl bg-white shadow-lg border"
+              style={{
+                left: `${dropdownPosition.left - 120}px`,
+                top: "calc(100% + 0.5rem)", // Equivalent to mt-2 but with fixed positioning
+              }}
+            >
               <SubMenuItems
                 subItems={menuItem.sub}
                 pathname={pathname}

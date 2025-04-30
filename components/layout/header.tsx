@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useTheme from "@/stores/theme";
 import useAuth from "@/stores/auth";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/utils/utils";
 
 function Header() {
   // variables
@@ -57,7 +58,14 @@ function Header() {
 
       {!isMobile && (
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <div className="flex justify-center gap-1 xl:gap-2 !min-w-[542px]">
+          <div
+            className={cn(
+              "flex flex-row rounded-full bg-white px-3 py-2 w-auto overflow-x-auto max-w-[75%] min-[1380px]:!max-w-full desktop-header gap-1 md:gap-2",
+              {
+                ["lg:mx-auto"]: menu.length > 5,
+              },
+            )}
+          >
             {menu.map((menuItem, index) => (
               <NavItem
                 key={index}
@@ -73,9 +81,9 @@ function Header() {
       )}
 
       <div className="flex items-center gap-2">
-        <div className="bg-white rounded-full p-2">
+        {/* <div className="bg-white rounded-full p-2">
           <Bell size={24} className="cursor-pointer" />
-        </div>
+        </div> */}
         <Link href={"/profile"}>
           <Avatar className="h-10 w-10">
             <AvatarImage

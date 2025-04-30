@@ -12,6 +12,12 @@ import {
 import { Badge } from "@/components/ui/badge";
 import ChartSummary from "./ChartSummary";
 import useAuth from "@/stores/auth";
+import CardReminder from "./CardReminder";
+
+import {
+  usePaymentReminder,
+  useAttendanceSummary,
+} from "../hooks/useDashboard";
 
 const stats = [
   { value: 0, label: "🙋 Attend" },
@@ -23,6 +29,9 @@ const stats = [
 export default function Summary() {
   // variables
   const { profile } = useAuth();
+  const { data: attendanceSummary } = useAttendanceSummary();
+  const { data: paymentReminder } = usePaymentReminder();
+
   return (
     <Card className="w-full lg:w-4/6 h-full">
       <CardHeader>
@@ -41,8 +50,18 @@ export default function Summary() {
           and HR insights at your fingertips.
         </CardDescription>
       </CardHeader>
+      <div className="flex items-center gap-2 w-full overflow-x-auto mt-4">
+        {paymentReminder?.data?.map((reminder, index) => (
+          <CardReminder
+            key={index}
+            client={reminder.client_name}
+            date={reminder.date}
+            status={reminder.status_name}
+          />
+        ))}
+      </div>
       <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 items-center justify-between">
-        {stats.map((stat, index) => (
+        {attendanceSummary?.data?.map((stat, index) => (
           <div
             key={index}
             className="border border-gray-200 bg-gray-50 flex flex-col items-center justify-center p-2 rounded-lg"

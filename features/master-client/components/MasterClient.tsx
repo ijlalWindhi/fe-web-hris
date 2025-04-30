@@ -27,6 +27,7 @@ import useMasterClient from "@/stores/master-client";
 import { TSearchParams } from "@/types";
 import { useSetParams } from "@/utils/set-params";
 import { useMasterClientList } from "../hooks/useMasterClient";
+import { hasPermission } from "@/utils/get-permission";
 
 export default function MasterClient() {
   // variables
@@ -99,7 +100,7 @@ export default function MasterClient() {
               defaultValue={queryParams.src}
             />
           </div>
-          <Button
+          {/* <Button
             variant={"default-outline"}
             size="sm"
             className="w-full md:w-auto"
@@ -107,15 +108,17 @@ export default function MasterClient() {
           >
             <Download size={16} />
             Download Report
-          </Button>
-          <Button
-            size="sm"
-            className="w-full md:w-auto"
-            onClick={() => toggleModalMasterClient(true)}
-          >
-            <Plus size={16} />
-            Register Client
-          </Button>
+          </Button> */}
+          {hasPermission("Master Client", "create") && (
+            <Button
+              size="sm"
+              className="w-full md:w-auto"
+              onClick={() => toggleModalMasterClient(true)}
+            >
+              <Plus size={16} />
+              Register Client
+            </Button>
+          )}
         </div>
       </CardHeader>
       <CardContent>
