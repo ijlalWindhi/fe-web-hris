@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as z from "zod";
 import {
   UseFieldArrayUpdate,
@@ -57,6 +57,24 @@ export default function ModalOutlet({
   });
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState("");
+
+  // Custom debounce function implementation
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Function to debounce map updates from input
+  const debouncedUpdateMapFromInput = (lat: number, long: number) => {
+    if (isNaN(lat) || isNaN(long)) return;
+
+    // Clear any existing timeout
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+
+    // Set a new timeout
+    debounceTimeoutRef.current = setTimeout(() => {
+      setLocation({ lat, long });
+    }, 800);
+  };
 
   // functions
   const handleClose = () => {
@@ -139,12 +157,32 @@ export default function ModalOutlet({
     }
   };
 
+  const handleLatLongChange = (field: string, value: string) => {
+    const numValue = parseFloat(value);
+    if (!isNaN(numValue)) {
+      if (field === "lat") {
+        debouncedUpdateMapFromInput(numValue, location.long);
+      } else if (field === "long") {
+        debouncedUpdateMapFromInput(location.lat, numValue);
+      }
+    }
+  };
+
   // lifecycle
   useEffect(() => {
     if (location.lat && location.long) {
       getAddressFromCoordinates(location.lat, location.long);
     }
   }, [location]);
+
+  // Clear timeout on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (address) {
@@ -227,21 +265,20 @@ export default function ModalOutlet({
                 </Button>
               </div>
             </div>
-            <div className="hidden">
-              <InputField
-                name="address"
-                label="Alamat"
-                control={form.control}
-                render={({ field }) => (
-                  <Input {...field} placeholder="Alamat akan terisi otomatis" />
-                )}
-              />
+            <div className="grid grid-cols-2 gap-4">
               <InputField
                 name="lat"
                 label="Latitude"
                 control={form.control}
                 render={({ field }) => (
-                  <Input {...field} placeholder="Latitude" />
+                  <Input
+                    {...field}
+                    placeholder="Latitude"
+                    onChange={(e) => {
+                      field.onChange(e);
+                      handleLatLongChange("lat", e.target.value);
+                    }}
+                  />
                 )}
               />
               <InputField
@@ -249,7 +286,24 @@ export default function ModalOutlet({
                 label="Longitude"
                 control={form.control}
                 render={({ field }) => (
-                  <Input {...field} placeholder="Longitude" />
+                  <Input
+                    {...field}
+                    placeholder="Longitude"
+                    onChange={(e) => {
+                      field.onChange(e);
+                      handleLatLongChange("long", e.target.value);
+                    }}
+                  />
+                )}
+              />
+            </div>
+            <div className="hidden">
+              <InputField
+                name="address"
+                label="Alamat"
+                control={form.control}
+                render={({ field }) => (
+                  <Input {...field} placeholder="Alamat akan terisi otomatis" />
                 )}
               />
             </div>
