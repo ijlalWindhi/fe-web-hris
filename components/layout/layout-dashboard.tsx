@@ -19,7 +19,7 @@ export function ClientLayoutWrapper({
   const isMobile = useIsMobile();
   const pathname = usePathname();
   const { isSidebarOpen, toggleSidebar } = useTheme();
-  const { permission, menu } = useAuth();
+  const { permission, menu, getPermission, getMenu } = useAuth();
 
   // functions
   const findMenuItemByPath = (
@@ -118,6 +118,11 @@ export function ClientLayoutWrapper({
     checkUserPermission();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [permission, menu]);
+
+  useEffect(() => {
+    getPermission();
+    getMenu();
+  }, []);
 
   return (
     <div className="min-h-screen h-full bg-gray-50">

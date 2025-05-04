@@ -6,6 +6,7 @@ import {
   IResponseUserManagement,
   IResponseDetailPermission,
   IResponseOptionsModule,
+  IResponseRoleOptions,
   TPayloadPermission,
   TSearchParams,
 } from "@/types";
@@ -108,6 +109,19 @@ export async function updatePermission(
     return response.data;
   } catch (error) {
     console.error("Error from service updatePermission: ", error);
+    throw error;
+  }
+}
+
+export async function getRoleOptions(): Promise<
+  IResponse<IResponseRoleOptions[]>
+> {
+  try {
+    const response =
+      await axios.get<IResponse<IResponseRoleOptions[]>>("/role/option");
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getRoleOptions: ", error);
     throw error;
   }
 }

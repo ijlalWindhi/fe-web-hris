@@ -93,7 +93,7 @@ export default function MasterData() {
               defaultValue={queryParams.src}
             />
           </div>
-          {hasPermission("Master Data", "create") && (
+          {hasPermission("Holiday", "create") && (
             <Button onClick={() => toggleModalMasterHoliday(true)}>
               <Plus size={16} />
               Add Holiday Calendar

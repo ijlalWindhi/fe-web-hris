@@ -81,9 +81,9 @@ function Header() {
       )}
 
       <div className="flex items-center gap-2">
-        <div className="bg-white rounded-full p-2">
+        {/* <div className="bg-white rounded-full p-2">
           <Bell size={24} className="cursor-pointer" />
-        </div>
+        </div> */}
         <Link href={"/profile"}>
           <Avatar className="h-10 w-10">
             <AvatarImage

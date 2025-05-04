@@ -9,6 +9,7 @@ import {
   IResponseTimesheet,
   IResponsePerformance,
   IResponsePayroll,
+  IResponseInformationDevice,
   TPayloadUpdatePerformance,
   TSearchParams,
   IParamsSearch,
@@ -168,6 +169,20 @@ export async function getPayroll(
   }
 }
 
+export async function getInformationDevice(
+  id: string,
+): Promise<IResponse<IResponseInformationDevice>> {
+  try {
+    const response = await axios.get<IResponse<IResponseInformationDevice>>(
+      `/talent-monitor/information-device/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getInformationDevice: ", error);
+    throw error;
+  }
+}
+
 export async function updatePerformance(
   id: number,
   payload: TPayloadUpdatePerformance,
@@ -180,6 +195,18 @@ export async function updatePerformance(
     return response.data;
   } catch (error) {
     console.error("Error from service updatePerformance: ", error);
+    throw error;
+  }
+}
+
+export async function resetDevice(id: string): Promise<IResponse<null>> {
+  try {
+    const response = await axios.post<IResponse<null>>(
+      `/talent-monitor/reset-device/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service resetDevice: ", error);
     throw error;
   }
 }

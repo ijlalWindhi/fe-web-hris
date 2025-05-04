@@ -195,6 +195,10 @@ export type TParamsShiftCalender = {
   end_date: string;
 };
 
+export interface IResponseInformationDevice {
+  active_device: boolean;
+}
+
 export type TPayloadUpdatePerformance = {
   softskill: number;
   hardskill: number;

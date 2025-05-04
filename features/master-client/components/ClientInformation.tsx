@@ -44,7 +44,14 @@ export default function ClientInformation({
         primary
         control={form.control}
         render={({ field }) => (
-          <Input placeholder="e.g. 123456789" {...field} />
+          <Input
+            placeholder="e.g. 123456789"
+            {...field}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, "");
+              field.onChange(value);
+            }}
+          />
         )}
       />
       <InputField

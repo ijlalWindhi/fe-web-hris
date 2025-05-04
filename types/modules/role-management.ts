@@ -44,3 +44,8 @@ export type TPayloadPermission = {
   module_id: number;
   permission_name: string;
 };
+
+export interface IResponseRoleOptions {
+  id: number;
+  name: string;
+}

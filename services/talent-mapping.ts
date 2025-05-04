@@ -9,6 +9,7 @@ import {
   IResponseShiftCalender,
   IResponseTalentOptions,
   IResponsePtkpOptions,
+  IResponseRoleTalentMappingOptions,
   TParamsShiftCalender,
   TSearchParams,
 } from "@/types";
@@ -168,6 +169,22 @@ export async function getPtkpOptions(
     return response.data;
   } catch (error) {
     console.error("Error from service getPtkpOptions: ", error);
+    throw error;
+  }
+}
+
+export async function getRoleTalentMappingOptions(
+  src?: string,
+): Promise<IResponse<IResponseRoleTalentMappingOptions[]>> {
+  try {
+    const response = await axios.get<
+      IResponse<IResponseRoleTalentMappingOptions[]>
+    >("/talent-mapping/role/option", {
+      params: { src },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getRoleTalentMappingOptions: ", error);
     throw error;
   }
 }

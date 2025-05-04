@@ -147,7 +147,7 @@ export default function DetailMasterClient() {
             alt="logo client"
             width={50}
             height={50}
-            className="rounded-lg"
+            className="rounded-lg h-12 w-12 object-cover"
           />
           <div className="space-y-1.5">
             <div className="flex items-center">

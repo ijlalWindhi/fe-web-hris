@@ -13,4 +13,5 @@ export const CreateUserManagementSchema = z.object({
     .max(15, "Phone number must be at most 15 characters"),
   address: z.string().nonempty("Address is required"),
   role_id: z.string().nonempty("Role is required"),
+  client_id: z.string().optional().nullable(),
 });
