@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format, parse } from "date-fns";
+import { id } from "date-fns/locale";
 
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -134,7 +136,15 @@ export default function ModalClaimCompensation() {
   // lifecycle
   useEffect(() => {
     if (selectedData) {
-      form.setValue("payment_date", selectedData.payment_date);
+      form.setValue(
+        "payment_date",
+        format(
+          parse(selectedData.payment_date, "dd MMMM yyyy", new Date(), {
+            locale: id,
+          }),
+          "dd MMMM yyyy",
+        ),
+      );
       form.setValue("code_user", selectedData.talent_id?.toString());
       form.setValue("client_id", selectedData.client_id?.toString());
       form.setValue("service_name", selectedData.service_name);
