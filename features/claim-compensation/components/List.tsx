@@ -142,6 +142,18 @@ export default function List({ queryParams }: Readonly<IListProps>) {
           </Badge>
         )}
       </TableCell>
+      <TableCell<IResponseClaimCompensation> name="amount">
+        {({ row }) => (
+          <span>
+            {row?.amount
+              ? new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                }).format(row?.amount || 0)
+              : "-"}
+          </span>
+        )}
+      </TableCell>
       <TableCell<IResponseClaimCompensation> name="action">
         {({ row }) => (
           <div className="flex gap-1">
