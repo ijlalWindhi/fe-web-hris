@@ -118,7 +118,6 @@ export default function PersonalInformation({
       <InputField
         name="bpjs_number"
         label="BPJS TK Number"
-        primary
         control={form.control}
         render={({ field }) => (
           <Input

@@ -20,7 +20,7 @@ export const createTalentMappingSchema = (roleId: number) => {
       .min(10, "Phone number must be at least 10 characters")
       .max(15, "Phone number must be at most 15 characters"),
     address: z.string().nonempty("Address is required"),
-    bpjs_number: z.string().nonempty("BPJS Number is required"),
+    bpjs_number: z.string().optional().nullable(),
     bank_account_name: z.string().optional().nullable(),
     bank_account_number: z.string().optional().nullable(),
     ptkp: z.string().nonempty("PTKP is required"),

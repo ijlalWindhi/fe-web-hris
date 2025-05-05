@@ -135,7 +135,7 @@ export interface TPayloadTalentMapping {
   email?: string;
   phone?: string;
   address?: string;
-  bpjs_number?: string;
+  bpjs_number?: string | null;
   bank_account_name?: string | null;
   bank_account_number?: string | null;
   ptkp?: number;
