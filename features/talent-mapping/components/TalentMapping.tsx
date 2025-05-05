@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Plus } from "lucide-react";
 
@@ -19,6 +19,7 @@ import ModalTalent from "./ModalTalent";
 import ModalHistoryContract from "./ModalHistoryContract";
 import DetailTalent from "./DetailTalent";
 import ModalDetailWorkingArrangement from "./ModalDetailWorkingArrangement";
+import Filter from "@/components/common/filter";
 
 import useTalentMapping from "@/stores/talent-mapping";
 import { TSearchParams } from "@/types";
@@ -35,8 +36,10 @@ export default function TalentMapping() {
     page: parseInt(searchParams.get("page") ?? "1"),
     page_size: parseInt(searchParams.get("page_size") ?? "10"),
     src: searchParams.get("src") ?? undefined,
+    client_id: searchParams.get("client_id") ?? undefined,
+    outlet_id: searchParams.get("outlet_id") ?? undefined,
   });
-  const { data } = useTalentMappingList(queryParams);
+  const { data, refetch } = useTalentMappingList(queryParams);
 
   // functions
   const handleSearch = useCallback(
@@ -45,6 +48,8 @@ export default function TalentMapping() {
         const newParams: TSearchParams = {
           ...queryParams,
           src: searchTerm || undefined,
+          client_id: queryParams.client_id,
+          outlet_id: queryParams.outlet_id,
           page: 1,
         };
 
@@ -78,6 +83,21 @@ export default function TalentMapping() {
     }
   };
 
+  // lifecycle
+  useEffect(() => {
+    setQueryParams({
+      page: parseInt(searchParams.get("page") ?? "1"),
+      page_size: parseInt(searchParams.get("page_size") ?? "10"),
+      src: searchParams.get("src") ?? undefined,
+      client_id: searchParams.get("client_id") ?? undefined,
+      outlet_id: searchParams.get("outlet_id") ?? undefined,
+    });
+  }, [searchParams]);
+
+  useEffect(() => {
+    refetch();
+  }, [searchParams, refetch]);
+
   return (
     <Card>
       <CardHeader className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center md:gap-4 w-full">
@@ -96,6 +116,7 @@ export default function TalentMapping() {
               defaultValue={queryParams.src}
             />
           </div>
+          <Filter ownClient={hasPermission("Talent Mapping", "own client")} />
           {hasPermission("Talent Mapping", "create") && (
             <Button
               size="sm"

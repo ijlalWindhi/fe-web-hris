@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Plus } from "lucide-react";
 
@@ -16,6 +16,7 @@ import InputSearch from "@/components/common/input-search";
 import { PaginationCompo } from "@/components/ui/pagination";
 import List from "./List";
 import ModalUserManagement from "./ModalUserManagement";
+import Filter from "@/components/common/filter";
 
 import useUserManagement from "@/stores/user-management";
 import { TSearchParams } from "@/types";
@@ -32,8 +33,10 @@ export default function UserManagement() {
     page: parseInt(searchParams.get("page") ?? "1"),
     page_size: parseInt(searchParams.get("page_size") ?? "10"),
     src: searchParams.get("src") ?? undefined,
+    client_id: searchParams.get("client_id") ?? undefined,
+    outlet_id: searchParams.get("outlet_id") ?? undefined,
   });
-  const { data } = useUserList(queryParams);
+  const { data, refetch } = useUserList(queryParams);
 
   // functions
   const handleSearch = useCallback(
@@ -42,6 +45,8 @@ export default function UserManagement() {
         const newParams: TSearchParams = {
           ...queryParams,
           src: searchTerm || undefined,
+          client_id: queryParams.client_id,
+          outlet_id: queryParams.outlet_id,
           page: 1,
         };
 
@@ -75,6 +80,21 @@ export default function UserManagement() {
     }
   };
 
+  // lifecycle
+  useEffect(() => {
+    setQueryParams({
+      page: parseInt(searchParams.get("page") ?? "1"),
+      page_size: parseInt(searchParams.get("page_size") ?? "10"),
+      src: searchParams.get("src") ?? undefined,
+      client_id: searchParams.get("client_id") ?? undefined,
+      outlet_id: searchParams.get("outlet_id") ?? undefined,
+    });
+  }, [searchParams]);
+
+  useEffect(() => {
+    refetch();
+  }, [searchParams, refetch]);
+
   return (
     <Card>
       <CardHeader className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center md:gap-4 w-full">
@@ -93,6 +113,7 @@ export default function UserManagement() {
               defaultValue={queryParams.src}
             />
           </div>
+          <Filter ownClient={hasPermission("User Management", "own client")} />
           {hasPermission("User Management", "create") && (
             <Button
               size="sm"

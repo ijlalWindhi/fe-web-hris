@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
 import {
@@ -13,10 +13,12 @@ import { Badge } from "@/components/ui/badge";
 import InputSearch from "@/components/common/input-search";
 import { PaginationCompo } from "@/components/ui/pagination";
 import List from "./List";
+import Filter from "@/components/common/filter";
 
 import { TSearchParams } from "@/types";
 import { useSetParams } from "@/utils/set-params";
 import { useTalentMonitoringList } from "../hooks/useTalentMonitoring";
+import { hasPermission } from "@/utils/get-permission";
 
 export default function TalentMonitoring() {
   // variables
@@ -26,8 +28,10 @@ export default function TalentMonitoring() {
     page: parseInt(searchParams.get("page") ?? "1"),
     page_size: parseInt(searchParams.get("page_size") ?? "10"),
     src: searchParams.get("src") ?? undefined,
+    client_id: searchParams.get("client_id") ?? undefined,
+    outlet_id: searchParams.get("outlet_id") ?? undefined,
   });
-  const { data } = useTalentMonitoringList(queryParams);
+  const { data, refetch } = useTalentMonitoringList(queryParams);
 
   // functions
   const handleSearch = useCallback(
@@ -36,6 +40,8 @@ export default function TalentMonitoring() {
         const newParams: TSearchParams = {
           ...queryParams,
           src: searchTerm || undefined,
+          client_id: queryParams.client_id,
+          outlet_id: queryParams.outlet_id,
           page: 1,
         };
 
@@ -69,6 +75,21 @@ export default function TalentMonitoring() {
     }
   };
 
+  // lifecycle
+  useEffect(() => {
+    setQueryParams({
+      page: parseInt(searchParams.get("page") ?? "1"),
+      page_size: parseInt(searchParams.get("page_size") ?? "10"),
+      src: searchParams.get("src") ?? undefined,
+      client_id: searchParams.get("client_id") ?? undefined,
+      outlet_id: searchParams.get("outlet_id") ?? undefined,
+    });
+  }, [searchParams]);
+
+  useEffect(() => {
+    refetch();
+  }, [searchParams, refetch]);
+
   return (
     <Card>
       <CardHeader className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center md:gap-4 w-full">
@@ -79,11 +100,14 @@ export default function TalentMonitoring() {
             {data?.meta?.count ?? 0} TAD
           </Badge>
         </div>
-        <div className="w-full md:w-1/3 xl:w-1/4">
+        <div className="flex flex-col sm:flex-row w-full md:w-[60%] items-center justify-end gap-2">
           <InputSearch
             onSearch={handleSearch}
             placeholder="Search TAD here..."
             defaultValue={queryParams.src}
+          />
+          <Filter
+            ownClient={hasPermission("Talent Monitoring", "own client")}
           />
         </div>
       </CardHeader>
