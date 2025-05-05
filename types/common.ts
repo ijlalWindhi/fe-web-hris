@@ -27,4 +27,6 @@ export type TSearchParams = {
   page: number;
   page_size: number;
   src: string | undefined;
+  client_id?: string;
+  outlet_id?: string;
 };
