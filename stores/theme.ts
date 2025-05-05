@@ -19,6 +19,7 @@ const useTheme = create<IThemeStore>((set) => ({
     type: "",
     action: () => {},
   },
+  modalNotPresence: false,
 
   // actions
   setLoading: (loading) => {
@@ -29,6 +30,9 @@ const useTheme = create<IThemeStore>((set) => ({
   },
   setModalDelete: (modal) => {
     set({ modalDelete: modal });
+  },
+  setModalNotPresence: (modal) => {
+    set({ modalNotPresence: modal });
   },
   toggleSidebar: () => {
     set((state) => ({ isSidebarOpen: !state.isSidebarOpen }));

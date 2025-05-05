@@ -34,3 +34,12 @@ export interface IResponsePaymentReminder {
   status: number;
   status_name: string;
 }
+
+export interface IResponseNotPresence {
+  talent_id: string;
+  talent_name: string;
+  client_name: string;
+  outlet_name: string;
+  shift: string;
+  phone: string;
+}

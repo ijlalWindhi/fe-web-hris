@@ -6,6 +6,7 @@ import {
   IResponseBilling,
   IResponsePaymentReminder,
   IResponseAttendanceSummary,
+  IResponseNotPresence,
 } from "@/types";
 
 export async function getDashboard(
@@ -90,6 +91,20 @@ export async function getPaymentReminder(): Promise<
     return response.data;
   } catch (error) {
     console.error("Error from service getPaymentReminder: ", error);
+    throw error;
+  }
+}
+
+export async function getNotPresence(): Promise<
+  IResponse<IResponseNotPresence[]>
+> {
+  try {
+    const response = await axios.get<IResponse<IResponseNotPresence[]>>(
+      "/dashboard/not-presence",
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error from service getNotPresence: ", error);
     throw error;
   }
 }

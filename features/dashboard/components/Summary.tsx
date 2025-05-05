@@ -11,24 +11,21 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import ChartSummary from "./ChartSummary";
-import useAuth from "@/stores/auth";
 import CardReminder from "./CardReminder";
+import ModalNotPresence from "./ModalNotPresence";
 
+import useAuth from "@/stores/auth";
+import useTheme from "@/stores/theme";
 import {
   usePaymentReminder,
   useAttendanceSummary,
 } from "../hooks/useDashboard";
-
-const stats = [
-  { value: 0, label: "🙋 Attend" },
-  { value: 0, label: "🤒 Sick" },
-  { value: 0, label: "🏝️ Leave" },
-  { value: 0, label: "🏙️ Out of City" },
-];
+import { cn } from "@/utils/utils";
 
 export default function Summary() {
   // variables
   const { profile } = useAuth();
+  const { setModalNotPresence } = useTheme();
   const { data: attendanceSummary } = useAttendanceSummary();
   const { data: paymentReminder } = usePaymentReminder();
 
@@ -60,16 +57,25 @@ export default function Summary() {
           />
         ))}
       </div>
-      <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 items-center justify-between">
+      <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 items-center justify-between">
         {attendanceSummary?.data?.map((stat, index) => (
           <div
             key={index}
-            className="border border-gray-200 bg-gray-50 flex flex-col items-center justify-center p-2 rounded-lg"
+            className={cn(
+              "border border-gray-200 bg-gray-50 flex flex-col items-center justify-center p-2 rounded-lg",
+              stat.label.includes("⏰Belum Absen") ? "cursor-pointer" : "",
+            )}
+            onClick={() => {
+              if (stat.label.includes("⏰Belum Absen")) {
+                setModalNotPresence(true);
+              }
+            }}
           >
             <h2 className="text-xl md:text-3xl font-semibold">{stat.value}</h2>
             <p className="text-xs md:text-sm text-gray-500">{stat.label}</p>
           </div>
         ))}
+        <ModalNotPresence />
       </CardContent>
       <CardFooter>
         <ChartSummary />

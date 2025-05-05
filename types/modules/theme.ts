@@ -5,9 +5,11 @@ export interface IThemeStore {
   isSidebarOpen: boolean;
   modalSuccess: IModalSuccess;
   modalDelete: IModalDelete;
+  modalNotPresence: boolean;
   setLoading: (loading: boolean) => void;
   setModalSuccess: (modal: IModalSuccess) => void;
   setModalDelete: (modal: IModalDelete) => void;
+  setModalNotPresence: (modal: boolean) => void;
   toggleSidebar: () => void;
 }
 

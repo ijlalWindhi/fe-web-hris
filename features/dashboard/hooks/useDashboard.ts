@@ -5,6 +5,7 @@ import {
   getTad,
   getAttendanceSummary,
   getPaymentReminder,
+  getNotPresence,
 } from "@/services/dashboard";
 
 export function useDashboard(start?: string, end?: string) {
@@ -45,5 +46,13 @@ export function usePaymentReminder() {
   return useQuery({
     queryKey: ["payment-reminder"],
     queryFn: () => getPaymentReminder(),
+  });
+}
+
+export function useNotPresence() {
+  return useQuery({
+    queryKey: ["not-presence"],
+    queryFn: () => getNotPresence(),
+    enabled: false,
   });
 }
