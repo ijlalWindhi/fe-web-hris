@@ -14,6 +14,7 @@ import { Form } from "../ui/form";
 import { useOptionMasterClient } from "@/features/master-client/hooks/useMasterClient";
 import useTalentMapping from "@/stores/talent-mapping";
 import { useSetParams } from "@/utils/set-params";
+import useAuth from "@/stores/auth";
 
 interface IFilterProps {
   ownClient: boolean;
@@ -37,6 +38,7 @@ function Filter({ ownClient }: IFilterProps) {
   });
   const { data: optionsClient } = useOptionMasterClient();
   const { optionsOutlet, fetchOptionsOutlet } = useTalentMapping();
+  const { profile } = useAuth();
 
   // functions
   const handleSubmit = (data: z.infer<typeof FilterSchema>) => {
@@ -68,6 +70,13 @@ function Filter({ ownClient }: IFilterProps) {
       fetchOptionsOutlet(clientId);
     }
   }, [searchParams, fetchOptionsOutlet]);
+
+  useEffect(() => {
+    if (ownClient) {
+      form.setValue("client_id", profile.client?.id?.toString() || null);
+      fetchOptionsOutlet(profile.client?.id?.toString());
+    }
+  }, [ownClient]);
 
   return (
     <CustomPopover

@@ -61,6 +61,14 @@ export type TResponseProfile = {
     id: number;
     name: string;
   };
+  client: {
+    id: number;
+    name: string;
+  };
+  outlet: {
+    id: number;
+    name: string;
+  };
   address: string;
 };
 
