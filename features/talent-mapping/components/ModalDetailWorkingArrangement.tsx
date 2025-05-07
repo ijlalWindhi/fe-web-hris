@@ -111,14 +111,9 @@ export default function ModalDetailWorkingArrangement() {
       form.setValue("outlet_id", outletId?.toString());
       form.setValue(
         "start_date",
-        format(startOfMonth(new Date()), "dd MMMM yyyy", {
-          locale: id,
-        }),
+        format(startOfMonth(new Date()), "dd MMMM yyyy"),
       );
-      form.setValue(
-        "end_date",
-        format(endOfMonth(new Date()), "dd MMMM yyyy", { locale: id }),
-      );
+      form.setValue("end_date", format(endOfMonth(new Date()), "dd MMMM yyyy"));
       if (clientId) {
         fetchOptionsOutlet(clientId);
       }
@@ -186,7 +181,7 @@ export default function ModalDetailWorkingArrangement() {
           >
             <InputField
               name="client_id"
-              label="Client Name"
+              label="Nama Klien"
               primary
               control={form.control}
               render={({ field }) => (
@@ -198,7 +193,7 @@ export default function ModalDetailWorkingArrangement() {
                       value: item.id?.toString() ?? "",
                     })) || []
                   }
-                  placeholder="Select client name"
+                  placeholder="Pilih klien"
                   onChange={(value) => handleClientChange(value)}
                   disabled={hasPermission("Talent Mapping", "own client")}
                 />
@@ -206,7 +201,7 @@ export default function ModalDetailWorkingArrangement() {
             />
             <InputField
               name="outlet_id"
-              label="Outlet Name"
+              label="Nama Outlet"
               primary
               control={form.control}
               render={({ field }) => (
@@ -218,19 +213,19 @@ export default function ModalDetailWorkingArrangement() {
                       value: item.id?.toString() ?? "",
                     })) || []
                   }
-                  placeholder="Select outlet"
+                  placeholder="Pilih outlet"
                   disabled={form.watch("client_id") === ""}
                 />
               )}
             />
             <InputField
               name="start_date"
-              label="Start Date"
+              label="Tanggal Mulai"
               primary
               control={form.control}
               render={({ field }) => (
                 <DatePicker
-                  placeholder="Choose Start Date"
+                  placeholder="Pilih Tanggal Mulai"
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
@@ -239,19 +234,19 @@ export default function ModalDetailWorkingArrangement() {
             />
             <InputField
               name="end_date"
-              label="End Date"
+              label="Tanggal Selesai"
               primary
               control={form.control}
               render={({ field }) => (
                 <DatePicker
-                  placeholder="Choose End Date"
+                  placeholder="Pilih Tanggal Selesai"
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
                 />
               )}
             />
-            <Button type="submit">Search</Button>
+            <Button type="submit">Cari</Button>
           </form>
         </Form>
         <ScheduleXCalendar calendarApp={calendar} />

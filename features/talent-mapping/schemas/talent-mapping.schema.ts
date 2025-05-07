@@ -35,6 +35,15 @@ export const createTalentMappingSchema = (roleId: number) => {
     outlet_address: z.string().optional().nullable(),
     outlet_lat: z.string().optional().nullable(),
     outlet_long: z.string().optional().nullable(),
+    total_working_days: z.number().optional().nullable(),
+    working_arrangements: z.array(
+      z.object({
+        shift_id: z.string().optional().nullable(),
+        day: z.string().nonempty("Hari wajib diisi"),
+        start_time: z.string().nonempty("Waktu Mulai wajib diisi"),
+        end_time: z.string().nonempty("Waktu Selesai wajib diisi"),
+      }),
+    ),
   });
 
   const schemaWithContract =

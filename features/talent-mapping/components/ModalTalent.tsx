@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import * as z from "zod";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -72,7 +72,19 @@ export default function ModalTalent() {
       contract_end_date: "",
       current_salary: 0,
       resign_date: "",
+      total_working_days: 0,
+      working_arrangements: [
+        {
+          day: "",
+          start_time: "00:00",
+          end_time: "00:00",
+        },
+      ],
     },
+  });
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "working_arrangements",
   });
   const { data, refetch } = useDetailTalentMapping(
     selectedData?.talend_id ?? "",
@@ -159,6 +171,12 @@ export default function ModalTalent() {
               })
             : "",
         },
+        shift: values.working_arrangements.map((item) => ({
+          shift_id: item.shift_id,
+          day: item.day,
+          start_time: item.start_time,
+          end_time: item.end_time,
+        })),
       };
       if (file) {
         const response = await uploadFile(file);
@@ -222,6 +240,12 @@ export default function ModalTalent() {
   const getData = async () => {
     try {
       const initialValue = data?.data;
+      const working_arrangements = data?.data?.shift.map((item) => ({
+        day: item.day,
+        start_time: item.start_time,
+        end_time: item.end_time,
+        shift_id: item.shift_id,
+      }));
       form.reset({
         talent_id: initialValue?.talent_id,
         name: initialValue?.name,
@@ -270,6 +294,8 @@ export default function ModalTalent() {
               formatTo: "dd MMMM yyyy",
             })
           : undefined,
+        working_arrangements: working_arrangements || [],
+        total_working_days: initialValue?.shift?.length || 0,
       });
       const resClientOptions = await fetchOptionsClient();
       const resOutletOptions = await fetchOptionsOutlet(
@@ -413,7 +439,15 @@ export default function ModalTalent() {
               <ClientIdentification form={form} />
             </TabsContent>
             <TabsContent value="working_arrangement">
-              <WorkingArrangement />
+              <WorkingArrangement
+                form={form}
+                fields={fields.map((field) => ({
+                  ...field,
+                  shift_id: field.shift_id ?? "",
+                }))}
+                append={append}
+                remove={remove}
+              />
             </TabsContent>
             <TabsContent value="contract_management">
               <ContractManagement

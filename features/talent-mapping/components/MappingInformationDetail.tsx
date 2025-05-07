@@ -29,27 +29,22 @@ export default function MappingInformationDetail() {
 
   return (
     <dl className="">
-      <h2 className="font-medium text-sm md:text-base">
-        Client Identification
-      </h2>
+      <h2 className="font-medium text-sm md:text-base">Identifikasi Klien</h2>
+      <DataRow label="ID Klien" value={data?.data?.mapping?.client_id ?? "-"} />
       <DataRow
-        label="Client ID"
-        value={data?.data?.mapping?.client_id ?? "-"}
-      />
-      <DataRow
-        label="Client Name"
+        label="Nama Klien"
         value={data?.data?.mapping?.client_name ?? "-"}
       />
       <DataRow
-        label="Client Address"
+        label="Alamat Klien"
         value={data?.data?.mapping?.client_address ?? "-"}
       />
       <DataRow
-        label="Outlet Mapping"
+        label="Pemetaan Outlet"
         value={data?.data?.mapping?.outlet_name ?? "-"}
       />
       <DataRow
-        label="Outlet Address"
+        label="Alamat Outlet"
         value={data?.data?.mapping?.outlet_address ?? "-"}
       />
       <DataRow
@@ -61,7 +56,7 @@ export default function MappingInformationDetail() {
         value={data?.data?.mapping?.outlet_longitude?.toString() ?? "-"}
       />
 
-      <div className="flex w-full justify-between items-center flex-col md:flex-row gap-2 mt-6">
+      {/* <div className="flex w-full justify-between items-center flex-col md:flex-row gap-2 mt-6">
         <h2 className="font-medium text-sm md:text-base">
           Working Arrangement
         </h2>
@@ -104,21 +99,21 @@ export default function MappingInformationDetail() {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
       {/* <DataRow
         label="Workdays"
         value={data?.data?.mapping?.workdays?.toString() ?? "-"}
       /> */}
 
       <h2 className="font-medium text-sm md:text-base mt-4">
-        Contract Management
+        Manajemen Kontrak
       </h2>
       <DataRow
-        label="Contract Date"
+        label="Tanggal Kontrak"
         value={`${data?.data?.mapping?.contract?.start_date ?? "-"} - ${data?.data?.mapping?.contract?.end_date ?? "-"}`}
       />
       <DataRow
-        label="Contract Statement"
+        label="Pernyataan Kontrak"
         value={
           truncateText(data?.data?.mapping?.contract?.file ?? "-", 20) ?? "-"
         }
@@ -133,7 +128,7 @@ export default function MappingInformationDetail() {
         }}
       >
         <CircleAlert size={16} className="mr-2 text-primary" />
-        History Contract
+        Riwayat Kontrak
       </Badge>
     </dl>
   );

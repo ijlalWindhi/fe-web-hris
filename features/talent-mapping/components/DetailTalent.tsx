@@ -41,7 +41,7 @@ export default function DetailTalent() {
         toggleModalDetailTalentMapping(false);
       }}
     >
-      <Pencil size={16} className="mr-2" /> Edit Data
+      <Pencil size={16} className="mr-2" /> Ubah Data
     </Button>
   ) : null;
 
@@ -49,7 +49,7 @@ export default function DetailTalent() {
     <SheetAction
       isOpen={modalDetailTalentMapping}
       onClose={() => toggleModalDetailTalentMapping(false)}
-      title="View TAD"
+      title="Detail TAD"
       position="right"
       className="!min-w-[100vw] md:!min-w-[60vw] lg:!min-w-[40vw] !overflow-y-auto"
       showFooter={true}
@@ -59,14 +59,14 @@ export default function DetailTalent() {
       <Tabs defaultValue="personal_information" className="min-w-full mt-2">
         <TabsList className="w-full">
           <TabsTrigger value="personal_information">
-            Personal Information
+            Informasi Pribadi
           </TabsTrigger>
           <TabsTrigger value="mapping_information">
-            Mapping Information
+            Informasi Pemetaan
           </TabsTrigger>
           {hasPermission("Talent Mapping", "working arrangement") && (
             <TabsTrigger value="working_arrangement">
-              Working Arrangement
+              Pengaturan Kerja
             </TabsTrigger>
           )}
         </TabsList>

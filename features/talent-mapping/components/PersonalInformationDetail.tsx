@@ -13,10 +13,10 @@ export default function PersonalInformationDetail() {
 
   return (
     <dl className="divide-y">
-      <DataRow label="TAD ID" value={data?.data?.personal?.talent_id ?? "-"} />
-      <DataRow label="TAD Name" value={data?.data?.personal?.name ?? "-"} />
+      <DataRow label="ID TAD" value={data?.data?.personal?.talent_id ?? "-"} />
+      <DataRow label="Nama TAD" value={data?.data?.personal?.name ?? "-"} />
       <DataRow
-        label="Date of Birth"
+        label="Tanggal Lahir"
         value={
           data?.data?.personal?.dob
             ? format(
@@ -26,18 +26,12 @@ export default function PersonalInformationDetail() {
             : "-"
         }
       />
-      <DataRow label="ID Number" value={data?.data?.personal?.nik ?? "-"} />
+      <DataRow label="NIK" value={data?.data?.personal?.nik ?? "-"} />
+      <DataRow label="Email" value={data?.data?.personal?.email ?? "-"} />
+      <DataRow label="No. Telepon" value={data?.data?.personal?.phone ?? "-"} />
+      <DataRow label="Alamat" value={data?.data?.personal?.address ?? "-"} />
       <DataRow
-        label="Email Address"
-        value={data?.data?.personal?.email ?? "-"}
-      />
-      <DataRow
-        label="Number Phone"
-        value={data?.data?.personal?.phone ?? "-"}
-      />
-      <DataRow label="Address" value={data?.data?.personal?.address ?? "-"} />
-      <DataRow
-        label="Selfie Photo"
+        label="Swafoto"
         value={
           data?.data?.personal?.photo || "/images/unavailable-profile.webp"
         }

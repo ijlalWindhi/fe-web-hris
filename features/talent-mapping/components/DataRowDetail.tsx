@@ -22,7 +22,7 @@ export default function DataRow({
   };
 
   const renderValue = () => {
-    if (label === "Selfie Photo") {
+    if (label === "Swafoto") {
       return (
         <div className="relative h-10 w-10 rounded-lg overflow-hidden">
           <Image
@@ -33,7 +33,7 @@ export default function DataRow({
           />
         </div>
       );
-    } else if (label === "Contract Statement") {
+    } else if (label === "Pernyataan Kontrak") {
       return (
         <div
           className="flex items-center gap-1 cursor-pointer hover:text-primary hover:underline"

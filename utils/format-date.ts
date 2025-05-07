@@ -25,6 +25,11 @@ export function formatDate({
   formatTo = "dd-MM-yyyy",
 }: IFormatDateProps): string {
   const parsedDate = parse(inputDate, formatFrom, new Date());
+
+  if (!parsedDate || isNaN(parsedDate.getTime())) {
+    return "";
+  }
+
   const formattedDate = format(parsedDate, formatTo);
 
   return formattedDate;
