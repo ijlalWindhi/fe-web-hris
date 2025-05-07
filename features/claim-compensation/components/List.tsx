@@ -20,22 +20,21 @@ import {
   useClaimCompensationList,
 } from "../hooks/useClaimCompensation";
 import { hasPermission } from "@/utils/get-permission";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 
 const TableHeader: ITableHeader[] = [
   {
     key: "talent_name",
-    title: "TAD Name",
+    title: "Nama TAD",
   },
   {
     key: "client_name",
-    title: "Client Name",
+    title: "Nama Klien",
     className: "min-w-[8rem]",
   },
   {
     key: "service_name",
-    title: "Service Name",
+    title: "Nama Layanan",
     className: "min-w-[8rem]",
   },
   {
@@ -45,20 +44,20 @@ const TableHeader: ITableHeader[] = [
   },
   {
     key: "payment_date",
-    title: "Payment Date",
+    title: "Tanggal Pembayaran",
     className: "min-w-[8rem]",
   },
   {
     key: "type",
-    title: "Type",
+    title: "Tipe",
     className: "min-w-[8rem]",
   },
   {
     key: "description",
-    title: "Description",
+    title: "Deskripsi",
     className: "min-w-[14rem]",
   },
-  { key: "action", title: "Action" },
+  { key: "action", title: "Aksi" },
 ];
 
 interface IListProps {
@@ -84,8 +83,8 @@ export default function List({ queryParams }: Readonly<IListProps>) {
           if (res.status === "success") {
             setModalSuccess({
               open: true,
-              title: "Payemnt Successfully Deleted",
-              message: "The payment information has been deleted successfully.",
+              title: "Klaim & Kompensasi Berhasil Dihapus",
+              message: "Informasi pembayaran telah berhasil dihapus.",
               actionVariant: "default",
               actionMessage: "Back",
               action: () => {},
@@ -108,17 +107,9 @@ export default function List({ queryParams }: Readonly<IListProps>) {
       <TableCell<IResponseClaimCompensation> name="talent_name">
         {({ row }) => (
           <div className="flex items-center gap-1">
-            <Avatar className="h-8 w-8 rounded-lg">
-              <AvatarImage
-                src={row?.photo || "/images/unavailable-profile.webp"}
-                alt="avatar"
-                className="object-cover w-full h-full"
-              />
-              <AvatarFallback>
-                {row?.talent_name?.charAt(0)?.toUpperCase() || "-"}
-              </AvatarFallback>
-            </Avatar>
-            <span>{row?.talent_name || "-"}</span>
+            <span>
+              {row?.employee?.map((emp) => emp.name).join(", ") || "-"}
+            </span>
           </div>
         )}
       </TableCell>
@@ -175,7 +166,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                     }}
                   >
                     <Pencil className="h-5 w-5" />
-                    Edit
+                    Ubah
                   </DropdownMenuItem>
                 )}
                 {hasPermission("Claim & Compensation", "delete") && (
@@ -188,7 +179,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                     }}
                   >
                     <Trash className="h-5 w-5" />
-                    Delete
+                    Hapus
                   </DropdownMenuItem>
                 )}
               </DropdownMenuContent>

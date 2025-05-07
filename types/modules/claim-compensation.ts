@@ -21,10 +21,15 @@ export interface IResponseClaimCompensation {
   };
   description: string;
   status_payment: boolean;
+  employee: {
+    code_user: string;
+    name: string;
+  }[];
 }
 
 export type TPayloadClaimCompensation = {
-  code_user: string;
+  // code_user: string;
+  employee: string[];
   client_id: number;
   service_name: string;
   amount: number;

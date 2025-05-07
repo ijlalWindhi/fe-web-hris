@@ -15,6 +15,7 @@ import DialogAction from "@/components/common/dialog-action";
 import { Button } from "@/components/ui/button";
 import { InputCurrency } from "@/components/common/input-currency";
 import RadioButton from "@/components/ui/radio-group";
+import { MultiSelect } from "@/components/common/input-multiselect";
 
 import useClaimCompensation from "@/stores/claim-compensation";
 import useTheme from "@/stores/theme";
@@ -40,7 +41,8 @@ export default function ModalClaimCompensation() {
   const form = useForm<z.infer<typeof ClaimCompensationSchema>>({
     resolver: zodResolver(ClaimCompensationSchema),
     defaultValues: {
-      code_user: "",
+      // code_user: "",
+      employee: [],
       client_id: "",
       service_name: "",
       amount: 0,
@@ -83,7 +85,8 @@ export default function ModalClaimCompensation() {
               formatFrom: "dd MMMM yyyy",
               formatTo: "yyyy-MM-dd",
             }),
-            code_user: data.code_user,
+            // code_user: data.code_user,
+            employee: data.employee,
             client_id: Number(data.client_id),
             type: Number(data.type),
             status_payment: data.status_payment === "true",
@@ -111,7 +114,8 @@ export default function ModalClaimCompensation() {
             formatFrom: "dd MMMM yyyy",
             formatTo: "yyyy-MM-dd",
           }),
-          code_user: data.code_user,
+          // code_user: data.code_user,
+          employee: data.employee,
           client_id: Number(data.client_id),
           amount: Number(data.amount),
           type: Number(data.type),
@@ -149,7 +153,11 @@ export default function ModalClaimCompensation() {
           "dd MMMM yyyy",
         ),
       );
-      form.setValue("code_user", selectedData.talent_id?.toString());
+      // form.setValue("code_user", selectedData.talent_id?.toString());
+      form.setValue(
+        "employee",
+        selectedData?.employee?.map((item) => item.code_user) || [],
+      );
       form.setValue("client_id", selectedData.client_id?.toString());
       form.setValue("service_name", selectedData.service_name);
       form.setValue("amount", selectedData.amount);
@@ -197,7 +205,7 @@ export default function ModalClaimCompensation() {
                 />
               )}
             />
-            <InputField
+            {/* <InputField
               name="code_user"
               label="Nama TAD"
               primary
@@ -213,6 +221,25 @@ export default function ModalClaimCompensation() {
                   }
                   disabled={!form.watch("client_id")}
                   placeholder="Pilih TAD"
+                />
+              )}
+            /> */}
+            <InputField
+              name="employee"
+              label="Nama TAD"
+              primary
+              control={form.control}
+              render={({ field }) => (
+                <MultiSelect
+                  options={
+                    optionsTalent?.data?.map((item) => ({
+                      value: item.id?.toString(),
+                      label: item.name,
+                    })) || []
+                  }
+                  placeholder="Pilih TAD"
+                  disabled={!form.watch("client_id")}
+                  {...field}
                 />
               )}
             />
