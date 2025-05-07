@@ -20,6 +20,7 @@ export interface IResponseClaimCompensation {
     name: string;
   };
   description: string;
+  status_payment: boolean;
 }
 
 export type TPayloadClaimCompensation = {
@@ -30,6 +31,7 @@ export type TPayloadClaimCompensation = {
   payment_date: string;
   type: number;
   description?: string;
+  status_payment: boolean;
 };
 
 export interface IResponseClaimCompensationOptions {

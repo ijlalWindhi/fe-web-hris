@@ -14,6 +14,7 @@ import { DatePicker } from "@/components/common/input-date-picket";
 import DialogAction from "@/components/common/dialog-action";
 import { Button } from "@/components/ui/button";
 import { InputCurrency } from "@/components/common/input-currency";
+import RadioButton from "@/components/ui/radio-group";
 
 import useClaimCompensation from "@/stores/claim-compensation";
 import useTheme from "@/stores/theme";
@@ -46,6 +47,7 @@ export default function ModalClaimCompensation() {
       payment_date: "",
       type: "",
       description: "",
+      status_payment: "false",
     },
   });
   const createClaimCompensation = useCreateClaimCompensation();
@@ -84,6 +86,7 @@ export default function ModalClaimCompensation() {
             code_user: data.code_user,
             client_id: Number(data.client_id),
             type: Number(data.type),
+            status_payment: data.status_payment === "true",
           },
         });
         if (res.status === "success") {
@@ -112,6 +115,7 @@ export default function ModalClaimCompensation() {
           client_id: Number(data.client_id),
           amount: Number(data.amount),
           type: Number(data.type),
+          status_payment: data.status_payment === "true",
         });
         if (res.status === "success") {
           setModalSuccess({
@@ -151,6 +155,10 @@ export default function ModalClaimCompensation() {
       form.setValue("amount", selectedData.amount);
       form.setValue("type", selectedData.type.id.toString());
       form.setValue("description", selectedData.description);
+      form.setValue(
+        "status_payment",
+        selectedData.status_payment ? "true" : "false",
+      );
     }
   }, [selectedData, form]);
 
@@ -158,7 +166,7 @@ export default function ModalClaimCompensation() {
     <DialogAction
       isOpen={modalClaimCompensation}
       onClose={() => handleClose()}
-      title={`${selectedData ? "Edit" : "Add"} Payment`}
+      title={`${selectedData ? "Ubah" : "Tambah"} Klaim & Kompensasi`}
       className="max-w-full md:max-w-lg"
     >
       <Form {...form}>
@@ -169,7 +177,7 @@ export default function ModalClaimCompensation() {
           <div className="py-4 px-1 space-y-4 max-h-[50vh] overflow-y-auto">
             <InputField
               name="client_id"
-              label="Client Name"
+              label="Nama Klien"
               primary
               control={form.control}
               render={({ field }) => (
@@ -181,7 +189,7 @@ export default function ModalClaimCompensation() {
                       label: item.name,
                     })) || []
                   }
-                  placeholder="Select client"
+                  placeholder="Pilih klien"
                   onChange={(value) => {
                     field.onChange(value);
                     refetchTalent();
@@ -191,7 +199,7 @@ export default function ModalClaimCompensation() {
             />
             <InputField
               name="code_user"
-              label="TAD Name"
+              label="Nama TAD"
               primary
               control={form.control}
               render={({ field }) => (
@@ -204,13 +212,13 @@ export default function ModalClaimCompensation() {
                     })) || []
                   }
                   disabled={!form.watch("client_id")}
-                  placeholder="Select TAD"
+                  placeholder="Pilih TAD"
                 />
               )}
             />
             <InputField
               name="service_name"
-              label="Service Name"
+              label="Nama Layanan"
               primary
               control={form.control}
               render={({ field }) => (
@@ -234,12 +242,12 @@ export default function ModalClaimCompensation() {
             />
             <InputField
               name="payment_date"
-              label="Date"
+              label="Tanggal Pembayaran"
               primary
               control={form.control}
               render={({ field }) => (
                 <DatePicker
-                  placeholder="Choose date"
+                  placeholder="Pilih tanggal"
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
@@ -248,7 +256,7 @@ export default function ModalClaimCompensation() {
             />
             <InputField
               name="type"
-              label="Type"
+              label="Tipe"
               primary
               control={form.control}
               render={({ field }) => (
@@ -260,18 +268,32 @@ export default function ModalClaimCompensation() {
                       label: item.name,
                     })) || []
                   }
-                  placeholder="Select type"
+                  placeholder="Pilih tipe"
                 />
               )}
             />
             <InputField
               name="description"
-              label="Description"
+              label="Deskripsi"
               control={form.control}
               render={({ field }) => (
                 <Input
                   placeholder="e.g. Reimbure transportasi ke kantor pusat"
                   {...field}
+                />
+              )}
+            />
+            <InputField
+              name="status_payment"
+              label="Status Pembayaran"
+              control={form.control}
+              render={({ field }) => (
+                <RadioButton
+                  {...field}
+                  options={[
+                    { label: "Sudah Dibayarkan", value: "true" },
+                    { label: "Belum Dibayarkan", value: "false" },
+                  ]}
                 />
               )}
             />
@@ -281,7 +303,7 @@ export default function ModalClaimCompensation() {
             className="w-full"
             loading={createClaimCompensation.isPending}
           >
-            Save
+            Simpan
           </Button>
         </form>
       </Form>
