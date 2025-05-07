@@ -28,7 +28,10 @@ const RadioButton: React.FC<RadioButtonProps> = ({
         className={`flex gap-4 ${direction === "column" ? "flex-col" : "flex-row"}`}
       >
         {options?.map((option) => (
-          <label key={option.value} className="flex items-center gap-2">
+          <label
+            key={option.value}
+            className="flex items-center gap-2 text-xs md:text-sm"
+          >
             <input
               type="radio"
               value={option.value}
