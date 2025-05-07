@@ -15,13 +15,21 @@ export interface ITalentMonitoringStore {
 
 export interface IResponseListTalentMonitoring {
   talend_id: string;
+  penempatan_client: string;
+  penempatan_outlet: string;
+  jam_masuk: string;
+  jam_keluar: string;
+  distance: number;
+  total_jam_kerja: string;
+  long: number;
+  lat: number;
   name: string;
   dob: string;
   nik: string;
   email: string;
   phone: string;
   address: string;
-  photo: string;
+  photo: string | null;
 }
 
 export interface IResponseTalentInformation {

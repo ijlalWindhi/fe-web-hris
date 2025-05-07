@@ -94,7 +94,7 @@ export default function TalentMonitoring() {
     <Card>
       <CardHeader className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center md:gap-4 w-full">
         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-[40%]">
-          <CardTitle className="font-semibold">TAD List</CardTitle>
+          <CardTitle className="font-semibold">Daftar TAD</CardTitle>
           <Badge variant={"outline"} className="w-fit">
             <span className="text-primary">•</span> Total{" "}
             {data?.meta?.count ?? 0} TAD
@@ -103,7 +103,7 @@ export default function TalentMonitoring() {
         <div className="flex flex-col sm:flex-row w-full md:w-[60%] items-center justify-end gap-2">
           <InputSearch
             onSearch={handleSearch}
-            placeholder="Search TAD here..."
+            placeholder="Cari TAD disini..."
             defaultValue={queryParams.src}
           />
           <Filter

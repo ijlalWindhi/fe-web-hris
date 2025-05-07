@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
-import { EllipsisVertical, Info } from "lucide-react";
+import { EllipsisVertical, Info, MapPin } from "lucide-react";
 
 import { ITableHeader, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -19,40 +19,45 @@ import { useTalentMonitoringList } from "../hooks/useTalentMonitoring";
 const TableHeader: ITableHeader[] = [
   {
     key: "talend_id",
-    title: "TAD ID",
+    title: "ID TAD",
     className: "min-w-[6rem]",
   },
   {
     key: "name",
-    title: "Name",
-    className: "min-w-[10rem]",
-  },
-  {
-    key: "dob",
-    title: "Date of Birth",
-    className: "min-w-[14rem]",
-  },
-  {
-    key: "nik",
-    title: "ID Number",
-    className: "min-w-[14rem]",
-  },
-  {
-    key: "email",
-    title: "Email Address",
-    className: "min-w-[14rem]",
+    title: "Nama",
+    className: "min-w-[12rem]",
   },
   {
     key: "phone",
-    title: "Number Phone",
-    className: "min-w-[14rem]",
+    title: "No. Telepon",
+    className: "min-w-[10rem]",
   },
   {
-    key: "address",
-    title: "Address",
-    className: "min-w-[14rem]",
+    key: "penempatan_client",
+    title: "Penempatan Klien",
+    className: "min-w-[10rem]",
   },
-  { key: "action", title: "Action" },
+  {
+    key: "penempatan_outlet",
+    title: "Penempatan Outlet",
+    className: "min-w-[11rem]",
+  },
+  {
+    key: "distance",
+    title: "Jarak Ke Outlet",
+    className: "min-w-[10rem]",
+  },
+  {
+    key: "shift",
+    title: "Jadwal Shift",
+    className: "min-w-[8rem]",
+  },
+  {
+    key: "total_jam_kerja",
+    title: "Total Jam Kerja",
+    className: "min-w-[10rem]",
+  },
+  { key: "action", title: "Aksi" },
 ];
 
 interface IListProps {
@@ -87,6 +92,16 @@ export default function List({ queryParams }: Readonly<IListProps>) {
           </div>
         )}
       </TableCell>
+      <TableCell<IResponseListTalentMonitoring> name="shift">
+        {({ row }) => (
+          <div className="flex items-center gap-1">
+            {row.jam_masuk} - {row.jam_keluar}
+          </div>
+        )}
+      </TableCell>
+      <TableCell<IResponseListTalentMonitoring> name="distance">
+        {({ row }) => <p>{row.distance ? row.distance + "m" : "-"}</p>}
+      </TableCell>
       <TableCell<IResponseListTalentMonitoring> name="action">
         {({ row }) => (
           <div className="flex gap-1">
@@ -105,6 +120,22 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                 >
                   <Info className="h-5 w-5" />
                   Detail
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    const { lat, long } = row;
+                    if (lat && long) {
+                      window.open(
+                        `https://www.google.com/maps?q=${lat},${long}`,
+                        "_blank",
+                      );
+                    } else {
+                      alert("Lokasi tidak tersedia");
+                    }
+                  }}
+                >
+                  <MapPin className="h-5 w-5" />
+                  Lokasi Clock-In
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
