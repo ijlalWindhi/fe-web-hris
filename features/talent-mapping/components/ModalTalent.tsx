@@ -186,11 +186,11 @@ export default function ModalTalent() {
         if (res.status === "success") {
           setModalSuccess({
             open: true,
-            title: "TAD Successfully Updated",
+            title: "Berhasil Memperbarui TAD!",
             message:
-              "The TAD's information has been updated and saved successfully.",
+              "Informasi TAD telah diperbarui dan disimpan dengan sukses.",
             actionVariant: "default",
-            actionMessage: "Back",
+            actionMessage: "Kembali",
             action: () => {
               handleClose();
             },
@@ -202,10 +202,10 @@ export default function ModalTalent() {
         if (res.status === "success") {
           setModalSuccess({
             open: true,
-            title: "TAD Successfully Registered!",
-            message: "The TAD's information has been added to the system. ",
+            title: "Berhasil Mendaftar TAD!",
+            message: "Informasi TAD telah ditambahkan ke sistem.",
             actionVariant: "default",
-            actionMessage: "Back",
+            actionMessage: "Kembali",
             action: () => {
               handleClose();
             },
@@ -368,7 +368,7 @@ export default function ModalTalent() {
     <DialogAction
       isOpen={modalTalentMapping}
       onClose={handleClose}
-      title={`${selectedData ? "Edit" : "Register"} TAD`}
+      title={`${selectedData ? "Ubah" : "Tambah"} TAD`}
       className="max-w-full md:max-w-2xl"
     >
       <Form {...form}>
@@ -391,18 +391,18 @@ export default function ModalTalent() {
             className="min-w-full mt-2"
           >
             <TabsList className="w-full">
-              <TabsTrigger value="personal_information">
-                Personal Information
+              <TabsTrigger value="personal_information" className="pl-5">
+                Informasi Pribadi
               </TabsTrigger>
               <TabsTrigger value="client_identification">
-                Client Identification
+                Identifikasi Klien
               </TabsTrigger>
               <TabsTrigger value="working_arrangement">
-                Working Arrangement
+                Pengaturan Kerja
               </TabsTrigger>
               {hasPermission("Talent Mapping", "add contract") && (
                 <TabsTrigger value="contract_management">
-                  Contract Management
+                  Manajemen Kontrak
                 </TabsTrigger>
               )}
             </TabsList>
@@ -423,7 +423,7 @@ export default function ModalTalent() {
             </TabsContent>
           </Tabs>
           <Button type="submit" className="mt-4 w-full">
-            Save
+            Simpan
           </Button>
         </form>
       </Form>

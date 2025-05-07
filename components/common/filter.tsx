@@ -88,7 +88,7 @@ function Filter({ ownClient }: IFilterProps) {
           >
             <InputField
               name="client_id"
-              label="Client"
+              label="Klien"
               control={form.control}
               render={({ field }) => (
                 <InputCombobox
@@ -99,7 +99,7 @@ function Filter({ ownClient }: IFilterProps) {
                       label: item.name,
                     })) || []
                   }
-                  placeholder="Pilih client"
+                  placeholder="Pilih klien"
                   onChange={(value) => {
                     field.onChange(value);
                     if (value) {

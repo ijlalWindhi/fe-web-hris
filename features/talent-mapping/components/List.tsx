@@ -24,40 +24,40 @@ import { hasPermission } from "@/utils/get-permission";
 const TableHeader: ITableHeader[] = [
   {
     key: "talend_id",
-    title: "TAD ID",
+    title: "ID TAD",
     className: "min-w-[6rem]",
   },
   {
     key: "name",
-    title: "Name",
+    title: "Nama",
     className: "min-w-[10rem]",
   },
   {
     key: "dob",
-    title: "Date of Birth",
+    title: "Tanggal Lahir",
     className: "min-w-[14rem]",
   },
   {
     key: "nik",
-    title: "ID Number",
+    title: "NIK",
     className: "min-w-[14rem]",
   },
   {
     key: "email",
-    title: "Email Address",
+    title: "Email",
     className: "min-w-[14rem]",
   },
   {
     key: "phone",
-    title: "Number Phone",
+    title: "No. Telepon",
     className: "min-w-[14rem]",
   },
   {
     key: "address",
-    title: "Address",
+    title: "Alamat",
     className: "min-w-[14rem]",
   },
-  { key: "action", title: "Action" },
+  { key: "action", title: "Aksi" },
 ];
 
 interface IListProps {
@@ -86,9 +86,9 @@ export default function List({ queryParams }: Readonly<IListProps>) {
           if (res.status === "success") {
             setModalSuccess({
               open: true,
-              title: "Data Deleted Successfully!",
-              message: "The TAD data has been removed from the system.",
-              actionMessage: "Back",
+              title: "Data Berhasil Dihapus!",
+              message: "Data TAD telah dihapus dari sistem.",
+              actionMessage: "Kembali",
               actionVariant: "outline",
               animation: "success",
               action: () => {},
@@ -156,7 +156,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                     }}
                   >
                     <Pencil className="h-5 w-5" />
-                    Edit
+                    Ubah
                   </DropdownMenuItem>
                 )}
                 {hasPermission("Talent Mapping", "delete") && (
@@ -168,7 +168,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                     }}
                   >
                     <Trash className="h-5 w-5" />
-                    Delete
+                    Hapus
                   </DropdownMenuItem>
                 )}
               </DropdownMenuContent>

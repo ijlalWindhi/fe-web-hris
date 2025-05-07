@@ -48,7 +48,7 @@ export default function ClientIdentification({
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
       <InputField
         name="client_name"
-        label="Client Name"
+        label="Nama Klien"
         primary
         control={form.control}
         render={({ field }) => (
@@ -60,32 +60,32 @@ export default function ClientIdentification({
                 value: item.id?.toString() ?? "",
               })) || []
             }
-            placeholder="Select client name"
+            placeholder="Pilih nama klien"
             onChange={(value) => handleClientChange(value)}
           />
         )}
       />
       <InputField
         name="client_id"
-        label="Client ID"
+        label="ID Klien"
         primary
         control={form.control}
         render={({ field }) => (
-          <Input disabled placeholder="Client ID" {...field} />
+          <Input disabled placeholder="ID Klien" {...field} />
         )}
       />
       <InputField
         name="client_address"
-        label="Client Address"
+        label="Alamat Klien"
         primary
         control={form.control}
         render={({ field }) => (
-          <Input disabled placeholder="Client Address" {...field} />
+          <Input disabled placeholder="Alamat Klien" {...field} />
         )}
       />
       <InputField
         name="outlet_mapping"
-        label="Outlet Mapping"
+        label="Pemetaan Outlet"
         primary
         control={form.control}
         render={({ field }) => (
@@ -97,7 +97,7 @@ export default function ClientIdentification({
                 value: item.id?.toString() ?? "",
               })) || []
             }
-            placeholder="Select outlet"
+            placeholder="Pilih outlet"
             onChange={(value) => handleOutletChange(value)}
             disabled={form.watch("client_id") === ""}
           />
@@ -105,20 +105,20 @@ export default function ClientIdentification({
       />
       <InputField
         name="outlet_id"
-        label="Outlet ID"
+        label="ID Outlet"
         primary
         control={form.control}
         render={({ field }) => (
-          <Input disabled placeholder="Outlet ID" {...field} />
+          <Input disabled placeholder="ID Outlet" {...field} />
         )}
       />
       <InputField
         name="outlet_address"
-        label="Outlet Address"
+        label="Alamat Outlet"
         primary
         control={form.control}
         render={({ field }) => (
-          <Input disabled placeholder="Outlet Address" {...field} />
+          <Input disabled placeholder="Alamat Outlet" {...field} />
         )}
       />
       <InputField

@@ -29,12 +29,12 @@ type TContractManagementProps = {
 const TableHeader: ITableHeader[] = [
   {
     key: "contract_date",
-    title: "Contract Date",
+    title: "Tanggal Kontrak",
     className: "min-w-[13rem]",
   },
   {
     key: "file_name",
-    title: "Contract Document",
+    title: "Dokumen Kontrak",
     className: "min-w-[10rem]",
   },
   { key: "action", title: "" },
@@ -63,7 +63,7 @@ function ContractManagement({
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
       <InputField
         name="current_salary"
-        label="Current Salary"
+        label="Gaji Saat Ini"
         control={form.control}
         render={({ field }) => (
           <InputCurrency
@@ -80,12 +80,12 @@ function ContractManagement({
         <div className="w-full">
           <InputField
             name="contract_start_date"
-            label="Contract Date"
+            label="Tanggal Kontrak"
             primary
             control={form.control}
             render={({ field }) => (
               <DatePicker
-                placeholder="Choose contract start date"
+                placeholder="Pilih tanggal mulai kontrak"
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
@@ -102,7 +102,7 @@ function ContractManagement({
             control={form.control}
             render={({ field }) => (
               <DatePicker
-                placeholder="Choose contract end date"
+                placeholder="Pilih tanggal akhir kontrak"
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
@@ -115,11 +115,11 @@ function ContractManagement({
 
       <InputField
         name="resign_date"
-        label="Resign Date"
+        label="Tanggal Resign"
         control={form.control}
         render={({ field }) => (
           <DatePicker
-            placeholder="Choose resign date"
+            placeholder="Pilih tanggal resign"
             value={field.value}
             onChange={field.onChange}
             onBlur={field.onBlur}
@@ -128,9 +128,9 @@ function ContractManagement({
         )}
       />
       <InputFile
-        label="Contract Document"
+        label="File Kontrak"
         defaultValue={detail?.data?.contract?.file}
-        placeholder="Choose file to upload"
+        placeholder="Pilih file untuk diunggah"
         accept="application/pdf"
         acceptLabel="PDF"
         onFileChange={(file) => {

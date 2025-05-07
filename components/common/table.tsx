@@ -122,7 +122,7 @@ function TableCompo<T>({
         ) : (
           <TableRow>
             <TableCell colSpan={header.length} className="text-center">
-              No data available
+              Tidak ada data
             </TableCell>
           </TableRow>
         )}

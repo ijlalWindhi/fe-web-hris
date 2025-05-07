@@ -48,7 +48,7 @@ export default function WorkingArrangement() {
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
       <div className="flex justify-between items-center gap-3">
         <h2 className="font-medium text-sm">
-          Workdays : {data?.data?.workdays ?? 0}
+          Jumlah Hari : {data?.data?.workdays ?? 0}
         </h2>
         {selectedData && (
           <Button

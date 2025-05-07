@@ -31,11 +31,11 @@ export default function PersonalInformation({
     <div className="space-y-2 max-h-[50vh] overflow-y-auto p-2">
       <InputField
         name="talent_id"
-        label="TAD ID"
+        label="ID TAD"
         primary
         control={form.control}
         render={({ field }) => (
-          <Input disabled placeholder="TAD ID" {...field} />
+          <Input disabled placeholder="ID TAD" {...field} />
         )}
       />
       <InputField

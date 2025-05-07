@@ -102,7 +102,7 @@ export default function TalentMapping() {
     <Card>
       <CardHeader className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center md:gap-4 w-full">
         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-[40%]">
-          <CardTitle className="font-semibold">TAD List</CardTitle>
+          <CardTitle className="font-semibold">Daftar TAD</CardTitle>
           <Badge variant={"outline"} className="w-fit">
             <span className="text-primary">•</span> Total{" "}
             {data?.meta?.count ?? 0} TAD
@@ -112,7 +112,7 @@ export default function TalentMapping() {
           <div className="w-full md:w-1/3 xl:w-1/4">
             <InputSearch
               onSearch={handleSearch}
-              placeholder="Search TAD here..."
+              placeholder="Cari TAD disini..."
               defaultValue={queryParams.src}
             />
           </div>
@@ -124,7 +124,7 @@ export default function TalentMapping() {
               onClick={() => toggleModalTalentMapping(true)}
             >
               <Plus size={16} />
-              Register TAD
+              Tambah TAD
             </Button>
           )}
         </div>

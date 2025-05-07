@@ -28,11 +28,11 @@ export default function ModalDelete() {
         <Lottie animation={warningAnimation} height={180} width={180} />
         <div className="flex flex-col gap-1">
           <DialogTitle className="font-semibold text-center">
-            Confirm Deletion
+            Konfirmasi Penghapusan
           </DialogTitle>
           <p className="text-xs text-center text-gray-400">
-            Are you sure you want to delete this {modalDelete.type} data? This
-            action cannot be undone.
+            Apakah Anda yakin ingin menghapus data {modalDelete.type} ini?
+            Tindakan ini tidak dapat dibatalkan.
           </p>
         </div>
         <div className="flex w-full justify-between gap-3">
@@ -47,14 +47,14 @@ export default function ModalDelete() {
             className="w-full text-black"
             variant="outline"
           >
-            Back
+            Batalkan
           </Button>
           <Button
             onClick={() => handleAction()}
             className="w-full"
             variant={"destructive"}
           >
-            Delete
+            Hapus
           </Button>
         </div>
       </DialogContent>
