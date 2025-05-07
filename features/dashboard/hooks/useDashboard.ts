@@ -53,6 +53,5 @@ export function useNotPresence() {
   return useQuery({
     queryKey: ["not-presence"],
     queryFn: () => getNotPresence(),
-    enabled: false,
   });
 }

@@ -7,6 +7,7 @@ import DialogAction from "@/components/common/dialog-action";
 import useTheme from "@/stores/theme";
 import { IResponseNotPresence } from "@/types";
 import { useNotPresence } from "../hooks/useDashboard";
+import { useEffect } from "react";
 
 const TableHeader: ITableHeader[] = [
   {
@@ -45,8 +46,6 @@ export default function ModalNotPresence() {
   // variables
   const { modalNotPresence, setModalNotPresence } = useTheme();
   const { data, isLoading } = useNotPresence();
-
-  // functions
   return (
     <DialogAction
       isOpen={modalNotPresence}

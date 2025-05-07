@@ -63,10 +63,10 @@ export default function Summary() {
             key={index}
             className={cn(
               "border border-gray-200 bg-gray-50 flex flex-col items-center justify-center p-2 rounded-lg",
-              stat.label.includes("⏰Belum Absen") ? "cursor-pointer" : "",
+              stat.label.includes("⏰ Belum Absen") ? "cursor-pointer" : "",
             )}
             onClick={() => {
-              if (stat.label.includes("⏰Belum Absen")) {
+              if (stat.label.includes("⏰ Belum Absen")) {
                 setModalNotPresence(true);
               }
             }}
