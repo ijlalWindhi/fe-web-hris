@@ -3,31 +3,30 @@ import * as z from "zod";
 export const createTalentMappingSchema = (roleId: number) => {
   const baseSchema = z.object({
     talent_id: z.string().optional().nullable(),
-    name: z.string().nonempty("Name is required"),
-    dob: z.string().nonempty("Date of Birth is required"),
+    name: z.string().nonempty("Nama wajib diisi"),
+    dob: z.string().nonempty("Tanggal Lahir wajib diisi"),
+    tempat_lahir: z.string().optional().nullable(),
+    kk: z.string().nonempty("Kartu Keluarga wajib diisi"),
     nik: z
       .string()
-      .nonempty("ID Number is required")
-      .min(16, "Invalid ID Number")
-      .max(16, "Invalid ID Number"),
-    email: z
-      .string()
-      .nonempty("Email Address is required")
-      .email("Invalid email address"),
+      .nonempty("NIK wajib diisi")
+      .min(16, "NIK tidak sesuai")
+      .max(16, "NIK tidak sesuai"),
+    email: z.string().nonempty("Email wajib diisi").email("Email tidak sesuai"),
     phone: z
       .string()
-      .nonempty("Phone Number is required")
-      .min(10, "Phone number must be at least 10 characters")
-      .max(15, "Phone number must be at most 15 characters"),
-    address: z.string().nonempty("Address is required"),
+      .nonempty("Nomor Telepon wajib diisi")
+      .min(10, "Nomor Telepon harus minimal 10 karakter")
+      .max(15, "Nomor Telepon harus maksimal 15 karakter"),
+    address: z.string().nonempty("Alamat wajib diisi"),
     bpjs_number: z.string().optional().nullable(),
     bank_account_name: z.string().optional().nullable(),
     bank_account_number: z.string().optional().nullable(),
-    ptkp: z.string().nonempty("PTKP is required"),
+    ptkp: z.string().nonempty("PTKP wajib diisi"),
     npwp: z.string().optional().nullable(),
-    type_tad: z.string().nonempty("Type TAD is required"),
-    gender: z.string().nonempty("Gender is required"),
-    role_id: z.string().nonempty("User Role is required"),
+    type_tad: z.string().nonempty("Tipe TAD wajib diisi"),
+    gender: z.string().nonempty("Jenis Kelamin wajib diisi"),
+    role_id: z.string().nonempty("Role Pengguna wajib diisi"),
     client_name: z.string().optional().nullable(),
     client_id: z.string().optional().nullable(),
     client_address: z.string().optional().nullable(),
@@ -43,10 +42,10 @@ export const createTalentMappingSchema = (roleId: number) => {
       ? baseSchema.extend({
           contract_start_date: z
             .string()
-            .nonempty("Contract Start Date is required"),
+            .nonempty("Tanggal Mulai Kontrak wajib diisi"),
           contract_end_date: z
             .string()
-            .nonempty("Contract End Date is required"),
+            .nonempty("Tanggal Akhir Kontrak wajib diisi"),
           current_salary: z.number().optional(),
           resign_date: z.string().optional(),
         })
@@ -62,7 +61,7 @@ export const createTalentMappingSchema = (roleId: number) => {
       if (!data.outlet_mapping || data.outlet_mapping.trim() === "") {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "Outlet Mapping is required when Client Name is provided",
+          message: "Outlet Mapping wajib diisi ketika Nama Klien disediakan",
           path: ["outlet_mapping"],
         });
       }
@@ -73,7 +72,7 @@ export const createTalentMappingSchema = (roleId: number) => {
       if (data.npwp !== data.nik) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "NPWP must be the same as ID Number (NIK)",
+          message: "NPWP harus sama dengan Nomor Identitas (NIK)",
           path: ["npwp"],
         });
       }
@@ -81,7 +80,7 @@ export const createTalentMappingSchema = (roleId: number) => {
       if (data.npwp.length > 16) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "NPWP must be at most 16 characters",
+          message: "NPWP harus maksimal 16 karakter",
           path: ["npwp"],
         });
       }
@@ -94,9 +93,9 @@ export const WorkingArrangementSchema = z.object({
   working_arrangements: z.array(
     z.object({
       shift_id: z.string().optional().nullable(),
-      day: z.string().nonempty("Day is required"),
-      start_time: z.string().nonempty("Start Time is required"),
-      end_time: z.string().nonempty("End Time is required"),
+      day: z.string().nonempty("Hari wajib diisi"),
+      start_time: z.string().nonempty("Waktu Mulai wajib diisi"),
+      end_time: z.string().nonempty("Waktu Selesai wajib diisi"),
     }),
   ),
 });

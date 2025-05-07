@@ -52,7 +52,9 @@ export default function ModalTalent() {
     defaultValues: {
       name: "",
       dob: "",
+      tempat_lahir: "",
       nik: "",
+      kk: "",
       email: "",
       phone: "",
       address: "",
@@ -116,7 +118,9 @@ export default function ModalTalent() {
           formatFrom: "dd MMMM yyyy",
           formatTo: "dd-MM-yyyy",
         }),
+        tempat_lahir: values.tempat_lahir,
         nik: values.nik,
+        kk: values.kk,
         email: values.email,
         phone: values.phone,
         address: values.address,
@@ -228,7 +232,9 @@ export default function ModalTalent() {
               formatTo: "dd MMMM yyyy",
             })
           : undefined,
+        tempat_lahir: initialValue?.tempat_lahir,
         nik: initialValue?.nik,
+        kk: initialValue?.kk,
         email: initialValue?.email,
         phone: initialValue?.phone,
         address: initialValue?.address,
@@ -314,7 +320,9 @@ export default function ModalTalent() {
       form.setValue("talent_id", "");
       form.setValue("name", "");
       form.setValue("dob", "");
+      form.setValue("tempat_lahir", "");
       form.setValue("nik", "");
+      form.setValue("kk", "");
       form.setValue("email", "");
       form.setValue("phone", "");
       form.setValue("address", "");

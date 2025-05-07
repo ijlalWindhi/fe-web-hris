@@ -4,6 +4,7 @@ export const fieldToTabMapping: any = {
   name: "personal_information",
   dob: "personal_information",
   nik: "personal_information",
+  kk: "personal_information",
   email: "personal_information",
   phone: "personal_information",
   address: "personal_information",

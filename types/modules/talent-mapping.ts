@@ -40,7 +40,9 @@ export interface IResponseDetailTalentMapping {
   photo: string;
   name: string;
   dob: string;
+  tempat_lahir: string;
   nik: string;
+  kk: string;
   email: string;
   phone: string;
   address: string;
@@ -131,7 +133,9 @@ export interface TPayloadTalentMapping {
   photo?: string;
   name?: string;
   dob?: string;
+  tempat_lahir?: string | null;
   nik?: string;
+  kk?: string;
   email?: string;
   phone?: string;
   address?: string;

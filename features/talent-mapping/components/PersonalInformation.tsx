@@ -40,19 +40,19 @@ export default function PersonalInformation({
       />
       <InputField
         name="name"
-        label="TAD Name"
+        label="Nama TAD"
         primary
         control={form.control}
         render={({ field }) => <Input placeholder="e.g Dhisa" {...field} />}
       />
       <InputField
         name="dob"
-        label="Date of Birth"
+        label="Tanggal Lahir"
         primary
         control={form.control}
         render={({ field }) => (
           <DatePicker
-            placeholder="Choose date of birth"
+            placeholder="Pilih Tanggal Lahir"
             value={field.value}
             onChange={field.onChange}
             onBlur={field.onBlur}
@@ -60,17 +60,46 @@ export default function PersonalInformation({
         )}
       />
       <InputField
+        name="tempat_lahir"
+        label="Tempat Lahir"
+        control={form.control}
+        render={({ field }) => <Input placeholder="e.g Jakarta" {...field} />}
+      />
+      <InputField
         name="nik"
-        label="ID Number"
+        label="NIK"
         primary
         control={form.control}
         render={({ field }) => (
-          <Input placeholder="e.g. 1234567890" {...field} />
+          <Input
+            placeholder="e.g. 1234567890"
+            {...field}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, "");
+              field.onChange(value);
+            }}
+          />
+        )}
+      />
+      <InputField
+        name="kk"
+        label="Kartu Keluarga"
+        primary
+        control={form.control}
+        render={({ field }) => (
+          <Input
+            placeholder="e.g. 1234567890"
+            {...field}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, "");
+              field.onChange(value);
+            }}
+          />
         )}
       />
       <InputField
         name="email"
-        label="Email Address"
+        label="Email"
         primary
         control={form.control}
         render={({ field }) => (
@@ -83,16 +112,24 @@ export default function PersonalInformation({
       />
       <InputField
         name="phone"
-        label="Phone Number"
+        label="Nomor Telepon"
         primary
         control={form.control}
         render={({ field }) => (
-          <Input type="tel" placeholder="e.g. 081234567890" {...field} />
+          <Input
+            type="tel"
+            placeholder="e.g. 081234567890"
+            {...field}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, "");
+              field.onChange(value);
+            }}
+          />
         )}
       />
       <InputField
         name="address"
-        label="Address"
+        label="Alamat"
         primary
         control={form.control}
         render={({ field }) => (
@@ -101,7 +138,7 @@ export default function PersonalInformation({
       />
       <InputField
         name="gender"
-        label="Gender"
+        label="Jenis Kelamin"
         primary
         control={form.control}
         render={({ field }) => (
@@ -111,13 +148,13 @@ export default function PersonalInformation({
               { label: "Laki-laki", value: "0" },
               { label: "Perempuan", value: "1" },
             ]}
-            placeholder="Select gender"
+            placeholder="Pilih Jenis Kelamin"
           />
         )}
       />
       <InputField
         name="bpjs_number"
-        label="BPJS TK Number"
+        label="Nomor BPJS TK"
         control={form.control}
         render={({ field }) => (
           <Input
@@ -132,7 +169,7 @@ export default function PersonalInformation({
       />
       <InputField
         name="ptkp"
-        label="Material status and PTKP"
+        label="Material status dan PTKP"
         primary
         control={form.control}
         render={({ field }) => (
@@ -144,13 +181,13 @@ export default function PersonalInformation({
                 value: item.id?.toString() ?? "",
               })) || []
             }
-            placeholder="Select material status and PTKP"
+            placeholder="Pilih material status dan PTKP"
           />
         )}
       />
       <InputField
         name="npwp"
-        label="NPWP Number"
+        label="Nomor NPWP"
         control={form.control}
         render={({ field }) => (
           <Input
@@ -165,13 +202,13 @@ export default function PersonalInformation({
       />
       <InputField
         name="bank_account_name"
-        label="Bank Account Name"
+        label="Nama Rekening Bank"
         control={form.control}
         render={({ field }) => <Input placeholder="e.g. Dhisa" {...field} />}
       />
       <InputField
         name="bank_account_number"
-        label="Bank Account Number"
+        label="Nomor Rekening Bank"
         control={form.control}
         render={({ field }) => (
           <Input placeholder="e.g. 1234567890" {...field} />
@@ -179,7 +216,7 @@ export default function PersonalInformation({
       />
       <InputField
         name="type_tad"
-        label="Type TAD"
+        label="Tipe TAD"
         primary
         control={form.control}
         render={({ field }) => (
@@ -191,13 +228,13 @@ export default function PersonalInformation({
                 value: item.id?.toString() ?? "",
               })) || []
             }
-            placeholder="Select type TAD"
+            placeholder="Pilih Tipe TAD"
           />
         )}
       />
       <InputField
         name="role_id"
-        label="User Role"
+        label="Role Pengguna"
         primary
         control={form.control}
         render={({ field }) => (
@@ -209,7 +246,7 @@ export default function PersonalInformation({
                 value: item.id?.toString() ?? "",
               })) || []
             }
-            placeholder="Select user role"
+            placeholder="Pilih Role Pengguna"
           />
         )}
       />
