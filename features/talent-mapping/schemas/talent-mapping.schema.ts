@@ -24,7 +24,7 @@ export const createTalentMappingSchema = (roleId: number) => {
     bank_account_name: z.string().optional().nullable(),
     bank_account_number: z.string().optional().nullable(),
     ptkp: z.string().nonempty("PTKP is required"),
-    npwp: z.string().nonempty("NPWP is required"),
+    npwp: z.string().optional().nullable(),
     type_tad: z.string().nonempty("Type TAD is required"),
     gender: z.string().nonempty("Gender is required"),
     role_id: z.string().nonempty("User Role is required"),
@@ -64,6 +64,25 @@ export const createTalentMappingSchema = (roleId: number) => {
           code: z.ZodIssueCode.custom,
           message: "Outlet Mapping is required when Client Name is provided",
           path: ["outlet_mapping"],
+        });
+      }
+    }
+
+    // Validate NPWP when provided: must match NIK and max 16 characters
+    if (data.npwp && data.npwp.trim() !== "") {
+      if (data.npwp !== data.nik) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "NPWP must be the same as ID Number (NIK)",
+          path: ["npwp"],
+        });
+      }
+
+      if (data.npwp.length > 16) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "NPWP must be at most 16 characters",
+          path: ["npwp"],
         });
       }
     }

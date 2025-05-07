@@ -151,7 +151,6 @@ export default function PersonalInformation({
       <InputField
         name="npwp"
         label="NPWP Number"
-        primary
         control={form.control}
         render={({ field }) => (
           <Input

@@ -139,7 +139,7 @@ export interface TPayloadTalentMapping {
   bank_account_name?: string | null;
   bank_account_number?: string | null;
   ptkp?: number;
-  npwp?: string;
+  npwp?: string | null;
   type_tad?: number;
   role_id?: number;
   gender?: number;
