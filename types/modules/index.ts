@@ -11,3 +11,4 @@ export * from "./history-payment";
 export * from "./dashboard";
 export * from "./claim-compensation";
 export * from "./type-tad";
+export * from "./log-system";
