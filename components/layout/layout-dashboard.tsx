@@ -59,19 +59,20 @@ export function ClientLayoutWrapper({
 
   const getModuleNameFromTitle = (title: string): string => {
     const moduleMapping: { [key: string]: string } = {
-      Dashboard: "Dashboard",
-      "TAD Mapping": "Talent Mapping",
-      "TAD Monitoring": "Talent Monitoring",
+      Beranda: "Dashboard",
+      "Pemetaan TAD": "Talent Mapping",
+      "Pemantauan TAD": "Talent Monitoring",
       "Detail Talent Monitoring": "Talent Monitoring",
-      "Client Billing": "Client Billing",
-      "Master Client": "Master Client",
-      "User Management": "User Management",
-      "Role Management": "Role Management",
+      "Penagihan Klien": "Client Billing",
+      "Data Klien": "Master Client",
+      "Manajemen Pengguna": "User Management",
+      "Manajemen Peran": "Role Management",
       "Detail Role Management": "Role Management",
-      Holiday: "Holiday",
-      "Type Tad": "Type Tad",
-      "History Payment": "History Payment",
-      "Claim & Compensation": "Claim & Compensation",
+      "Hari Libur": "Holiday",
+      "Jenis TAD": "Type Tad",
+      "Riwayat Pembayaran": "History Payment",
+      "Klaim & Kompensasi": "Claim & Compensation",
+      "Log Sistem": "Log Sistem",
     };
 
     return moduleMapping[title] || title;
