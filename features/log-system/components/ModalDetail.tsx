@@ -103,12 +103,13 @@ export default function ModalDetail() {
             <div className="border rounded bg-gray-50 p-4 overflow-x-auto">
               <pre className="text-sm">
                 <code className="text-gray-700">
-                  {canCompare
+                  {/* {canCompare
                     ? renderHighlightedJson(
                         selectedData?.data_before as Record<string, any>,
                         selectedData?.data_after as Record<string, any>,
                       )
-                    : JSON.stringify(selectedData?.data_before || {}, null, 2)}
+                    : JSON.stringify(selectedData?.data_before || {}, null, 2)} */}
+                  {JSON.stringify(selectedData?.data_before || {}, null, 2)}
                 </code>
               </pre>
             </div>
@@ -120,12 +121,13 @@ export default function ModalDetail() {
             <div className="border rounded bg-gray-50 p-4 overflow-x-auto">
               <pre className="text-sm">
                 <code className="text-gray-700">
-                  {canCompare
+                  {/* {canCompare
                     ? renderHighlightedJson(
                         selectedData?.data_after as Record<string, any>,
-                        selectedData?.data_before as Record<string, any>,
+                        selectedData?.data_before as Record<string, any>
                       )
-                    : JSON.stringify(selectedData?.data_after || {}, null, 2)}
+                    : JSON.stringify(selectedData?.data_after || {}, null, 2)} */}
+                  {JSON.stringify(selectedData?.data_after || {}, null, 2)}
                 </code>
               </pre>
             </div>
