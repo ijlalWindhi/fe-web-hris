@@ -67,7 +67,7 @@ export default function ModalDetailBilling() {
     <DialogAction
       isOpen={modalDetailBilling}
       onClose={() => handleClose()}
-      title={"Detail Billing"}
+      title={"Detail Tagihan"}
       className="max-w-full md:max-w-3xl"
     >
       <div className="space-y-2 mt-6">

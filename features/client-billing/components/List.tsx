@@ -21,25 +21,25 @@ import { hasPermission } from "@/utils/get-permission";
 const TableHeader: ITableHeader[] = [
   {
     key: "id",
-    title: "Client ID",
+    title: "ID Klien",
     className: "min-w-[6rem]",
   },
   {
     key: "name",
-    title: "Client Name",
+    title: "Nama Klien",
     className: "min-w-[14rem]",
   },
   {
-    key: "address",
-    title: "Client Address",
+    key: "current_detail",
+    title: "Detail",
     className: "min-w-[14rem]",
   },
   {
     key: "status",
-    title: "Current Status",
+    title: "Status",
     className: "min-w-[8rem]",
   },
-  { key: "action", title: "Action" },
+  { key: "action", title: "Aksi" },
 ];
 
 interface IListProps {
@@ -116,7 +116,7 @@ export default function List({ queryParams }: Readonly<IListProps>) {
                     }}
                   >
                     <Pencil className="h-5 w-5" />
-                    Edit
+                    Ubah
                   </DropdownMenuItem>
                 )}
               </DropdownMenuContent>

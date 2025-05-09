@@ -27,17 +27,17 @@ import { truncateText } from "@/utils/truncate";
 const TableHeader: ITableHeader[] = [
   {
     key: "date",
-    title: "Invoice Date",
+    title: "Tanggal Tagihan",
     className: "min-w-[10rem]",
   },
   {
     key: "amount",
-    title: "Amount Billed",
+    title: "Jumlah Tagihan",
     className: "min-w-[10rem]",
   },
   {
     key: "total_talent",
-    title: "TAD Resource",
+    title: "Sumber Daya TAD",
     className: "min-w-[10rem]",
   },
   {
@@ -47,12 +47,12 @@ const TableHeader: ITableHeader[] = [
   },
   {
     key: "evidence_payment",
-    title: "Payment",
+    title: "Pembayaran",
     className: "min-w-[10rem]",
   },
   {
     key: "action",
-    title: "Action",
+    title: "Aksi",
   },
 ];
 
@@ -89,11 +89,11 @@ export default function DetailClientBilling() {
       if (res.status === "success") {
         setModalSuccess({
           open: true,
-          title: "Payment Successfully Verified",
+          title: "Pembayaran Berhasil Diverifikasi",
           message:
-            "The payment has been successfully verified. Please check the client billing list.",
+            "Pembayaran telah berhasil diverifikasi. Silakan periksa daftar penagihan klien.",
           actionVariant: "default",
-          actionMessage: "Back",
+          actionMessage: "Kembali",
           action: () => {
             refetch();
           },
@@ -120,7 +120,7 @@ export default function DetailClientBilling() {
       <SheetContent className="!min-w-[100vw] md:!min-w-[60vw] lg:!min-w-[40vw] overflow-y-auto">
         <SheetHeader>
           <SheetTitle>
-            {detailType === "detail" ? "View" : "Edit"} Client Billing
+            {detailType === "detail" ? "Lihat" : "Ubah"} Penagihan Klien
           </SheetTitle>
         </SheetHeader>
         <div className="flex items-center gap-2 bg-blue-50 p-2 md:p-3 rounded-lg my-4">
@@ -144,7 +144,7 @@ export default function DetailClientBilling() {
             <p className="text-xs">{selectedData?.address ?? "-"}</p>
           </div>
         </div>
-        <h3 className="text-sm font-medium">Client Billing</h3>
+        <h3 className="text-sm font-medium">Penagihan Klien</h3>
         <Table<IResponseDetailClientBilling>
           header={TableHeader}
           data={Array.isArray(data?.data) ? data.data : []}
@@ -194,7 +194,7 @@ export default function DetailClientBilling() {
                       loading={verifyBilling.isPending}
                     >
                       <BadgeCheck size={16} className="text-green-500" />
-                      Verify
+                      Verifikasi
                     </Button>
                   )}
                 <Button
