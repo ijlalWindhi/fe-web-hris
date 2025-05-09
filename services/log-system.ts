@@ -1,11 +1,11 @@
 import axios from "@/lib/axios";
-import { IResponse, IResponseLogSistem, TSearchParams } from "@/types";
+import { IResponse, IResponseLogSystem, TSearchParams } from "@/types";
 
 export async function getListLogSistem(
   params?: TSearchParams,
-): Promise<IResponse<IResponseLogSistem[]>> {
+): Promise<IResponse<IResponseLogSystem[]>> {
   try {
-    const response = await axios.get<IResponse<IResponseLogSistem[]>>(
+    const response = await axios.get<IResponse<IResponseLogSystem[]>>(
       "/log-activity/list",
       {
         params,

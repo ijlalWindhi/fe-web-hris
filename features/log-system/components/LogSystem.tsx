@@ -1,7 +1,6 @@
 "use client";
 import React, { useCallback, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Plus } from "lucide-react";
 
 import {
   Card,
@@ -13,8 +12,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { PaginationCompo } from "@/components/ui/pagination";
 import InputSearch from "@/components/common/input-search";
-import { Button } from "@/components/ui/button";
 import List from "./List";
+import ModalDetail from "./ModalDetail";
 
 import { TSearchParams } from "@/types";
 import { useSetParams } from "@/utils/set-params";
@@ -107,6 +106,7 @@ export default function MasterData() {
           onPageChange={(data) => handlePageChange(data)}
         />
       </CardFooter>
+      <ModalDetail />
     </Card>
   );
 }
